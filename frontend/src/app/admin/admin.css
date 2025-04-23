@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+
+* {
+    font-family: 'Lexend', sans-serif;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+:root {
+    /* option 1 colors */
+    --main: #589981;
+    --side: #B0D79F;
+
+    /* option 2 colors */
+    --green1: #b8d6a4;
+    --green2: #d0e5c3;
+    --green3: #d0e5c3;
+    --blue1: #72b3b4;
+    --blue2: #94dceb;
+    --blue3: #cbedee;
+    --sand1: #d1b596;
+    --sand2: #ccbeac;
+    --sand3: #f8e7ca;
+}
+
+.swal2-confirm {
+    background: #589981 !important;
+}
+
+.swal2-deny,
+.swal2-cancel {
+    background: #cd6d00 !important;
+}
+
+.button-interact {
+    transition: .3s ease;
+}
+
+.button-interact:hover {
+    box-shadow: 0 0 9px #CCCAB2;
+}
+
+.button-interact:active {
+    box-shadow: none;
+}
