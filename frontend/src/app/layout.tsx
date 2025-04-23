@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -24,9 +25,45 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <head>
+        {/* <link rel="icon" href="..." /> */}
+        {/* Tailwind CSS CDN */}
+        <link
+          href="https://cdn.jsdelivr.net/npm/tailwindcss@latest/dist/tailwind.min.css"
+          rel="stylesheet"
+        />
+        {/* jQuery CDN */}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+        {/* jQuery DataTables CDN */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css"
+        />
+        <Script
+          src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"
+          strategy="beforeInteractive"
+        ></Script>
+
+        {/* TwElements CSS CDN */}
+        <link
+          href="https://cdn.jsdelivr.net/npm/tw-elements@latest/dist/css/tw-elements.min.css"
+          rel="stylesheet"
+        />
+        <Script
+          src="https://cdn.jsdelivr.net/npm/tw-elements@latest/dist/js/tw-elements.umd.min.js"
+          strategy="afterInteractive"
+        ></Script>
+        <link
+          href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
+          rel="stylesheet"
+        />
+        <Script
+          strategy="afterInteractive"
+          src="https://cdn.jsdelivr.net/npm/sweetalert2@11"
+        />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
       </body>
     </html>
