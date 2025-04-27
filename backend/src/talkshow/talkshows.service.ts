@@ -12,7 +12,7 @@ export class TalkshowsService {
     ) {}
 
     async findAll(): Promise<Talkshow[]> {
-        return await this.talkshowsRepository.find(); // fetch from db
+        return await this.talkshowsRepository.find({select: ['nama', 'nrp', 'jurusan', 'wa', 'idline', 'domisili', 'asal']}); // fetch from db
     }
 
     async findPetra(): Promise<Pick<Talkshow, 'nama' | 'nrp' | 'jurusan' | 'wa' | 'idline'>[]> {
