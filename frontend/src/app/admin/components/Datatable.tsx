@@ -14,11 +14,14 @@ const DataTable = ({ data }: DataTableProps) => {
     useEffect(() => {
         // Initialize DataTable with dynamic data
         $('#dataTable').DataTable({
-        data: data,  // Pass the data directly to DataTables
+        data: data,
         columns: Object.keys(data[0] || {}).map(key => ({
-            title: key, 
-            data: key 
-        }))  // Dynamically set columns based on data keys
+            title: key.toUpperCase(),
+            data: key
+        })),
+        columnDefs: [
+            { targets: '_all', className: 'text-center align-middle border' }
+        ]
         })
 
         // Cleanup DataTable instance on unmount
@@ -28,7 +31,7 @@ const DataTable = ({ data }: DataTableProps) => {
     }, [data])  // Reinitialize DataTable if data changes
 
     return (
-        <table id="dataTable" className="display">
+        <table id="dataTable" className="display text-center rounded-xl border border-gray-300 overflow-hidden">
         <thead>
             <tr>
             {/* Table headers will be populated dynamically via DataTables options */}
