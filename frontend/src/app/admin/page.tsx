@@ -1,6 +1,17 @@
-import PageHeader from './components/PageHeader';
+// app/admin/page.tsx
 
-export default function AdminHomePage() {
+import PageHeader from './components/PageHeader';
+import Datatable from './components/Datatable';
+
+// This is a server component because it's inside the `app/` folder
+const AdminHomePage = async () => {
+  // Use the environment variable to get the API URL
+  const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/talkshows`;
+
+  // Fetch data from the API using the URL from the environment variable
+  const res = await fetch(apiUrl);
+  const data = await res.json();
+
   return (
     <div className="min-h-screen p-6">
       {/* Dynamic title header */}
@@ -8,10 +19,11 @@ export default function AdminHomePage() {
 
       {/* Main content */}
       <div className="mt-8 md:ms-60">
-        <p className="text-lg text-gray-700">
-          Welcome to the admin panel. Here you can manage applicants and more.
-        </p>
+        {/*Datatable */}
+        <Datatable data={data} />
       </div>
     </div>
   );
 }
+
+export default AdminHomePage;
