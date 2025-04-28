@@ -25,7 +25,7 @@ const AdminHomePage = () => {
             Whatsapp: item.wa,
             IDLine: item.idline,
             Pembayaran: item.status_pembayaran === 0
-              ? '<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded">Validasi</button>'
+              ? `<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded" data-id="${item.id}">Validasi</button>`
               : '<span class="text-green-500">Validated</span>',
           }));
 
@@ -49,7 +49,7 @@ const AdminHomePage = () => {
             Whatsapp: item.wa,
             IDLine: item.idline,
             Pembayaran: item.status_pembayaran === 0
-              ? '<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded">Validasi</button>'
+              ? `<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded" data-id="${item.id}">Validasi</button>`
               : '<span class="text-green-500">Validated</span>',
           }));
 

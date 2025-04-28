@@ -58,6 +58,7 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
           rel="stylesheet"
         />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.6/dist/sweetalert2.min.css"></link>
         <Script
           strategy="afterInteractive"
           src="https://cdn.jsdelivr.net/npm/sweetalert2@11"

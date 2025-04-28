@@ -32,9 +32,68 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
         });
 
         // Scoped click event inside this table only
-        $(`#${id}`).on('click', '.btn-pay', function () {
-        alert('Tombol Bayar diklik!');
+        $(`#${id}`).on('click', '.btn-pay', async function () {
+            const btnId = $(this).data('id'); // Get the ID of the clicked button
+            console.log(btnId);
+            if (!btnId) return;
+        
+            // Show the confirmation dialog
+            const result = await Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: 'Pembayaran akan divalidasi dan tidak bisa dibatalkan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Validasi!',
+                cancelButtonText: 'Batal',
+                reverseButtons: true, // This will reverse the positions of the buttons
+            });
+        
+            // If the user confirms, proceed with the payment validation
+            if (result.isConfirmed) {
+                try {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/talkshows/validate`, {
+                        method: 'POST', // or PATCH
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            id: btnId, // Send the ID of the talkshow
+                            validate: true,
+                        }),
+                    });
+        
+                    if (response.ok) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil memvalidasi!',
+                            text: 'Pembayaran telah divalidasi.',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            location.reload(); // Reload the page to reflect changes
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal memvalidasi!',
+                            text: 'Terjadi masalah saat memvalidasi pembayaran.',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error validating payment:', error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Gagal memvalidasi!',
+                        text: 'Terjadi masalah dari server.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            } else {
+                // If canceled, log that the user canceled the validation
+                console.log('Validation canceled');
+            }
         });
+        
 
         // Cleanup on unmount
         return () => {
