@@ -17,7 +17,7 @@ export class TalkshowsService {
 
     async findPetra(): Promise<Pick<Talkshow, 'nama' | 'nrp' | 'jurusan' | 'wa' | 'idline'>[]> {
         const result = await this.talkshowsRepository.find({
-            select: ['nama', 'nrp', 'jurusan', 'wa', 'idline'], 
+            select: ['nama', 'nrp', 'jurusan', 'wa', 'idline', 'status_pembayaran'], 
             where: { asal: AsalType.Petra }
         });
     
@@ -27,13 +27,14 @@ export class TalkshowsService {
             nrp: item.nrp,
             jurusan: item.jurusan,
             wa: item.wa,
-            idline: item.idline
+            idline: item.idline,
+            status_pembayaran: item.status_pembayaran
         }));
     }
 
     async findUmum(): Promise<Talkshow[]> {
         return await this.talkshowsRepository.find({
-            select: ['nama', 'domisili', 'wa', 'idline'], 
+            select: ['nama', 'domisili', 'wa', 'idline', 'status_pembayaran'], 
             where: { asal: AsalType.Umum } 
         });
     }
