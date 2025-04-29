@@ -3,7 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TalkshowsModule } from './talkshow/talkshows.module';
+import { DatabaseModule } from './database/database.module';
+import { TalkshowsModule } from './talkshows/talkshows.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TalkshowsModule } from './talkshow/talkshows.module';
         synchronize: true,
       }),
     }),
+    DatabaseModule,
     TalkshowsModule,
 
   ],
