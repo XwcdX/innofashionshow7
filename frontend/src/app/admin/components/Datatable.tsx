@@ -1,8 +1,8 @@
 'use client';
 import { useEffect } from 'react';
 import $ from 'jquery';
-import 'datatables.net';
 import 'datatables.net-dt';
+import 'datatables.net';
 
 interface DataTableProps {
     id: string;
@@ -28,6 +28,12 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
                 }
             : undefined
         })),
+        columnDefs: [
+            {
+              targets: ['_all'],  // Apply to all columns
+              type: 'string', // Set type to string to prevent numeric behavior
+            },
+        ],
         destroy: true,
         });
 

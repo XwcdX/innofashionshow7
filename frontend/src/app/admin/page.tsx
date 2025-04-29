@@ -59,7 +59,6 @@ const AdminHomePage = () => {
         }
         setLoadingUmum(false);
       }
-      console.log(dataUmum);
     }
 
     fetchData();

@@ -1,1 +1,0 @@
-declare var Swal: import('sweetalert2').SweetAlert;
