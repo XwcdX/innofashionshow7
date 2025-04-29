@@ -57,16 +57,15 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
             // If the user confirms, proceed with the payment validation
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/talkshows/validate`, {
-                        method: 'POST', // or PATCH
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/talkshows/validate/${btnId}`, {
+                        method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            id: btnId, // Send the ID of the talkshow
-                            validate: true,
+                            status_pembayaran: true, // Send only the status in the body
                         }),
-                    });
+                    });                      
         
                     if (response.ok) {
                         Swal.fire({
