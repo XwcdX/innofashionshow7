@@ -40,7 +40,7 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
         // Scoped click event inside this table only
         $(`#${id}`).on('click', '.btn-pay', async function () {
             const btnId = $(this).data('id'); // Get the ID of the clicked button
-            console.log(btnId);
+            //console.log(btnId);
             if (!btnId) return;
         
             // Show the confirmation dialog
@@ -57,7 +57,9 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
             // If the user confirms, proceed with the payment validation
             if (result.isConfirmed) {
                 try {
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/talkshows/validate/${btnId}`, {
+                    const btnHref = $(this).data('href');
+                    if (!btnHref) return;
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${btnHref}/validate/${btnId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -114,6 +116,14 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
         <div className="flex justify-center items-center p-8">
             <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-gray-900"></div>
         </div>
+        );
+    }
+
+    if (data.length === 0) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="text-gray-500 text-lg">Tidak ada data untuk ditampilkan.</div>
+            </div>
         );
     }
 

@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseModule } from './database/database.module';
 import { TalkshowsModule } from './talkshows/talkshows.module';
+import { WorkshopsModule } from './workshops/workshops.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { TalkshowsModule } from './talkshows/talkshows.module';
     }),
     DatabaseModule,
     TalkshowsModule,
+    WorkshopsModule,
 
   ],
   controllers: [AppController],
