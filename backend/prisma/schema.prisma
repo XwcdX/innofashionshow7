@@ -1,16 +1,76 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
 
 generator client {
   provider = "prisma-client-js"
 }
 
-datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+model Division {
+  id     String   @id @default(uuid())
+  name   String
+  slug   String   @unique
+  admins Admin[]
+
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model Admin {
+  id         String   @id @default(uuid())
+  email      String   @unique
+  name       String
+  division   Division @relation(fields: [divisionId], references: [id])
+  divisionId String
+  
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+enum UserType {
+  INTERNAL
+  EXTERNAL
+}
+
+enum Category {
+  INTERMEDIATE
+  ADVANCED
+}
+
+model User {
+  id               String     @id @default(uuid())
+  email            String     @unique
+  name             String
+  type             UserType   @default(EXTERNAL)
+  category         Category   @default(INTERMEDIATE)
+  age              Int?
+  whatsapp         String?
+  proofOfPayment   String?
+
+  internalProfile  Internal?  @relation("UserInternal")
+  externalProfile  External?  @relation("UserExternal")
+
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}
+
+model Internal {
+  userId  String   @id
+  nrp     String   @unique
+  batch   Int
+  major   String
+  ktm     String
+
+  user    User     @relation("UserInternal", fields: [userId], references: [id])
+}
+
+model External {
+  userId   String   @id
+  instance String
+  idCard   String
+
+  user     User     @relation("UserExternal", fields: [userId], references: [id])
 }
 
 enum AsalType {
