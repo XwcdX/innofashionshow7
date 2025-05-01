@@ -1,3 +1,4 @@
+'use client'    
 import { useEffect, useState } from 'react'
 import { signIn } from 'next-auth/react'
 
@@ -29,7 +30,7 @@ export default function LoginPage() {
             </button>
 
             <style jsx>
-            {`
+                {`
             .buttons {
             display: flex;
             height: 100vh;

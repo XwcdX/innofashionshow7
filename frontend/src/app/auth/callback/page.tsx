@@ -1,6 +1,7 @@
+'use client'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -14,34 +15,32 @@ export default function AuthCallback() {
 
         (async () => {
             try {
-                const category = localStorage.getItem('category');
-                if (!category) throw new Error('No category in localStorage');
-                console.log(`${API_URL}/auth/login`);
+                const category = localStorage.getItem('category')
+                if (!category) throw new Error('No category selected')
 
-                const base = API_URL ?? (typeof window !== 'undefined' && window.location.origin);
-                const res = await fetch(`${base}/auth/login`, {
+                const res = await fetch('/api/auth/login', {
                     method: 'POST',
+                    credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email: session.user!.email,
                         name: session.user!.name,
-                        category,
-                    }),
-                });
-                if (!res.ok) {
-                    const err = await res.json().catch(() => ({}));
-                    throw new Error(err.message || res.statusText);
-                }
-                const { token } = await res.json();
-                localStorage.setItem('ACCESS_TOKEN', token);
-                router.replace('/dashboard');
-            } catch (err: any) {
-                console.error('Login fetch error:', err);
-                setError(`Network or CORS error: ${err.message}`);
-            }
-        })();
-    }, [status, session]);
+                        category
+                    })
+                })
 
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}))
+                    throw new Error(err.message || res.statusText)
+                }
+
+                router.replace('/')
+            } catch (err: any) {
+                console.error('Auth callback error:', err)
+                setError(err.message || 'Unknown error')
+            }
+        })()
+    }, [status, session, router])
 
     if (status === 'loading') return <p>Validating session…</p>
     if (error) return <p style={{ color: 'red' }}>{error}</p>

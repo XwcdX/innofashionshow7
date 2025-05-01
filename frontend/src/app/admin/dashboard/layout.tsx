@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import Navbar from './components/Navbar';
 import './admin.css';
 
-// Admin-specific metadata
 export const metadata: Metadata = {
   title: 'Admin Panel',
   description: 'Admin dashboard for managing the app.',
