@@ -51,10 +51,6 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/npm/tw-elements@latest/dist/css/tw-elements.min.css"
           rel="stylesheet"
         />
-        <Script
-          src="https://cdn.jsdelivr.net/npm/tw-elements@latest/dist/js/tw-elements.umd.min.js"
-          strategy="afterInteractive"
-        ></Script>
         <link
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap"
           rel="stylesheet"
@@ -69,6 +65,11 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
+        
+        <Script
+          src="https://cdn.jsdelivr.net/npm/tw-elements@latest/dist/js/tw-elements.umd.min.js"
+          strategy="afterInteractive"
+        ></Script>
       </body>
     </html>
   );
