@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { User } from '@prisma/client';
+import { Prisma } from '@prisma/client'
 
 @Injectable()
 export class UsersService {
@@ -15,5 +16,36 @@ export class UsersService {
 
     async create(email: string, name: string): Promise<User> {
         return this.prisma.user.create({ data: { email, name } });
+    }
+
+    async findAllPetra() {
+        return this.prisma.user.findMany({
+            where: {
+                type: 'INTERNAL'
+            },
+            include: {
+                internalProfile: true
+            }
+        });
+    }
+
+    async findAllUmum() {
+        return this.prisma.user.findMany({
+            where: {
+                type: 'EXTERNAL'
+            },
+            include: {
+                externalProfile: true
+            }
+        });
+    }
+
+    async validatePembayaran(id: string, updateTalkshowDto: Prisma.UserUpdateInput) {
+        return this.prisma.user.update({
+            where: {
+                id,
+            },
+            data: updateTalkshowDto,
+        });
     }
 }
