@@ -1,27 +1,29 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import type { Config } from 'tailwindcss'
+
+const config: Config = {
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}", // Untuk Next.js 14
   ],
   theme: {
     extend: {
       colors: {
-        primary: '#a6ff4d',
-        secondary: '#4dffff',
-        accent: '#8f03d1',
-        dark: '#202021',
-        light: '#eef2ff',
-        purple: '#c306aa',
-        navy: '#0c1f6f'
+        neon: "#a6ff4d",
+        cyan: "#4dffff",
+        purple: "#8f03d1",
+        pink: "#c306aa",
+        dark: "#202021"
       },
       fontFamily: {
-        moderniz: ['Moderniz', 'sans-serif'],
-        eirene: ['Eirene Sans', 'sans-serif'],
+        moderniz: ["Moderniz", "sans-serif"],
+        eirene: ["Eirene Sans", "sans-serif"],
       },
     },
   },
   plugins: [],
 }
+
+export default config
 
 // /** @type {import('tailwindcss').Config} */
 // module.exports = {
