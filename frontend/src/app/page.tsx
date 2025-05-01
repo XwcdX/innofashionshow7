@@ -1,3 +1,4 @@
+import Navbar from './components/Navbar' 
 import ThemeSection from './components/ThemeSection'
 import EventBar from './components/EventBar'
 import { Timeline } from './components/Timeline'
@@ -32,12 +33,15 @@ const timelineItems = [
 
 export default function Home() {
   return (
-    <main>
-      <ThemeSection />
-      <EventBar />
-      <Timeline items={timelineItems} />
-      <RSVPButton />
-    </main>
+    <>
+      <Navbar /> 
+      <main className="pt-20 padding-top bg-primary"> {/* bg-[#202021] */}
+        <ThemeSection />
+        <EventBar />
+        <Timeline items={timelineItems} />
+        <RSVPButton />
+      </main>
+    </>
   )
 }
 

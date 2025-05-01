@@ -70,7 +70,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
   className = "",
   damping = 50,
   stiffness = 400,
-  numCopies = 6,
+  numCopies = 100, // Changed to 100 for near-infinite appearance
   velocityMapping = { input: [0, 1000], output: [0, 5] },
   parallaxClassName = "",
   scrollerClassName = "",
@@ -84,7 +84,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     className = "",
     damping,
     stiffness,
-    numCopies,
+    numCopies = 100, // Changed to 100
     velocityMapping,
     parallaxClassName,
     scrollerClassName,
@@ -137,7 +137,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     });
 
     const spans = [];
-    for (let i = 0; i < (numCopies ?? 6); i++) {
+    for (let i = 0; i < (numCopies ?? 100); i++) { // Changed to 100
       spans.push(
         <span
           className={`flex-shrink-0 ${className}`}
@@ -155,7 +155,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
         style={parallaxStyle}
       >
         <motion.div
-          className={`${scrollerClassName} flex whitespace-nowrap text-center font-sans text-4xl font-bold tracking-[-0.02em] drop-shadow md:text-[5rem] md:leading-[5rem]`}
+          className={`${scrollerClassName} flex whitespace-nowrap will-change-transform`}
           style={{ x, ...scrollerStyle }}
         >
           {spans}

@@ -1,8 +1,7 @@
 export default function RSVPButton() {
   return (
-    <section className="min-h-[70vh] bg-secondary flex flex-col justify-center items-center p-8">
+    <section className="bg-[#202021] min-h-[70vh] flex flex-col justify-center items-center p-8">
       <button className="
-        font-montserrat
         inline-block
         px-[30px] py-[15px]
         text-lg

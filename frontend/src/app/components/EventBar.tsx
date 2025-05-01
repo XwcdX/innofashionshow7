@@ -4,9 +4,9 @@ import ScrollVelocity from './ScrollVelocity';
 
 export default function EventBar() {
   return (
-    <section className="min-h-[50vh] bg-primary text-dark py-16 ">
-      <div className="mx-auto"> 
-        <h2 className="font-moderniz text-4xl md:text-5xl font-bold mb-12 text-[#a6ff4d] text-center">
+    <section className="min-h-[50vh] bg-[#202021] text-dark py-16 ">
+      <div className="mx-auto bg-[#202021]"> 
+        <h2 className="bg-[#202021]font-moderniz text-4xl md:text-5xl font-bold mb-12 text-[#a6ff4d] text-center">
           EVENT HIGHLIGHTS
         </h2>
         
