@@ -1,14 +1,103 @@
-export default function Timeline() {
-    return (
-      <section className="min-h-screen bg-light text-dark p-8">
-        <h2 className="text-4xl font-bold mb-12 text-center">TIMELINE</h2>
-        <div className="max-w-4xl mx-auto space-y-8">
-          {['Event 1', 'Event 2', 'Event 3'].map((event, index) => (
-            <div key={index} className="p-6 border-b-2 border-accent">
-              <h3 className="text-2xl font-semibold">{event}</h3>
-            </div>
-          ))}
-        </div>
-      </section>
-    )
+// src/app/components/Timeline.tsx
+import {
+    Timeline as ShadcnTimeline,
+    TimelineContent,
+    TimelineDate,
+    TimelineHeader,
+    TimelineIndicator,
+    TimelineItem,
+    TimelineSeparator,
+    TimelineTitle,
+  } from "@/app/components/ui/timeline";
+  
+  interface TimelineItemProps {
+    id: number;
+    date: string;
+    title: string;
+    description: string;
   }
+  
+  interface TimelineProps {
+    items: TimelineItemProps[];
+  }
+  
+  export function Timeline({ items }: TimelineProps) {
+    return (
+      <div className="bg-dark py-16">
+        <ShadcnTimeline defaultValue={3} className="max-w-4xl mx-auto">
+          {items.map((item) => (
+            <TimelineItem
+              key={item.id}
+              step={item.id}
+              className="group-data-[orientation=vertical]/timeline:sm:ms-32"
+            >
+              <TimelineHeader>
+                <TimelineSeparator />
+                <TimelineDate className="text-cyan group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
+                  {item.date}
+                </TimelineDate>
+                <TimelineTitle className="text-neon sm:-mt-0.5">
+                  {item.title}
+                </TimelineTitle>
+                <TimelineIndicator />
+              </TimelineHeader>
+              <TimelineContent className="text-cream">
+                {item.description}
+              </TimelineContent>
+            </TimelineItem>
+          ))}
+        </ShadcnTimeline>
+      </div>
+    );
+  }
+// import {
+//     Timeline,
+//     TimelineContent,
+//     TimelineDate,
+//     TimelineHeader,
+//     TimelineIndicator,
+//     TimelineItem,
+//     TimelineSeparator,
+//     TimelineTitle,
+//   } from "./app/components/ui/timeline";
+  
+//   interface TimelineItem {
+//     id: number;
+//     date: string;
+//     title: string;
+//     description: string;
+//   }
+  
+//   interface TimelineProps {
+//     items: TimelineItem[];
+//   }
+  
+//   export default function CustomTimeline({ items }: TimelineProps) {
+//     return (
+//       <div className="bg-dark py-16">
+//         <Timeline defaultValue={3} className="max-w-4xl mx-auto">
+//           {items.map((item) => (
+//             <TimelineItem
+//               key={item.id}
+//               step={item.id}
+//               className="group-data-[orientation=vertical]/timeline:sm:ms-32"
+//             >
+//               <TimelineHeader>
+//                 <TimelineSeparator />
+//                 <TimelineDate className="text-cyan group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
+//                   {item.date}
+//                 </TimelineDate>
+//                 <TimelineTitle className="text-neon sm:-mt-0.5">
+//                   {item.title}
+//                 </TimelineTitle>
+//                 <TimelineIndicator />
+//               </TimelineHeader>
+//               <TimelineContent className="text-cream">
+//                 {item.description}
+//               </TimelineContent>
+//             </TimelineItem>
+//           ))}
+//         </Timeline>
+//       </div>
+//     );
+//   }

@@ -1,14 +1,41 @@
 import ThemeSection from './components/ThemeSection'
 import EventBar from './components/EventBar'
-import Timeline from './components/Timeline'
+import { Timeline } from './components/Timeline'
 import RSVPButton from './components/RSVPButton'
+
+const timelineItems = [
+  {
+    id: 1,
+    date: "Mar 15, 2024",
+    title: "Project Kickoff",
+    description: "Initial team meeting and project scope definition.",
+  },
+  {
+    id: 2,
+    date: "Mar 22, 2024",
+    title: "Design Phase",
+    description: "Completed wireframes and user interface mockups.",
+  },
+  {
+    id: 3,
+    date: "Apr 5, 2024",
+    title: "Development Sprint",
+    description: "Backend API implementation in progress.",
+  },
+  {
+    id: 4,
+    date: "Apr 19, 2024",
+    title: "Testing & Deployment",
+    description: "Quality assurance testing underway.",
+  },
+];
 
 export default function Home() {
   return (
     <main>
       <ThemeSection />
       <EventBar />
-      <Timeline />
+      <Timeline items={timelineItems} />
       <RSVPButton />
     </main>
   )
