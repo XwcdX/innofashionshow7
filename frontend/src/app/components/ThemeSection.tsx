@@ -25,6 +25,7 @@
 
 export default function ThemeSection() {
     return (
+      
       <div className="bg-[#202021] min-h-screen p-8 flex flex-col justify-center items-center">
         {/* Forced color example */}
         <h1 

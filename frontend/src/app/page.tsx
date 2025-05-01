@@ -3,6 +3,7 @@ import ThemeSection from './components/ThemeSection'
 import EventBar from './components/EventBar'
 import { Timeline } from './components/Timeline'
 import RSVPButton from './components/RSVPButton'
+import Footer from './components/Footer';
 
 const timelineItems = [
   {
@@ -40,6 +41,7 @@ export default function Home() {
         <EventBar />
         <Timeline items={timelineItems} />
         <RSVPButton />
+        <Footer />
       </main>
     </>
   )

@@ -43,41 +43,55 @@ export default function Navbar() {
       </div>
 
       <style jsx>{`
-        .glitch {
-          position: relative;
-          color: white;
-        }
-        .glitch::before,
-        .glitch::after {
-          content: attr(data-text);
-          position: absolute;
-          left: 0;
-          width: 100%;
-          overflow: hidden;
-          color: #0ff;
-          clip: rect(0, 900px, 0, 0);
-        }
-        .glitch::before {
-          animation: glitchTop 2s infinite linear;
-          color: #ff00c8;
-        }
-        .glitch::after {
-          animation: glitchBottom 2s infinite linear;
-          color: #a6ff4d;
-        }
+  .glitch {
+    position: relative;
+    color: white;
+    font-weight: bold;
+  }
 
-        @keyframes glitchTop {
-          0%, 100% { clip: rect(0, 9999px, 0, 0); }
-          10% { clip: rect(0, 9999px, 10px, 0); }
-          30% { clip: rect(0, 9999px, 5px, 0); }
-        }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    color: #0ff;
+    clip: rect(0, 900px, 0, 0);
+  }
 
-        @keyframes glitchBottom {
-          0%, 100% { clip: rect(0, 9999px, 0, 0); }
-          10% { clip: rect(5px, 9999px, 10px, 0); }
-          30% { clip: rect(10px, 9999px, 15px, 0); }
-        }
-      `}</style>
+  .glitch::before {
+    animation: glitchTop 1.5s infinite linear alternate-reverse;
+    color: #ff00c8;
+  }
+
+  .glitch::after {
+    animation: glitchBottom 2s infinite linear alternate-reverse;
+    color: #a6ff4d;
+  }
+
+  @keyframes glitchTop {
+    0%, 100% { clip: rect(0, 9999px, 0, 0); }
+    5% { clip: rect(0, 9999px, 8px, 0); }
+    15% { clip: rect(0, 9999px, 12px, 0); }
+    25% { clip: rect(0, 9999px, 5px, 0); }
+    40% { clip: rect(0, 9999px, 2px, 0); }
+    55% { clip: rect(0, 9999px, 10px, 0); }
+    70% { clip: rect(0, 9999px, 7px, 0); }
+    85% { clip: rect(0, 9999px, 4px, 0); }
+  }
+
+  @keyframes glitchBottom {
+    0%, 100% { clip: rect(0, 9999px, 0, 0); }
+    10% { clip: rect(5px, 9999px, 10px, 0); }
+    20% { clip: rect(15px, 9999px, 10px, 0); }
+    35% { clip: rect(0, 9999px, 12px, 0); }
+    50% { clip: rect(5px, 9999px, 8px, 0); }
+    65% { clip: rect(10px, 9999px, 14px, 0); }
+    80% { clip: rect(3px, 9999px, 16px, 0); }
+  }
+`}</style>
+
     </motion.nav>
   )
 }
