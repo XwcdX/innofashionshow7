@@ -26,6 +26,7 @@ const AdminHomePage = () => {
 
           const modifiedDataPetra = rawDataPetra.map((item: any) => ({
             Nama: item.nama,
+            Email: item.email,
             NRP: item.nrp,
             Jurusan: item.jurusan,
             Whatsapp: item.wa,
@@ -52,6 +53,7 @@ const AdminHomePage = () => {
 
           const modifiedDataUmum = rawDataUmum.map((item: any) => ({
             Nama: item.nama,
+            Email: item.email,
             Domisili: item.domisili,
             Whatsapp: item.wa,
             IDLine: item.idline,
