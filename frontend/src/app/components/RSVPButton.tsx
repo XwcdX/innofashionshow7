@@ -20,7 +20,9 @@ export default function RSVPButton() {
         active:translate-y-[2px]
         active:shadow-none
         focus:outline-none
-      ">
+      "
+      style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
+      >
         RSVP NOW
       </button>
     </section>

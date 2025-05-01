@@ -11,7 +11,6 @@ import {
   useAnimationFrame,
 } from "framer-motion";
 
-
 interface VelocityMapping {
   input: [number, number];
   output: [number, number];
@@ -20,7 +19,7 @@ interface VelocityMapping {
 interface VelocityTextProps {
   children: React.ReactNode;
   baseVelocity: number;
-  scrollContainerRef?: React.RefObject<HTMLElement>;
+  scrollContainerRef?: React.RefObject<HTMLDivElement>;
   className?: string;
   damping?: number;
   stiffness?: number;
@@ -33,7 +32,7 @@ interface VelocityTextProps {
 }
 
 interface ScrollVelocityProps {
-  scrollContainerRef?: React.RefObject<HTMLElement>;
+  scrollContainerRef?: React.RefObject<HTMLDivElement>;
   texts: string[];
   velocity?: number;
   className?: string;
@@ -73,8 +72,8 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
   stiffness = 400,
   numCopies = 6,
   velocityMapping = { input: [0, 1000], output: [0, 5] },
-  parallaxClassName,
-  scrollerClassName,
+  parallaxClassName = "",
+  scrollerClassName = "",
   parallaxStyle,
   scrollerStyle,
 }) => {
@@ -110,7 +109,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     );
 
     const copyRef = useRef<HTMLSpanElement>(null);
-    const copyWidth = useElementWidth(copyRef);
+    const copyWidth = useElementWidth(copyRef as React.RefObject<HTMLElement>);
 
     function wrap(min: number, max: number, v: number): number {
       const range = max - min;
@@ -138,7 +137,7 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
     });
 
     const spans = [];
-    for (let i = 0; i < numCopies!; i++) {
+    for (let i = 0; i < (numCopies ?? 6); i++) {
       spans.push(
         <span
           className={`flex-shrink-0 ${className}`}

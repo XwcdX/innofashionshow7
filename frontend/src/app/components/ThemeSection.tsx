@@ -35,7 +35,7 @@ export default function ThemeSection() {
         </h1>
         
         <p 
-          className="text-[#4dffff] text-xl mb-8"
+          className="text-[#8f03d1] text-xl mb-8"
           style={{ fontFamily: "Eirene Sans, sans-serif" }}
         >
           A French-inspired take on illuminate for a high-fashion feel.
