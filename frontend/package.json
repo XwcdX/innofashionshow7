@@ -12,6 +12,7 @@
   "dependencies": {
     "datatables.net": "^2.2.2",
     "datatables.net-dt": "^2.2.2",
+    "formidable": "^3.5.4",
     "jquery": "^3.7.1",
     "next": "15.3.1",
     "next-auth": "^4.24.11",
@@ -22,6 +23,7 @@
     "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
     "@types/cookie": "^0.6.0",
+    "@types/formidable": "^3.4.5",
     "@types/jquery": "^3.5.32",
     "@types/node": "^20.17.32",
     "@types/react": "^19",

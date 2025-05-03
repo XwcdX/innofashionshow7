@@ -1,0 +1,17 @@
+-- AlterTable
+ALTER TABLE `external` MODIFY `instance` VARCHAR(191) NULL,
+    MODIFY `idCard` VARCHAR(191) NULL;
+
+-- AlterTable
+ALTER TABLE `internal` MODIFY `nrp` VARCHAR(191) NULL,
+    MODIFY `batch` INTEGER NULL,
+    MODIFY `major` VARCHAR(191) NULL,
+    MODIFY `ktm` VARCHAR(191) NULL;
+
+-- AlterTable
+ALTER TABLE `user` ADD COLUMN `adminId` VARCHAR(191) NULL,
+    ADD COLUMN `valid` BOOLEAN NULL,
+    MODIFY `category` ENUM('INTERMEDIATE', 'ADVANCED') NULL DEFAULT 'INTERMEDIATE';
+
+-- AddForeignKey
+ALTER TABLE `User` ADD CONSTRAINT `User_adminId_fkey` FOREIGN KEY (`adminId`) REFERENCES `Admin`(`id`) ON DELETE SET NULL ON UPDATE CASCADE;

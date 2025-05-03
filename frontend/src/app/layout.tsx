@@ -65,7 +65,7 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
-        
+
         <Script
           src="https://cdn.jsdelivr.net/npm/tw-elements@latest/dist/js/tw-elements.umd.min.js"
           strategy="afterInteractive"

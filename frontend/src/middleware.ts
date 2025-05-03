@@ -1,9 +1,11 @@
-// middleware.ts
+import { getToken } from 'next-auth/jwt'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-export function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET!
+
+export async function middleware(req: NextRequest) {
+  const { pathname, search } = req.nextUrl
 
   if (
     pathname.startsWith('/_next/') ||
@@ -21,19 +23,22 @@ export function middleware(req: NextRequest) {
   }
 
   if (pathname.startsWith('/admin/dashboard')) {
-    const adminToken = req.cookies.get('ADMIN_TOKEN')?.value
-    if (!adminToken) {
+    const session = await getToken({ req, secret: NEXTAUTH_SECRET })
+    const adminCookie = req.cookies.get('ADMIN_TOKEN')?.value
+    if (!session || !adminCookie) {
       const url = req.nextUrl.clone()
       url.pathname = '/admin'
+      url.searchParams.set('next', pathname + search)
       return NextResponse.redirect(url)
     }
     return NextResponse.next()
   }
 
-  const accessToken = req.cookies.get('ACCESS_TOKEN')?.value
-  if (!accessToken) {
+  const session = await getToken({ req, secret: NEXTAUTH_SECRET })
+  if (!session) {
     const url = req.nextUrl.clone()
     url.pathname = '/login'
+    url.searchParams.set('next', pathname + search)
     return NextResponse.redirect(url)
   }
 

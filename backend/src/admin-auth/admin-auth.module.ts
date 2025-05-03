@@ -13,7 +13,7 @@ import { AdminAuthController }    from './admin-auth.controller';
       imports: [ConfigModule],
       useFactory: (cs: ConfigService) => ({
         secret: cs.get<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '1h' },
+        signOptions: { expiresIn: '1d' },
       }),
       inject: [ConfigService],
     }),
