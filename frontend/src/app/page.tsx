@@ -8,27 +8,39 @@ import Footer from './components/Footer';
 const timelineItems = [
   {
     id: 1,
-    date: "Mar 15, 2024",
-    title: "Project Kickoff",
-    description: "Initial team meeting and project scope definition.",
+    date: "10 Mei 2025",
+    title: "Open Registration",
+    description: "asd",
   },
   {
     id: 2,
-    date: "Mar 22, 2024",
-    title: "Design Phase",
-    description: "Completed wireframes and user interface mockups.",
+    date: "28 Juni 2025",
+    title: "Close Registration",
+    description: "ef",
   },
   {
     id: 3,
-    date: "Apr 5, 2024",
-    title: "Development Sprint",
-    description: "Backend API implementation in progress.",
+    date: "30 Juni 2025",
+    title: "Last Submission Karya",
+    description: "ch",
   },
   {
     id: 4,
-    date: "Apr 19, 2024",
-    title: "Testing & Deployment",
-    description: "Quality assurance testing underway.",
+    date: "3 Juli 2025",
+    title: "Penjurian Lomba",
+    description: "jt",
+  },
+    {
+    id: 5,
+    date: "7 Juli 2025",
+    title: "Pengumuman Finalis",
+    description: "er",
+  },
+  {
+    id: 6,
+    date: "17 Juli 2025",
+    title: "Awarding Night",
+    description: "lg",
   },
 ];
 

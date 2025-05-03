@@ -14,23 +14,23 @@ export default function Footer() {
           
           <div className="text-center md:text-right">
             <h3 className="text-white text-xl font-bold mb-2">Contact Us</h3>
-            <p className="text-gray-300">Sarah Johnson</p>
-            <p className="text-gray-300">Event Manager</p>
+            <p className="text-gray-300">Jecelyn Gozal</p>
+            <p className="text-gray-300">Ketua INNOFASHION SHOW 7</p>
             <p className="text-gray-300 mt-2">
-              <a href="mailto:events@company.com" className="hover:text-[#a6ff4d] transition">
-                events@company.com
+              <a href="mailto:jecel@petra.id" className="hover:text-[#a6ff4d] transition">
+                jecel@petra.id
               </a>
             </p>
             <p className="text-gray-300">
               <a href="tel:+18005551234" className="hover:text-[#a6ff4d] transition">
-                +1 (800) 555-1234
+                +62 234-555-1234
               </a>
             </p>
           </div>
         </div>
         
         <div className="mt-10 text-center text-gray-500 text-sm">
-          © {new Date().getFullYear()} Event Horizons. All rights reserved.
+          © {new Date().getFullYear()} INNOFASHION SHOW 7. All rights reserved.
         </div>
       </div>
     </footer>

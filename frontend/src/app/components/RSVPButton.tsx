@@ -21,7 +21,7 @@ export default function RSVPButton() {
           active:shadow-none
           focus:outline-none
         "
-        style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
+        style={{ fontFamily: "Moderniz, sans-serif" }}
       >
         RSVP NOW
       </button>
