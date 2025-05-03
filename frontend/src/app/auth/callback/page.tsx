@@ -1,13 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function AuthCallback() {
     const router = useRouter()
     const { data: session, status } = useSession()
+    const searchParams = useSearchParams()
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
@@ -15,17 +14,13 @@ export default function AuthCallback() {
 
         (async () => {
             try {
-                const category = localStorage.getItem('category')
-                if (!category) throw new Error('No category selected')
-
                 const res = await fetch('/api/auth/login', {
                     method: 'POST',
                     credentials: 'include',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         email: session.user!.email,
-                        name: session.user!.name,
-                        category
+                        name: session.user!.name
                     })
                 })
 
@@ -34,7 +29,8 @@ export default function AuthCallback() {
                     throw new Error(err.message || res.statusText)
                 }
 
-                router.replace('/')
+                const nextPath = searchParams?.get('next')
+                router.replace(nextPath ?? '/')
             } catch (err: any) {
                 console.error('Auth callback error:', err)
                 setError(err.message || 'Unknown error')

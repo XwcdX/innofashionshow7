@@ -8,12 +8,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(405).json({ message: 'Method Not Allowed' })
     }
 
-    const { email, name, category } = req.body
+    const { email, name } = req.body
 
     const apiRes = await fetch(`${API_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, name, category })
+        body: JSON.stringify({ email, name })
     })
 
     if (!apiRes.ok) {
@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         secure: isProd,
         sameSite: 'lax',
         path: '/',
-        maxAge: 60 * 60 * 24 * 7,
+        maxAge: 60 * 60 * 24 * 1,
     }))
 
     res.status(200).json({ ok: true })

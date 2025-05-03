@@ -23,6 +23,7 @@ model Admin {
   name       String
   division   Division @relation(fields: [divisionId], references: [id])
   divisionId String
+  users      User[]
   
   createdAt        DateTime       @default(now())
   updatedAt        DateTime       @updatedAt
@@ -43,11 +44,13 @@ model User {
   email            String     @unique
   name             String
   type             UserType   @default(EXTERNAL)
-  category         Category   @default(INTERMEDIATE)
+  category         Category?   @default(INTERMEDIATE)
   age              Int?
   whatsapp         String?
   proofOfPayment   String?
-  status_pembayaran Boolean   @default(false)
+  valid            Boolean?    @default(false)
+  Admin            Admin?      @relation(fields: [adminId], references: [id])
+  adminId          String?
 
   internalProfile  Internal?  @relation("UserInternal")
   externalProfile  External?  @relation("UserExternal")
@@ -58,18 +61,18 @@ model User {
 
 model Internal {
   userId  String   @id
-  nrp     String   @unique
-  batch   Int
-  major   String
-  ktm     String
+  nrp     String?   @unique
+  batch   Int?
+  major   String?
+  ktm     String?
 
   user    User     @relation("UserInternal", fields: [userId], references: [id])
 }
 
 model External {
   userId   String   @id
-  instance String
-  idCard   String
+  instance String?
+  idCard   String?
 
   user     User     @relation("UserExternal", fields: [userId], references: [id])
 }

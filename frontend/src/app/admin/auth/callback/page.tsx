@@ -1,11 +1,12 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 export default function AdminAuthCallback() {
     const { data: session, status } = useSession()
     const router = useRouter()
+    const searchParams = useSearchParams()
     const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
@@ -25,7 +26,8 @@ export default function AdminAuthCallback() {
                     throw new Error(err.message || res.statusText)
                 }
 
-                router.replace('/admin/dashboard')
+                const nextPath = searchParams?.get('next')
+                router.replace(nextPath ?? '/admin/dashboard')
             } catch (err: any) {
                 console.error('Admin callback error:', err)
                 setError(err.message || 'Unknown error')
