@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, Req, UseGuards, Param } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, HttpCode, HttpStatus, Logger, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { JwtAuthGuardAdmin } from '../admin-auth/jwt-auth.guard';
 import { UsersService } from './users.service';
@@ -20,6 +20,7 @@ export class UsersController {
     private readonly logger = new Logger(UsersController.name);
 
     constructor(private readonly usersService: UsersService) { }
+
     @UseGuards(JwtAuthGuard)
     @Get('me')
     getProfile(@Req() req: RequestWithUser) {

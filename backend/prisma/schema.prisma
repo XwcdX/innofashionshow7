@@ -48,7 +48,7 @@ model User {
   age              Int?
   whatsapp         String?
   proofOfPayment   String?
-  valid            Boolean?
+  valid            Boolean?    @default(false)
   Admin            Admin?      @relation(fields: [adminId], references: [id])
   adminId          String?
 
@@ -86,11 +86,13 @@ model Talkshow {
   id                String    @id @default(uuid())
   asal              AsalType
   nama              String
+  email             String    
   wa                String
   idline            String
   domisili          String?   // Nullable
   nrp               String?   // Nullable
   jurusan           String?   // Nullable
+  proofOfPayment    String
   valid             Boolean   @default(false) // 0 = belum bayar
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
@@ -100,11 +102,13 @@ model Workshop {
   id                String    @id @default(uuid())
   asal              AsalType
   nama              String
+  email             String    
   wa                String
   idline            String
   domisili          String?   // Nullable
   nrp               String?   // Nullable
   jurusan           String?   // Nullable
+  proofOfPayment    String
   valid             Boolean   @default(false) // 0 = belum bayar
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
