@@ -6,7 +6,7 @@ export default function RSVPButton() {
           inline-block
           px-[30px] py-[15px]
           text-lg
-          bg-gradient-to-r from-[#8f03d1] to-[#c446f1]
+          bg-gradient-to-r from-[#8f03d1] to-[#c306aa]
           text-[#a6ff4d]
           border-none
           rounded-lg

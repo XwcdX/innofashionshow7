@@ -41,7 +41,7 @@ const TIMELINES = {
             title: "Penjurian Lomba",
             description: "jt",
           },
-            {
+         {
             id: 5,
             date: "7 Juli 2025",
             title: "Pengumuman Finalis",
@@ -81,19 +81,7 @@ const TIMELINES = {
             date: "3 Juli 2025",
             title: "Penjurian Lomba",
             description: "jt",
-          },
-            {
-            id: 5,
-            date: "7 Juli 2025",
-            title: "Pengumuman Finalis",
-            description: "er",
-          },
-          {
-            id: 6,
-            date: "17 Juli 2025",
-            title: "Awarding Night",
-            description: "lg",
-          },
+          }
     ]
   },
   talkshow: {
@@ -142,13 +130,14 @@ export function Timeline() {
           {TIMELINES[currentTimeline].title}
         </h2>
 
+        
         {/* Timeline Content */}
-        <ShadcnTimeline defaultValue={1} className="w-full">
+        <ShadcnTimeline defaultValue={1} className="flex flex-col items-center w-full">
           {TIMELINES[currentTimeline].items.map((item) => (
             <TimelineItem
               key={item.id}
               step={item.id}
-              className="group-data-[orientation=vertical]/timeline:sm:ms-32"
+              className="grid sm:grid-cols-[150px_1fr] gap-4 items-start sm:items-center"
             >
               <TimelineHeader>
                 <TimelineSeparator className="bg-[#8F8F8F]" />
@@ -158,11 +147,11 @@ export function Timeline() {
                 <TimelineTitle className="text-white sm:-mt-0.5">
                   {item.title}
                 </TimelineTitle>
-                <TimelineIndicator className="border-[#8F8F8F]" />
-              </TimelineHeader>
-              <TimelineContent className="text-[#8F8F8F]">
+                <TimelineContent className="text-[#8F8F8F]">
                 {item.description}
               </TimelineContent>
+                <TimelineIndicator className="border-[#8F8F8F]" />
+              </TimelineHeader>
             </TimelineItem>
           ))}
         </ShadcnTimeline>

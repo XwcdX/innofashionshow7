@@ -16,13 +16,16 @@ export default function EventBar() {
           className="text-accent text-3xl md:text-4xl font-bold mx-4"
           parallaxClassName="relative overflow-hidden py-2"
           scrollerClassName="flex whitespace-nowrap gap-8"
-          numCopies={6}
+          numCopies={50}
           velocityMapping={{ input: [0, 300], output: [0, 10] }}
         />
       </div>
     </section>
   );
 }
+
+
+
 
 // export default function EventBar() {
 //     return (

@@ -168,7 +168,7 @@ function TimelineSeparator({ className, ...props }: TimelineSeparatorProps) {
 }
 
 interface TimelineTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
-  highlighted?: boolean
+    highlighted?: boolean
 }
 
 function TimelineTitle({ className, ...props }: TimelineTitleProps) {
