@@ -91,7 +91,7 @@ model Talkshow {
   domisili          String?   // Nullable
   nrp               String?   // Nullable
   jurusan           String?   // Nullable
-  status_pembayaran Boolean   @default(false) // 0 = belum bayar
+  valid             Boolean   @default(false) // 0 = belum bayar
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
 }
@@ -105,7 +105,7 @@ model Workshop {
   domisili          String?   // Nullable
   nrp               String?   // Nullable
   jurusan           String?   // Nullable
-  status_pembayaran Boolean   @default(false) // 0 = belum bayar
+  valid             Boolean   @default(false) // 0 = belum bayar
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
 }

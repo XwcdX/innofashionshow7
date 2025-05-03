@@ -3,7 +3,7 @@ import { useSession, signIn } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { ReactNode, useEffect } from 'react'
 
-export default function SessionGuard({ children }: { children: ReactNode }) {
+export default function SessionGuard() {
   const pathname = usePathname() ?? '/'
   const isAdmin  = pathname.startsWith('/admin')
   const router   = useRouter()
@@ -32,5 +32,5 @@ export default function SessionGuard({ children }: { children: ReactNode }) {
     )
   }
 
-  return <>{children}</>
+  return <></>
 }

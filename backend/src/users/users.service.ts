@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, InternalServerErrorException, Logger } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { DraftUserDto } from './dto/draft-user.dto';
-import { User, UserType } from '@prisma/client';
+import { User, UserType, Prisma } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -199,5 +199,35 @@ export class UsersService {
             this.logger.error(`Failed to save draft for user ${userId}: ${error.message}`, error.stack);
             throw new InternalServerErrorException('Failed to save draft data.');
         }
+    }
+    async findAllPetra() {
+        return this.prisma.user.findMany({
+            where: {
+                type: 'INTERNAL'
+            },
+            include: {
+                internalProfile: true
+            }
+        });
+    }
+
+    async findAllUmum() {
+        return this.prisma.user.findMany({
+            where: {
+                type: 'EXTERNAL'
+            },
+            include: {
+                externalProfile: true
+            }
+        });
+    }
+
+    async validatePembayaran(id: string, updateTalkshowDto: Prisma.UserUpdateInput) {
+        return this.prisma.user.update({
+            where: {
+                id,
+            },
+            data: updateTalkshowDto,
+        });
     }
 }

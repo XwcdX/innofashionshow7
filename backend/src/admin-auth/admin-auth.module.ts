@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaModule }           from '../../prisma/prisma.module';
 import { AdminAuthService }       from './admin-auth.service';
 import { AdminAuthController }    from './admin-auth.controller';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { AdminAuthController }    from './admin-auth.controller';
       inject: [ConfigService],
     }),
   ],
-  providers: [AdminAuthService],
+  providers: [JwtStrategy, AdminAuthService],
   controllers: [AdminAuthController],
 })
 export class AdminAuthModule {}

@@ -59,14 +59,8 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
                 try {
                     const btnHref = $(this).data('href');
                     if (!btnHref) return;
-                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${btnHref}/validate/${btnId}`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            status_pembayaran: true, // Send only the status in the body
-                        }),
+                    const response = await fetch(`/api/${btnHref}/validate/${btnId}`, {
+                        credentials: 'include'
                     });                      
         
                     if (response.ok) {

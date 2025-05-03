@@ -1,9 +1,10 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, Req, UseGuards, Param } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuardAdmin } from '../admin-auth/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { DraftUserDto } from './dto/draft-user.dto';
 import { Request } from 'express';
-import { User, Internal, External } from '@prisma/client';
+import { User, Internal, External, Prisma } from '@prisma/client';
 
 interface AuthenticatedUser extends User {
     internalProfile?: Internal | null;
@@ -57,5 +58,27 @@ export class UsersController {
         await this.usersService.submitUser(userId, draftDto);
 
         return { message: 'Draft saved successfully.' };
+    }
+
+    @Get('petra')
+    @UseGuards(JwtAuthGuardAdmin)
+    @HttpCode(HttpStatus.OK)
+    findAllPetra() {
+        return this.usersService.findAllPetra();
+    }
+
+    @Get('umum')
+    @UseGuards(JwtAuthGuardAdmin)
+    @HttpCode(HttpStatus.OK)
+    findAllUmum() {
+        return this.usersService.findAllUmum();
+    }
+
+    @Post('validate/:id') // This defines the route to handle '/talkshows/validate/{id}'
+    @UseGuards(JwtAuthGuardAdmin)
+    @HttpCode(HttpStatus.OK)
+    validatePembayaran(@Param('id') id: string, @Body() updateTalkshowDto: Prisma.UserUpdateInput) {
+        // Pass the ID and the update data to the service
+        return this.usersService.validatePembayaran(id, updateTalkshowDto);
     }
 }

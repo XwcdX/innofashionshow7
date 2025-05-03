@@ -10,9 +10,10 @@ export const metadata: Metadata = {
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <SessionGuard>
+    <>
+      <SessionGuard/>
       <Navbar />
       <main>{children}</main>
-    </SessionGuard>
+      </>
   );
 }
