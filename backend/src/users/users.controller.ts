@@ -1,10 +1,11 @@
-import { Body, Controller, Get, Post, Param, HttpCode, HttpStatus, Logger, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Param, HttpCode, HttpStatus, Logger, NotFoundException, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { JwtAuthGuardAdmin } from '../admin-auth/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { DraftUserDto } from './dto/draft-user.dto';
 import { Request } from 'express';
 import { User, Internal, External, Prisma } from '@prisma/client';
+import { SubmitUserDto } from './dto/submit-user.dto';
 
 interface AuthenticatedUser extends User {
     internalProfile?: Internal | null;
@@ -50,15 +51,38 @@ export class UsersController {
     @HttpCode(HttpStatus.OK)
     async submitUser(
         @Req() req: RequestWithUser,
-        @Body() draftDto: DraftUserDto,
+        @Body() submitDto: SubmitUserDto,
     ) {
         const userId = req.user.id;
         this.logger.log(`Received draft save request from user ID: ${userId}`);
-        this.logger.debug(`Draft DTO: ${JSON.stringify(draftDto)}`);
+        this.logger.debug(`Draft DTO: ${JSON.stringify(submitDto)}`);
 
-        await this.usersService.submitUser(userId, draftDto);
+        await this.usersService.submitUser(userId, submitDto);
 
-        return { message: 'Draft saved successfully.' };
+        return { message: 'User profile submitted successfully.' };
+    }
+
+    @Get('profile')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async getUserProfile(@Req() req: RequestWithUser) {
+        const userId = req.user.id;
+        this.logger.log(`Fetching profile data for user ID: ${userId}`);
+        try {
+            const profileData = await this.usersService.getFormattedUserProfile(userId);
+            if (!profileData) {
+                 this.logger.log(`No existing profile data found for user ${userId}. Returning default structure.`);
+                 return {};
+            }
+            return profileData;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                this.logger.warn(`User ${userId} not found during profile fetch.`);
+                throw error;
+            }
+            this.logger.error(`Error fetching profile for user ${userId}: ${error.message}`, error.stack);
+             return {};
+        }
     }
 
     @Get('petra')

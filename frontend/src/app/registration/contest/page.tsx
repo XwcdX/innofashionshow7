@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { FilePurpose, RegistrationType } from '@/types/registration'
@@ -8,26 +8,48 @@ import { FilePurpose, RegistrationType } from '@/types/registration'
 type Category = 'INTERMEDIATE' | 'ADVANCED'
 type UserType = 'INTERNAL' | 'EXTERNAL'
 
-const loadDraftFromStorage = () => {
-    if (typeof window === 'undefined') return null;
-    const raw = localStorage.getItem('contest-draft');
+interface UserProfileData {
+    category?: Category | null;
+    age?: number | null;
+    whatsapp?: string | null;
+    proofPath?: string | null;
+    nrp?: string | null;
+    batch?: number | null;
+    major?: string | null;
+    ktmPath?: string | null;
+    instance?: string | null;
+    idCardPath?: string | null;
+}
+
+const getDraftStorageKey = (email: string | undefined | null): string | null => {
+    if (!email) return null;
+    return `contest-draft-${email}`;
+}
+
+const loadDraftFromStorage = (email: string | undefined | null) => {
+    if (typeof window === 'undefined' || !email) return null;
+    const key = getDraftStorageKey(email);
+    if (!key) return null;
+    const raw = localStorage.getItem(key);
     if (!raw) return null;
     try {
-        return JSON.parse(raw);
+        const parsed = JSON.parse(raw);
+        return typeof parsed === 'object' ? parsed : null;
     } catch (e) {
-        console.error("Failed to parse contest draft from localStorage", e);
-        localStorage.removeItem('contest-draft');
+        console.error("Failed to parse contest draft from localStorage for key:", key, e);
+        localStorage.removeItem(key);
         return null;
     }
 }
 
 export default function ContestPage() {
     const { data: session, status } = useSession()
+    const userEmail = session?.user?.email;
     const router = useRouter()
 
     // --- State ---
+    const [isInitializing, setIsInitializing] = useState(true);
     const [category, setCategory] = useState<Category | null>(null);
-    const [isLoadingCategory, setIsLoadingCategory] = useState(true);
 
     // Form field states
     const [age, setAge] = useState('');
@@ -36,16 +58,45 @@ export default function ContestPage() {
     const [batch, setBatch] = useState('');
     const [major, setMajor] = useState('');
     const [instance, setInstance] = useState('');
-
-    const [proof, setProof] = useState<File | null>(null);
-    const [ktm, setKtm] = useState<File | null>(null);
-    const [idCard, setIdCard] = useState<File | null>(null);
-
     const [uploadedProofPath, setUploadedProofPath] = useState<string | null>(null);
     const [uploadedKtmPath, setUploadedKtmPath] = useState<string | null>(null);
     const [uploadedIdCardPath, setUploadedIdCardPath] = useState<string | null>(null);
 
-    // --- Effects ---
+    // State for file inputs (transient)
+    const [proofFile, setProofFile] = useState<File | null>(null);
+    const [ktmFile, setKtmFile] = useState<File | null>(null);
+    const [idCardFile, setIdCardFile] = useState<File | null>(null);
+
+
+    const hasInitialized = useRef(false);
+
+    // --- API Call Function for Initial Data ---
+    const fetchServerData = useCallback(async (): Promise<UserProfileData | null> => {
+        console.log("Attempting to fetch initial server profile data...");
+        try {
+            const res = await fetch('/api/contest/profile');
+            if (res.ok) {
+                const data = await res.json();
+                console.log("Received initial server data:", data);
+                if (typeof data === 'object' && data !== null) {
+                    return data as UserProfileData;
+                } else {
+                    console.log("Server returned OK but data is not an object:", data);
+                    return null;
+                }
+            } else if (res.status === 404) {
+                console.log("Initial server data fetch returned 404 (No profile found).");
+                return null;
+            }
+            else {
+                console.error(`Failed to fetch initial server data (${res.status}): ${await res.text()}`);
+                return null;
+            }
+        } catch (error) {
+            console.error("Client-side error fetching initial server data:", error);
+            return null;
+        }
+    }, []);
 
     // 1. Check Authentication & Redirect
     useEffect(() => {
@@ -56,69 +107,158 @@ export default function ContestPage() {
 
     // 2. Load Initial Draft (including Category) from localStorage ON MOUNT
     useEffect(() => {
-        const draft = loadDraftFromStorage();
-        if (draft) {
-            if (draft.category && (draft.category === 'INTERMEDIATE' || draft.category === 'ADVANCED')) {
-                setCategory(draft.category);
+        if (status === 'authenticated' && userEmail && !hasInitialized.current) {
+            console.log(`CONTEST PAGE INIT: User ${userEmail} authenticated. Starting initialization.`);
+            setIsInitializing(true);
+            hasInitialized.current = true;
+
+            const storageKey = getDraftStorageKey(userEmail);
+            if (storageKey) {
+                console.log(`CONTEST PAGE INIT: Clearing local storage draft for key: ${storageKey}`);
+                localStorage.removeItem(storageKey);
             }
-            setAge(draft.age || '');
-            setWhatsapp(draft.whatsapp || '');
-            setNrp(draft.nrp || '');
-            setBatch(draft.batch || '');
-            setMajor(draft.major || '');
-            setInstance(draft.instance || '');
-            setUploadedProofPath(draft.proofPath || null);
-            setUploadedKtmPath(draft.ktmPath || null);
-            setUploadedIdCardPath(draft.idCardPath || null);
+
+            fetchServerData().then((serverData) => {
+                console.log("CONTEST PAGE INIT: Server fetch completed. Data:", serverData);
+                const draftToSave: UserProfileData = {};
+
+                if (serverData && typeof serverData === 'object' && Object.keys(serverData).length > 0) {
+                    console.log("CONTEST PAGE INIT: Applying server data to state.");
+                    const serverCategory = serverData.category ?? null;
+                    const serverAge = serverData.age != null ? String(serverData.age) : '';
+                    const serverWhatsapp = serverData.whatsapp ?? '';
+                    const serverProofPath = serverData.proofPath ?? null;
+                    const serverNrp = serverData.nrp ?? '';
+                    const serverBatch = serverData.batch != null ? String(serverData.batch) : '';
+                    const serverMajor = serverData.major ?? '';
+                    const serverKtmPath = serverData.ktmPath ?? null;
+                    const serverInstance = serverData.instance ?? '';
+                    const serverIdCardPath = serverData.idCardPath ?? null;
+
+                    setCategory(serverCategory); draftToSave.category = serverCategory;
+                    setAge(serverAge); draftToSave.age = serverData.age ?? null;
+                    setWhatsapp(serverWhatsapp); draftToSave.whatsapp = serverWhatsapp;
+                    setUploadedProofPath(serverProofPath); draftToSave.proofPath = serverProofPath;
+                    setNrp(serverNrp); draftToSave.nrp = serverNrp;
+                    setBatch(serverBatch); draftToSave.batch = serverData.batch ?? null;
+                    setMajor(serverMajor); draftToSave.major = serverMajor;
+                    setUploadedKtmPath(serverKtmPath); draftToSave.ktmPath = serverKtmPath;
+                    setInstance(serverInstance); draftToSave.instance = serverInstance;
+                    setUploadedIdCardPath(serverIdCardPath); draftToSave.idCardPath = serverIdCardPath;
+
+                } else {
+                    console.log("CONTEST PAGE INIT: No server data found or fetch failed. Resetting state to defaults.");
+                    setCategory(null); draftToSave.category = null;
+                    setAge(''); draftToSave.age = null;
+                    setWhatsapp(''); draftToSave.whatsapp = null;
+                    setUploadedProofPath(null); draftToSave.proofPath = null;
+                    setNrp(''); draftToSave.nrp = null;
+                    setBatch(''); draftToSave.batch = null;
+                    setMajor(''); draftToSave.major = null;
+                    setUploadedKtmPath(null); draftToSave.ktmPath = null;
+                    setInstance(''); draftToSave.instance = null;
+                    setUploadedIdCardPath(null); draftToSave.idCardPath = null;
+                    setProofFile(null);
+                    setKtmFile(null);
+                    setIdCardFile(null);
+                }
+
+                if (storageKey) {
+                    console.log(`CONTEST PAGE INIT: Saving initialized draft to local storage key ${storageKey}:`, draftToSave);
+                    localStorage.setItem(storageKey, JSON.stringify(draftToSave));
+                }
+
+                console.log("CONTEST PAGE INIT: Initialization complete.");
+                setIsInitializing(false);
+            });
+        } else if (status !== 'loading' && !userEmail && !hasInitialized.current) {
+            console.warn("CONTEST PAGE INIT: Status is not loading, but user email is missing or already initialized.");
+            setIsInitializing(false);
+        } else if (status === 'loading') {
+            console.log("CONTEST PAGE INIT: Session status is loading...");
+            setIsInitializing(true);
         }
-        setIsLoadingCategory(false);
-    }, []);
+
+    }, [status, userEmail, fetchServerData]);
 
     // 3. Save Draft to localStorage whenever relevant state changes
     useEffect(() => {
-        if (isLoadingCategory) return;
+        if (isInitializing || status !== 'authenticated' || !userEmail) {
+            return;
+        }
 
-        const draft = {
+        const key = getDraftStorageKey(userEmail);
+        if (!key) return;
+
+        const draft: UserProfileData = {
             category,
-            age,
+            age: parseInt(age, 10) || null,
             whatsapp,
             nrp,
-            batch,
+            batch: parseInt(batch, 10) || null,
             major,
             instance,
             proofPath: uploadedProofPath,
             ktmPath: uploadedKtmPath,
             idCardPath: uploadedIdCardPath
         };
-        localStorage.setItem('contest-draft', JSON.stringify(draft));
+
+        console.log(`CONTEST PAGE DRAFT SAVE: Saving draft for key ${key}`, draft);
+        localStorage.setItem(key, JSON.stringify(draft));
+
     }, [
         category, age, whatsapp, nrp, batch, major, instance,
         uploadedProofPath, uploadedKtmPath, uploadedIdCardPath,
-        isLoadingCategory
+        isInitializing, userEmail, status
     ]);
 
-    // 4. Sync Draft with Server Periodically (Optional)
-
+    // Effect 4: Periodic Sync Draft with Server (FIXED Cleaning Logic)
     useEffect(() => {
-        if (status !== 'authenticated' || isLoadingCategory) return;
+        if (isInitializing || status !== 'authenticated' || !userEmail) return;
 
+        console.log("CONTEST PAGE SYNC: Setting up periodic draft sync interval.");
         const interval = setInterval(async () => {
-            const raw = localStorage.getItem('contest-draft');
-            if (!raw) return;
+            const storageKey = getDraftStorageKey(userEmail);
+            if (!storageKey) return;
+
+            const raw = localStorage.getItem(storageKey);
+            if (!raw) {
+                console.log("CONTEST PAGE SYNC: No draft found in local storage to sync.");
+                return;
+            }
+
             try {
                 const parsedDraft = JSON.parse(raw);
+                if (typeof parsedDraft !== 'object' || parsedDraft === null) {
+                    console.error("CONTEST PAGE SYNC: Invalid data found in local storage draft. Skipping sync.", parsedDraft);
+                    localStorage.removeItem(storageKey);
+                    return;
+                }
+
                 const cleanedDraftToSend: Record<string, any> = {};
+                console.log("CONTEST PAGE SYNC: Raw parsed draft from storage:", parsedDraft);
 
                 for (const key in parsedDraft) {
                     if (Object.prototype.hasOwnProperty.call(parsedDraft, key)) {
-                        const value = parsedDraft[key];
-                        if (value !== null && value !== undefined && value !== "") {
+                        const value = parsedDraft[key as keyof UserProfileData];
+
+                        if (value !== null && value !== undefined) {
+                            if ((key === 'major' || key === 'instance') && value === '') {
+                                console.log(`CONTEST PAGE SYNC: Skipping empty string for key: ${key}`);
+                                continue;
+                            }
+                            if (key === 'nrp' && value === '') {
+                                console.log(`CONTEST PAGE SYNC: Skipping empty string for key: ${key}`);
+                                continue;
+                            }
+
                             cleanedDraftToSend[key] = value;
                         }
                     }
                 }
-                if (cleanedDraftToSend.category && Object.keys(cleanedDraftToSend).length > 0) {
-                    console.log("Syncing cleaned draft to server:", cleanedDraftToSend);
+
+                if (Object.keys(cleanedDraftToSend).length > 0) {
+                    console.log(`CONTEST PAGE SYNC: Syncing *cleaned* draft to server for key ${storageKey}:`, cleanedDraftToSend);
                     const res = await fetch('/api/contest/draft', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -128,32 +268,35 @@ export default function ContestPage() {
                     if (!res.ok) {
                         try {
                             const errorData = await res.json();
-                            console.error(`Draft sync failed (${res.status}):`, errorData.message || errorData);
+                            console.error(`CONTEST PAGE SYNC: Draft sync failed (${res.status}):`, errorData);
                         } catch (e) {
-                            console.error(`Draft sync failed (${res.status}): ${await res.text()}`);
+                            const errorText = await res.text();
+                            console.error(`CONTEST PAGE SYNC: Draft sync failed (${res.status}): ${errorText}`);
                         }
+                    } else {
+                        console.log(`CONTEST PAGE SYNC: Draft sync successful for key ${storageKey}.`);
                     }
                 } else {
-                    console.log("Cleaned draft missing category or is empty, skipping sync.");
+                    console.log(`CONTEST PAGE SYNC: Cleaned draft is empty, skipping sync for key ${storageKey}.`);
                 }
             } catch (e) {
-                console.error("Failed to process/sync draft:", e);
+                console.error(`CONTEST PAGE SYNC: Failed to process/sync draft for key ${storageKey}:`, e);
             }
         }, 60_000);
-        return () => clearInterval(interval);
-    }, [status, isLoadingCategory]);
+
+        return () => {
+            console.log("CONTEST PAGE SYNC: Clearing periodic draft sync interval.");
+            clearInterval(interval);
+        };
+    }, [isInitializing, status, userEmail]);
 
     // --- Handlers ---
-
     const handleSelectCategory = (selectedCategory: Category) => {
         setCategory(selectedCategory);
     };
 
     const handleChangeCategory = () => {
         setCategory(null);
-        const draft = loadDraftFromStorage() || {};
-        draft.category = null;
-        localStorage.setItem('contest-draft', JSON.stringify(draft));
     };
 
     // Reusable Upload Function (using shared types)
@@ -223,7 +366,14 @@ export default function ContestPage() {
         if (!uploadedProofPath) {
             alert('Please upload Proof of Payment.'); return;
         }
-        const userType = determineUserType(session?.user?.email);
+        const currentEmail = session?.user?.email;
+        const currentName = session?.user?.name;
+        if (!currentEmail || !currentName) {
+            alert("User session information is missing. Please try logging out and back in.");
+            return;
+        }
+        const userType = determineUserType(currentEmail);
+
         if (userType === 'INTERNAL' && !uploadedKtmPath) {
             alert('Please upload your KTM (Student ID Card).'); return;
         }
@@ -237,49 +387,54 @@ export default function ContestPage() {
             alert('Please fill in your Institution/School name.'); return;
         }
 
-        const finalFormData = new FormData();
-        finalFormData.append('name', session!.user!.name!);
-        finalFormData.append('email', session!.user!.email!);
-        finalFormData.append('type', userType);
-        finalFormData.append('category', category);
-        finalFormData.append('age', age);
-        finalFormData.append('whatsapp', whatsapp);
-        finalFormData.append('proofOfPaymentPath', uploadedProofPath);
+        const submissionPayload = {
+            // name: currentName,
+            // email: currentEmail,
+            // type: userType,
+            category,
+            age: parseInt(age, 10),
+            whatsapp,
+            proofPath: uploadedProofPath,
+            nrp: userType === 'INTERNAL' ? nrp : undefined,
+            batch: userType === 'INTERNAL' ? (parseInt(batch, 10) || undefined) : undefined,
+            major: userType === 'INTERNAL' ? major : undefined,
+            ktmPath: userType === 'INTERNAL' ? uploadedKtmPath : undefined,
+            instance: userType === 'EXTERNAL' ? instance : undefined,
+            idCardPath: userType === 'EXTERNAL' ? uploadedIdCardPath : undefined,
+        };
 
-        if (userType === 'INTERNAL') {
-            finalFormData.append('nrp', nrp);
-            finalFormData.append('batch', batch);
-            finalFormData.append('major', major);
-            finalFormData.append('ktmPath', uploadedKtmPath!);
-        } else {
-            finalFormData.append('instance', instance);
-            finalFormData.append('idCardPath', uploadedIdCardPath!);
-        }
+        Object.keys(submissionPayload).forEach(key =>
+            (submissionPayload as any)[key] === undefined && delete (submissionPayload as any)[key]
+        );
 
         // --- Send to Final Submission API ---
         try {
             const res = await fetch('/api/contest', {
                 method: 'POST',
-                body: finalFormData,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(submissionPayload),
             });
 
             if (res.ok) {
-                localStorage.removeItem('contest-draft');
-                router.push('/thank-you');
+                console.log("Submission successful!");
+                const key = getDraftStorageKey(userEmail);
+                if (key) {
+                    console.log(`Clearing local storage draft for key ${key} after submission.`);
+                    localStorage.removeItem(key);
+                }
+                router.push('/');
             } else {
                 let errorText = 'Submission failed due to a server error.';
                 try {
                     const errorData = await res.json();
                     errorText = errorData.message || errorText;
-                } catch (e) {
-                    errorText = (await res.text()) || errorText;
-                }
+                } catch (e) { /* ignore parsing error */ }
                 console.error("Submission failed:", res.status, errorText);
                 alert(`Submission failed: ${errorText}`);
             }
         } catch (error) {
             console.error("Client-side error during submission:", error);
-            alert("An error occurred while submitting your registration. Please check the console or try again later.");
+            alert("An error occurred while submitting your registration. Check console.");
         }
     }
 
@@ -292,11 +447,11 @@ export default function ContestPage() {
         return isInternal ? 'INTERNAL' : 'EXTERNAL';
     };
 
-    // --- Render Logic ---
-    if (status === 'loading' || isLoadingCategory) {
+    if (status === 'loading' || isInitializing) {
         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold animate-pulse">Loading Registration...</p>;
     }
-    if (status !== 'authenticated') {
+
+    if (status !== 'authenticated' || !userEmail) {
         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
     }
 
@@ -395,10 +550,10 @@ export default function ContestPage() {
                                 onChange={async e => {
                                     const file = e.target.files?.[0];
                                     if (!file) return;
-                                    setProof(file);
+                                    setProofFile(file);
                                     const newPath = await uploadFile(file, currentRegistrationType, 'payment', email, name, uploadedProofPath ?? undefined);
                                     if (newPath) setUploadedProofPath(newPath);
-                                    else setProof(null);
+                                    else setProofFile(null);
                                 }}
                                 className="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition cursor-pointer"
                                 required={!uploadedProofPath}
@@ -438,10 +593,10 @@ export default function ContestPage() {
                                     onChange={async e => {
                                         const file = e.target.files?.[0];
                                         if (!file) return;
-                                        setKtm(file);
+                                        setKtmFile(file);
                                         const newPath = await uploadFile(file, currentRegistrationType, 'ktm', email, name, uploadedKtmPath ?? undefined);
                                         if (newPath) setUploadedKtmPath(newPath);
-                                        else setKtm(null);
+                                        else setKtmFile(null);
                                     }}
                                     className="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition cursor-pointer"
                                     required={!uploadedKtmPath}
@@ -471,10 +626,10 @@ export default function ContestPage() {
                                     onChange={async e => {
                                         const file = e.target.files?.[0];
                                         if (!file) return;
-                                        setIdCard(file);
+                                        setIdCardFile(file);
                                         const newPath = await uploadFile(file, currentRegistrationType, 'idCard', email, name, uploadedIdCardPath ?? undefined);
                                         if (newPath) setUploadedIdCardPath(newPath);
-                                        else setIdCard(null);
+                                        else setIdCardFile(null);
                                     }}
                                     className="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 transition cursor-pointer"
                                     required={!uploadedIdCardPath}
