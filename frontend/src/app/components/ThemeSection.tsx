@@ -4,19 +4,28 @@ import { useState, useEffect, ReactNode } from 'react'
 
 export default function ThemeSection() {
   const [glitchActive, setGlitchActive] = useState<boolean>(false)
+  const [pageLoaded, setPageLoaded] = useState<boolean>(false)
 
   useEffect(() => {
-    const glitchTimer = setInterval(() => {
-      setGlitchActive(true)
-      setTimeout(() => setGlitchActive(false), 100)
+    setPageLoaded(true)
+    
+    // Start glitch effect 3 seconds after page load
+    const glitchTimer = setTimeout(() => {
+      const interval = setInterval(() => {
+        setGlitchActive(true)
+        setTimeout(() => setGlitchActive(false), 100)
+      }, 3000)
+      
+      return () => clearInterval(interval)
     }, 3000)
-    return () => clearInterval(glitchTimer)
+
+    return () => clearTimeout(glitchTimer)
   }, [])
 
   const GlitchText = ({ children, className }: { children: ReactNode, className?: string }) => (
-    <span className={`relative ${className}`}>
+    <span className={`relative ${className}`} style={{ opacity: pageLoaded ? 1 : 0 }}>
       {children}
-      {glitchActive && (
+      {pageLoaded && glitchActive && (
         <>
           <span 
             className="absolute top-0 left-0 w-full h-full opacity-70 pointer-events-none"
@@ -55,8 +64,8 @@ export default function ThemeSection() {
         className="w-full text-center"
       >
         <h1
-          className={`text-[#a6ff4d] font-bold text-6xl mb-4 relative ${glitchActive ? 'glitch-active' : ''}`}
-          style={{ fontFamily: "Moderniz, sans-serif" }}
+          className="text-[#a6ff4d] font-bold text-6xl mb-4 relative"
+          style={{ fontFamily: "Moderniz, sans-serif", opacity: pageLoaded ? 1 : 0 }}
         >
           <GlitchText>ILLUMINÉ</GlitchText>
         </h1>
@@ -73,7 +82,7 @@ export default function ThemeSection() {
       >
         <p
           className="text-[#8f03d1] text-xl mb-6"
-          style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
+          style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}
         >
           <span className="font-semibold">
             <GlitchText>A French-inspired take on &ldquo;illuminate&rdquo; for a high-fashion feel.</GlitchText>
@@ -91,7 +100,7 @@ export default function ThemeSection() {
       >
         <p
           className="text-white text-lg mb-6 max-w-xl mx-auto"
-          style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
+          style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}
         >
           ───────────────────────────────
         </p>
@@ -108,7 +117,7 @@ export default function ThemeSection() {
       >
         <p
           className="text-[#8f03d1] text-lg max-w-xl mx-auto"
-          style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
+          style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}
         >
           <GlitchText>
             See you on <span className="text-[#c306aa] font-semibold">15th June 2025</span> at{' '}
