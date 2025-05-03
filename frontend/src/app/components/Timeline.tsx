@@ -1,110 +1,172 @@
-// src/app/components/Timeline.tsx
+"use client"
+
 import {
-    Timeline as ShadcnTimeline,
-    TimelineContent,
-    TimelineDate,
-    TimelineHeader,
-    TimelineIndicator,
-    TimelineItem,
-    TimelineSeparator,
-    TimelineTitle,
-} from "@/app/components/ui/timeline";
+  Timeline as ShadcnTimeline,
+  TimelineContent,
+  TimelineDate,
+  TimelineHeader,
+  TimelineIndicator,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineTitle,
+} from "@/app/components/ui/timelinedetails"
+import { useState } from "react"
 
-interface TimelineItemProps {
-    id: number;
-    date: string;
-    title: string;
-    description: string;
+
+const TIMELINES = {
+  lomba: {
+    title: "TIMELINE LOMBA",
+    items: [
+        {
+            id: 1,
+            date: "10 Mei 2025",
+            title: "Open Registration",
+            description: "asd",
+          },
+          {
+            id: 2,
+            date: "28 Juni 2025",
+            title: "Close Registration",
+            description: "ef",
+          },
+          {
+            id: 3,
+            date: "30 Juni 2025",
+            title: "Last Submission Karya",
+            description: "ch",
+          },
+          {
+            id: 4,
+            date: "3 Juli 2025",
+            title: "Penjurian Lomba",
+            description: "jt",
+          },
+            {
+            id: 5,
+            date: "7 Juli 2025",
+            title: "Pengumuman Finalis",
+            description: "er",
+          },
+          {
+            id: 6,
+            date: "17 Juli 2025",
+            title: "Awarding Night",
+            description: "lg",
+          },
+    ]
+  },
+  workshop: {
+    title: "TIMELINE WORKSHOP",
+    items: [
+        {
+            id: 1,
+            date: "10 Mei 2025",
+            title: "Open Registration",
+            description: "asd",
+          },
+          {
+            id: 2,
+            date: "28 Juni 2025",
+            title: "Close Registration",
+            description: "ef",
+          },
+          {
+            id: 3,
+            date: "30 Juni 2025",
+            title: "Last Submission Karya",
+            description: "ch",
+          },
+          {
+            id: 4,
+            date: "3 Juli 2025",
+            title: "Penjurian Lomba",
+            description: "jt",
+          },
+            {
+            id: 5,
+            date: "7 Juli 2025",
+            title: "Pengumuman Finalis",
+            description: "er",
+          },
+          {
+            id: 6,
+            date: "17 Juli 2025",
+            title: "Awarding Night",
+            description: "lg",
+          },
+    ]
+  },
+  talkshow: {
+    title: "TIMELINE TALKSHOW",
+    items: [
+        {
+            id: 1,
+            date: "10 Mei 2025",
+            title: "Open Registration",
+            description: "asd",
+          },
+          {
+            id: 2,
+            date: "28 Juni 2025",
+            title: "Close Registration",
+            description: "ef",
+          },
+          // Add timeline items...
+    ]
+  }
 }
 
-interface TimelineProps {
-    items: TimelineItemProps[];
-}
+export function Timeline() {
+  const [currentTimeline, setCurrentTimeline] = useState<keyof typeof TIMELINES>("lomba")
 
-export function Timeline({ items }: TimelineProps) {
-    return (
-        <div className="bg-[#202021] py-16 px-4 flex items-center justify-center h-screen">
-            <div className="max-w-4xl mx-auto">
-                <h2 className="text-3xl md:text-4xl font-bold text-center text-[#a6ff4d] mb-12">
-                    TIMELINE
-                </h2>
-                <ShadcnTimeline defaultValue={3} className="w-full">
-                    {items.map((item) => (
-                        <TimelineItem
-                            key={item.id}
-                            step={item.id}
-                            className="group-data-[orientation=vertical]/timeline:sm:ms-32"
-                        >
-                            <TimelineHeader> 
-                                <TimelineSeparator className="bg-[#8F8F8F]" /> 
-                                <TimelineDate className="text-white group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-                                    {item.date}
-                                </TimelineDate>
-                                <TimelineTitle className="text-white sm:-mt-0.5">
-                                    {item.title}
-                                </TimelineTitle>
-                                <TimelineIndicator className="border-[#8F8F8F]"/>
-                            </TimelineHeader>
-                            <TimelineContent className="text-[#8F8F8F]">
-                                {item.description}
-                            </TimelineContent>
-                        </TimelineItem>
-                    ))}
-                </ShadcnTimeline>
-            </div>
+  return (
+    <div className="bg-[#202021] py-16 px-4 min-h-screen">
+      <div className="max-w-4xl mx-auto relative">
+        
+        {/* Navigation Dots */}
+        <div className="flex justify-center gap-3 mb-8">
+          {Object.keys(TIMELINES).map((key) => (
+            <button
+              key={key}
+              onClick={() => setCurrentTimeline(key as keyof typeof TIMELINES)}
+              className={`w-3 h-3 rounded-full transition-colors ${
+                currentTimeline === key ? 'bg-[#a6ff4d]' : 'bg-[#8F8F8F]'
+              }`}
+              aria-label={`Show ${key} timeline`}
+            />
+          ))}
         </div>
-    );
+
+        {/* Timeline Title */}
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#a6ff4d] mb-12">
+          {TIMELINES[currentTimeline].title}
+        </h2>
+
+        {/* Timeline Content */}
+        <ShadcnTimeline defaultValue={1} className="w-full">
+          {TIMELINES[currentTimeline].items.map((item) => (
+            <TimelineItem
+              key={item.id}
+              step={item.id}
+              className="group-data-[orientation=vertical]/timeline:sm:ms-32"
+            >
+              <TimelineHeader>
+                <TimelineSeparator className="bg-[#8F8F8F]" />
+                <TimelineDate className="text-white group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
+                  {item.date}
+                </TimelineDate>
+                <TimelineTitle className="text-white sm:-mt-0.5">
+                  {item.title}
+                </TimelineTitle>
+                <TimelineIndicator className="border-[#8F8F8F]" />
+              </TimelineHeader>
+              <TimelineContent className="text-[#8F8F8F]">
+                {item.description}
+              </TimelineContent>
+            </TimelineItem>
+          ))}
+        </ShadcnTimeline>
+      </div>
+    </div>
+  )
 }
-
-
-// import {
-//     Timeline,
-//     TimelineContent,
-//     TimelineDate,
-//     TimelineHeader,
-//     TimelineIndicator,
-//     TimelineItem,
-//     TimelineSeparator,
-//     TimelineTitle,
-//   } from "./app/components/ui/timeline";
-  
-//   interface TimelineItem {
-//     id: number;
-//     date: string;
-//     title: string;
-//     description: string;
-//   }
-  
-//   interface TimelineProps {
-//     items: TimelineItem[];
-//   }
-  
-//   export default function CustomTimeline({ items }: TimelineProps) {
-//     return (
-//       <div className="bg-dark py-16">
-//         <Timeline defaultValue={3} className="max-w-4xl mx-auto">
-//           {items.map((item) => (
-//             <TimelineItem
-//               key={item.id}
-//               step={item.id}
-//               className="group-data-[orientation=vertical]/timeline:sm:ms-32"
-//             >
-//               <TimelineHeader>
-//                 <TimelineSeparator />
-//                 <TimelineDate className="text-cyan group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
-//                   {item.date}
-//                 </TimelineDate>
-//                 <TimelineTitle className="text-neon sm:-mt-0.5">
-//                   {item.title}
-//                 </TimelineTitle>
-//                 <TimelineIndicator />
-//               </TimelineHeader>
-//               <TimelineContent className="text-cream">
-//                 {item.description}
-//               </TimelineContent>
-//             </TimelineItem>
-//           ))}
-//         </Timeline>
-//       </div>
-//     );
-//   }

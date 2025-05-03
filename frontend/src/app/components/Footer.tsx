@@ -13,7 +13,7 @@ export default function Footer() {
           </div>
           
           <div className="text-center md:text-right">
-            <h3 className="text-white text-xl font-bold mb-2">Contact Us</h3>
+            <h3 className="text-white text-xl font-bold mb-2">Contact Person</h3>
             <p className="text-gray-300">Jecelyn Gozal</p>
             <p className="text-gray-300">Ketua INNOFASHION SHOW 7</p>
             <p className="text-gray-300 mt-2">
@@ -30,7 +30,8 @@ export default function Footer() {
         </div>
         
         <div className="mt-10 text-center text-gray-500 text-sm">
-          © {new Date().getFullYear()} INNOFASHION SHOW 7. All rights reserved.
+          © {new Date().getFullYear()} INNOFASHION SHOW 7<br />
+          All rights reserved.
         </div>
       </div>
     </footer>
