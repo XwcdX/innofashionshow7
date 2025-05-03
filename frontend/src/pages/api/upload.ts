@@ -130,11 +130,9 @@ export default async function handler(
     const finalFilename = `${registrationType}_${filePurpose}_${sanitizedEmail}_${sanitizedName}_${timestamp}${originalExtension}`;
     const finalFilePath = path.join(finalDir, finalFilename);
 
-    // --- Move the file from temp to final destination ---
     fs.renameSync(uploadedFile.filepath, finalFilePath);
     tempFilePath = undefined;
 
-    // --- Construct Public URL Path ---
     const publicPath = `/uploads/${registrationType}/${filePurpose}/${finalFilename}`;
 
     // --- Respond Success ---

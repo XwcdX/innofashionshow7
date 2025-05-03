@@ -388,13 +388,13 @@ export default function ContestPage() {
         }
 
         const submissionPayload = {
-            name: currentName,
-            email: currentEmail,
-            type: userType,
+            // name: currentName,
+            // email: currentEmail,
+            // type: userType,
             category,
             age: parseInt(age, 10),
             whatsapp,
-            proofOfPaymentPath: uploadedProofPath,
+            proofPath: uploadedProofPath,
             nrp: userType === 'INTERNAL' ? nrp : undefined,
             batch: userType === 'INTERNAL' ? (parseInt(batch, 10) || undefined) : undefined,
             major: userType === 'INTERNAL' ? major : undefined,
@@ -422,7 +422,7 @@ export default function ContestPage() {
                     console.log(`Clearing local storage draft for key ${key} after submission.`);
                     localStorage.removeItem(key);
                 }
-                router.push('/thank-you');
+                router.push('/');
             } else {
                 let errorText = 'Submission failed due to a server error.';
                 try {
