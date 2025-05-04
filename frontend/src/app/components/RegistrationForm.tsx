@@ -124,70 +124,151 @@ export function RegistrationForm({
             return;
         }
 
+        if (status === 'loading') {
+            if (!isInitializing) setIsInitializing(true);
+            return;
+        }
+
         if (status === 'authenticated' && userEmail && !hasInitialized.current) {
-            console.log(`[${registrationType}] INIT: User ${userEmail} authenticated. Starting.`);
+            console.log(`[${registrationType}] INIT: User ${userEmail} authenticated. Starting initialization.`);
             setIsInitializing(true);
             hasInitialized.current = true;
             initialLoadComplete.current = false;
 
             const storageKey = getDraftStorageKey(userEmail, registrationType);
+            let localDraftData: Partial<FormData> | null = null;
             if (storageKey) {
-                console.log(`[${registrationType}] INIT: Clearing local storage draft for key: ${storageKey}`);
-                localStorage.removeItem(storageKey);
+                console.log(`[${registrationType}] INIT: Checking local storage key: ${storageKey}`);
+                try {
+                    const rawDraft = localStorage.getItem(storageKey);
+                    if (rawDraft) {
+                        const parsedDraft = JSON.parse(rawDraft);
+                        if (typeof parsedDraft === 'object' && parsedDraft !== null && !Array.isArray(parsedDraft)) {
+                            console.log(`[${registrationType}] INIT: Found valid local storage draft.`, parsedDraft);
+                            localDraftData = parsedDraft;
+                        } else {
+                            console.warn(`[${registrationType}] INIT: Local storage data is invalid format. Removing.`);
+                            localStorage.removeItem(storageKey);
+                        }
+                    } else {
+                        console.log(`[${registrationType}] INIT: No data found in local storage.`);
+                    }
+                } catch (error) {
+                    console.error(`[${registrationType}] INIT: Error reading/parsing local storage. Removing potentially corrupt data.`, error);
+                    localStorage.removeItem(storageKey);
+                }
             }
 
+            console.log(`[${registrationType}] INIT: Fetching server data...`);
             fetchServerData().then((serverData) => {
-                console.log(`[${registrationType}] INIT: Server fetch done. Data:`, serverData);
+                console.log(`[${registrationType}] INIT: Server fetch complete. Server Data:`, serverData);
+                console.log(`[${registrationType}] INIT: Local Draft available for merge:`, localDraftData);
 
-                const initialFormState: FormData = getDefaultFormData(formSchema);
-                const initialFilePaths: UploadedFilePaths = {};
-                let categoryToUse = initialCategory;
+                const defaultFormState = getDefaultFormData(formSchema);
+                let mergedFormState: FormData = { ...defaultFormState };
+                let mergedFilePaths: UploadedFilePaths = {};
 
                 if (serverData) {
-                    console.log(`[${registrationType}] INIT: Merging server data into form state.`);
-                    if (serverData.category && (serverData.category === 'INTERMEDIATE' || serverData.category === 'ADVANCED')) {
-                        console.log(`[${registrationType}] INIT: Overriding initial category with server data: ${serverData.category}`);
-                        categoryToUse = serverData.category;
-                    }
+                    console.log(`[${registrationType}] INIT: Merging Server data over defaults...`);
                     formSchema.forEach(section => {
                         section.fields.forEach(field => {
-                            if (field.id !== 'category' && serverData.hasOwnProperty(field.id)) {
+                            if (serverData.hasOwnProperty(field.id)) {
                                 const serverValue = serverData[field.id as keyof typeof serverData];
-                                initialFormState[field.id] = serverValue ?? initialFormState[field.id];
-
+                                mergedFormState[field.id] = serverValue ?? defaultFormState[field.id];
                                 if (field.type === 'file' && typeof serverValue === 'string' && serverValue) {
-                                    initialFilePaths[field.id] = serverValue;
+                                    mergedFilePaths[field.id] = serverValue;
                                 }
                             }
                         });
                     });
-                } else {
-                    console.log(`[${registrationType}] INIT: No server data. Using defaults.`);
                 }
 
-                if (categoryToUse) {
-                    initialFormState.category = categoryToUse;
-                } else {
-                    delete initialFormState.category;
+                if (localDraftData) {
+                    console.log(`[${registrationType}] INIT: Merging Local data over current state...`);
+                    formSchema.forEach(section => {
+                        section.fields.forEach(field => {
+                            if (localDraftData!.hasOwnProperty(field.id) && localDraftData![field.id] !== undefined) {
+                                const localValue = localDraftData![field.id];
+                                mergedFormState[field.id] = localValue;
+
+                                if (field.type === 'file') {
+                                    if (typeof localValue === 'string' && localValue) {
+                                        mergedFilePaths[field.id] = localValue;
+                                    } else {
+                                        delete mergedFilePaths[field.id];
+                                    }
+                                }
+                            }
+                        });
+                    });
                 }
 
-                setFormData(initialFormState);
-                setUploadedFilePaths(initialFilePaths);
+                let finalCategory = mergedFormState.category;
+                if (initialCategory !== undefined) {
+                    console.log(`[${registrationType}] INIT: Applying category from prop: ${initialCategory}`);
+                    finalCategory = initialCategory;
+                }
+                if (finalCategory && !(finalCategory === 'INTERMEDIATE' || finalCategory === 'ADVANCED')) {
+                    console.warn(`[${registrationType}] INIT: Final category '${finalCategory}' is invalid. Removing.`);
+                    finalCategory = null;
+                }
+
+                if (finalCategory) {
+                    mergedFormState.category = finalCategory;
+                } else {
+                    delete mergedFormState.category;
+                }
+
+                console.log(`[${registrationType}] INIT: Setting final merged state:`, mergedFormState);
+                console.log(`[${registrationType}] INIT: Setting final file paths:`, mergedFilePaths);
+                setFormData(mergedFormState);
+                setUploadedFilePaths(mergedFilePaths);
 
                 if (storageKey) {
-                    const draftToSave = { ...initialFormState, ...initialFilePaths };
-                    console.log(`[${registrationType}] INIT: Saving initialized draft to LS key ${storageKey}:`, draftToSave);
+                    const draftToSave = { ...mergedFormState };
+                    formSchema.forEach(section => {
+                        section.fields.forEach(field => {
+                            if (field.type === 'file') {
+                                draftToSave[field.id] = mergedFilePaths[field.id] || null;
+                            }
+                        });
+                    });
+
+                    console.log(`[${registrationType}] INIT: Saving final merged state to LS key ${storageKey}:`, draftToSave);
                     localStorage.setItem(storageKey, JSON.stringify(draftToSave));
                 }
 
-                console.log(`[${registrationType}] INIT: Initialization complete.`);
                 setIsInitializing(false);
                 initialLoadComplete.current = true;
+                console.log(`[${registrationType}] INIT: Initialization complete (merged).`);
+
+            }).catch(error => {
+                console.error(`[${registrationType}] INIT: Error during server data fetch or merging process.`, error);
+                setIsInitializing(false);
+                const fallbackState = localDraftData ? { ...localDraftData } : getDefaultFormData(formSchema);
+                let fallbackPaths: UploadedFilePaths = {};
+                if (localDraftData) {
+                    console.log(`[${registrationType}] INIT (Error Fallback): Extracting file paths from local draft...`);
+                    formSchema.forEach(section => {
+                        section.fields.forEach(field => {
+                            const localValue = localDraftData![field.id];
+                            if (field.type === 'file' && typeof localValue === 'string' && localValue) {
+                                fallbackPaths[field.id] = localValue;
+                            }
+                        });
+                    });
+                }
+                if (initialCategory !== undefined) {
+                    if (initialCategory) fallbackState.category = initialCategory;
+                    else delete fallbackState.category;
+                }
+                setFormData(fallbackState as FormData);
+                setUploadedFilePaths(fallbackPaths);
+                initialLoadComplete.current = true;
             });
-        } else if (status === 'loading') {
-            console.log(`[${registrationType}] INIT: Session loading...`);
-        } else if (!userEmail && !hasInitialized.current) {
-            console.warn(`[${registrationType}] INIT: Status not loading, user email missing.`);
+
+        } else if (status === 'authenticated' && !userEmail && !hasInitialized.current) {
+            console.warn(`[${registrationType}] INIT: Status authenticated but user email is missing. Cannot initialize.`);
             setIsInitializing(false);
         }
     }, [status, userEmail, registrationType, fetchServerData, getDefaultFormData, formSchema, router, initialCategory]);

@@ -37,7 +37,7 @@ export const workshopSchema: FormSchema = [
                  id: 'proofPath_ws', label: 'Proof of Payment', type: 'file', required: true,
                  accept: 'image/jpeg,image/png,application/pdf',
                  maxFileSizeMB: 2,
-                 filePurpose: 'payment', // Can reuse purpose if backend handles context
+                 filePurpose: 'payment',
              },
          ]
      },
