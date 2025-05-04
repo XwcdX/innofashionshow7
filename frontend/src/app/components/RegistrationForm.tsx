@@ -10,6 +10,7 @@ import {
     FormField,
     type FormData,
     UploadedFilePaths,
+    Category,
 } from '@/types/registration';
 import { InputField } from './InputField';
 declare const Swal: any;
@@ -18,6 +19,7 @@ interface RegistrationFormProps {
     registrationType: RegistrationType;
     formSchema: FormSchema;
     onSuccessRedirectPath?: string;
+    initialCategory?: Category | null;
 }
 
 // --- Helper Functions ---
@@ -39,6 +41,7 @@ export function RegistrationForm({
     registrationType,
     formSchema,
     onSuccessRedirectPath = '/',
+    initialCategory,
 }: RegistrationFormProps) {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -138,12 +141,17 @@ export function RegistrationForm({
 
                 const initialFormState: FormData = getDefaultFormData(formSchema);
                 const initialFilePaths: UploadedFilePaths = {};
+                let categoryToUse = initialCategory;
 
                 if (serverData) {
                     console.log(`[${registrationType}] INIT: Merging server data into form state.`);
+                    if (serverData.category && (serverData.category === 'INTERMEDIATE' || serverData.category === 'ADVANCED')) {
+                        console.log(`[${registrationType}] INIT: Overriding initial category with server data: ${serverData.category}`);
+                        categoryToUse = serverData.category;
+                    }
                     formSchema.forEach(section => {
                         section.fields.forEach(field => {
-                            if (serverData.hasOwnProperty(field.id)) {
+                            if (field.id !== 'category' && serverData.hasOwnProperty(field.id)) {
                                 const serverValue = serverData[field.id as keyof typeof serverData];
                                 initialFormState[field.id] = serverValue ?? initialFormState[field.id];
 
@@ -157,10 +165,15 @@ export function RegistrationForm({
                     console.log(`[${registrationType}] INIT: No server data. Using defaults.`);
                 }
 
+                if (categoryToUse) {
+                    initialFormState.category = categoryToUse;
+                } else {
+                    delete initialFormState.category;
+                }
+
                 setFormData(initialFormState);
                 setUploadedFilePaths(initialFilePaths);
 
-                // Save the initialized state as the *first* local draft
                 if (storageKey) {
                     const draftToSave = { ...initialFormState, ...initialFilePaths };
                     console.log(`[${registrationType}] INIT: Saving initialized draft to LS key ${storageKey}:`, draftToSave);
@@ -177,7 +190,7 @@ export function RegistrationForm({
             console.warn(`[${registrationType}] INIT: Status not loading, user email missing.`);
             setIsInitializing(false);
         }
-    }, [status, userEmail, registrationType, fetchServerData, getDefaultFormData, formSchema, router]);
+    }, [status, userEmail, registrationType, fetchServerData, getDefaultFormData, formSchema, router, initialCategory]);
 
 
     // --- Save Draft to Local Storage ---
@@ -371,13 +384,11 @@ export function RegistrationForm({
     }, [formErrors]);
 
     // --- Form Submission Validator ---
-    // --- Form Submission Validator ---
     const validateForm = useCallback((): boolean => {
         console.log("Starting validation for userType:", userType);
         const errors: Record<string, string> = {};
         let isValid = true;
 
-        // --- Step 1: General validation based on schema for VISIBLE fields ---
         formSchema.forEach(section => {
             const isSectionVisible = !section.condition || section.condition(formData, userType);
             if (!isSectionVisible) return;
@@ -438,7 +449,6 @@ export function RegistrationForm({
             });
         });
 
-        // --- Step 2: Explicit user-type specific MANDATORY field checks (Mirror backend) ---
         console.log("Performing user-type specific checks...");
 
         // FIX: Compare userType variable against string literals 'INTERNAL' or 'EXTERNAL'
@@ -454,7 +464,6 @@ export function RegistrationForm({
             if (!uploadedFilePaths.idCardPath) { errors.idCardPath = 'ID Card (KTP/Student Card) is required for External users.'; isValid = false; console.log("Validation fail (Missing EXTERNAL idCardPath)"); }
         }
 
-        // --- Step 3: Update errors and return ---
         console.log("Validation finished. isValid:", isValid, "Errors:", errors);
         setFormErrors(errors);
         return isValid;
@@ -463,8 +472,6 @@ export function RegistrationForm({
 
     // --- Final Form Submission Handler ---
     const handleSubmit = async (e: React.FormEvent) => {
-        console.log('halo semua');
-
         e.preventDefault();
         const isValid = validateForm();
         if (!isValid) {
@@ -488,14 +495,15 @@ export function RegistrationForm({
 
         setIsSubmitting(true);
         setFormErrors({});
-        console.log('aku aman');
 
         const submissionPayload: FormData = {};
         formSchema.forEach(section => {
             section.fields.forEach(field => {
                 const isVisible = !field.condition || field.condition(formData, userType);
                 if (isVisible) {
-                    if (field.type === 'file') {
+                    if (field.id === 'category') {
+                        submissionPayload.category = formData.category;
+                    } else if (field.type === 'file') {
                         submissionPayload[field.id] = uploadedFilePaths[field.id] || null;
                     } else if (field.type === 'number' && formData[field.id] !== '') {
                         submissionPayload[field.id] = parseInt(String(formData[field.id]), 10);
@@ -510,6 +518,9 @@ export function RegistrationForm({
             });
         });
 
+        if (!submissionPayload.hasOwnProperty('category') && formData.category) {
+            submissionPayload.category = formData.category;
+        }
 
         console.log(`[${registrationType}] Submitting data to ${submitApiUrl}:`, submissionPayload);
 
@@ -617,12 +628,12 @@ export function RegistrationForm({
                                         <InputField
                                             key={field.id}
                                             field={field}
-                                            value={formData[field.id]}
+                                            value={(field.id === 'category' && initialCategory) ? initialCategory : formData[field.id]}
                                             uploadedFilePath={field.type === 'file' ? uploadedFilePaths[field.id] : undefined}
                                             error={formErrors[field.id]}
                                             onChange={handleInputChange}
                                             onFileChange={handleFileUpload}
-                                            disabled={isSubmitting}
+                                            disabled={isSubmitting || (field.id === 'category' && !!initialCategory)}
                                         />
                                     );
                                 })}

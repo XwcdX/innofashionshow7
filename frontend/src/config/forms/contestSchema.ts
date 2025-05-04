@@ -13,13 +13,13 @@ export const contestSchema: FormSchema = [
         id: 'contactPayment',
         title: 'Contact & Payment',
         fields: [
-             {
-                 id: 'category', label: 'Select Tier', type: 'radio', required: true,
-                 options: [
-                     { value: 'INTERMEDIATE', label: 'Intermediate' },
-                     { value: 'ADVANCED', label: 'Advanced' },
-                 ],
-             },
+            //  {
+            //      id: 'category', label: 'Select Tier', type: 'radio', required: true,
+            //      options: [
+            //          { value: 'INTERMEDIATE', label: 'Intermediate' },
+            //          { value: 'ADVANCED', label: 'Advanced' },
+            //      ],
+            //  },
             { id: 'age', label: 'Age', type: 'number', required: true, min: 1, placeholder: "Your age" },
             { id: 'whatsapp', label: 'WhatsApp', type: 'tel', required: true, placeholder: '+62 8XX XXXX XXXX', pattern: '^\\+?[0-9\\s\\-()]*$', title: "Enter a valid phone number" },
             {

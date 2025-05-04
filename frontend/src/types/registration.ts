@@ -4,6 +4,8 @@ export type FilePurpose = 'payment' | 'ktm' | 'idCard';
 
 export type UserType = 'INTERNAL' | 'EXTERNAL';
 
+export type Category = 'ADVANCED' | 'INTERMEDIATE';
+
 export type FieldType =
     | 'text'
     | 'number'
