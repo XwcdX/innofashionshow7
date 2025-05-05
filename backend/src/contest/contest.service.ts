@@ -113,6 +113,7 @@ export class ContestService {
             instance: user.type === UserType.EXTERNAL ? dto.instance : null,
             idCardPath: user.type === UserType.EXTERNAL ? dto.idCardPath : null,
             updatedAt: new Date(),
+            submitted: true,
         };
 
         const createData: Prisma.ContestCreateInput = {
@@ -128,6 +129,7 @@ export class ContestService {
             ktmPath: user.type === UserType.INTERNAL ? dto.ktmPath : null,
             instance: user.type === UserType.EXTERNAL ? dto.instance : null,
             idCardPath: user.type === UserType.EXTERNAL ? dto.idCardPath : null,
+            submitted: true,
         };
 
         try {
@@ -163,5 +165,48 @@ export class ContestService {
             return null;
         }
         return contestRegistration;
+    }
+
+    async getAllInternal(): Promise<Contest[]> {
+        this.logger.log(`Fetching all Internal Contest Participant`);
+        const allInternalContest = await this.prisma.contest.findMany({
+            where: { 
+                submitted: true,
+                user: {
+                    type: 'INTERNAL',
+                },
+            },
+            include:{
+                user: true,
+            }
+        });
+
+        return allInternalContest;
+    }
+
+    async getAllExternal(): Promise<Contest[]> {
+        this.logger.log(`Fetching all External Contest Participant`);
+        const allInternalContest = await this.prisma.contest.findMany({
+            where: { 
+                submitted: true,
+                user: {
+                    type: 'EXTERNAL',
+                },
+            },
+            include:{
+                user: true,
+            }
+        });
+
+        return allInternalContest;
+    }
+
+    async validate(id: string, updateTalkshowDto: Prisma.ContestUpdateInput) {
+        return this.prisma.contest.update({
+            where: {
+                id,
+            },
+            data: updateTalkshowDto,
+        });
     }
 }

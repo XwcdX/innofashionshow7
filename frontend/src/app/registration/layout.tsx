@@ -8,8 +8,9 @@ export const metadata: Metadata = {
 
 export default function RegistrationLayout({ children }: { children: React.ReactNode }) {
   return (
-    <SessionGuard>
+    <>
+      <SessionGuard/>
       <main>{children}</main>
-    </SessionGuard>
+    </>
   );
 }

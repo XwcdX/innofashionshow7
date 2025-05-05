@@ -72,6 +72,8 @@ model Contest {
   adminId        String?
   admin          Admin?    @relation(fields: [adminId], references: [id])
 
+  submitted      Boolean   @default(false)
+
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 

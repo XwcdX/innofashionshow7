@@ -1,23 +1,24 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, Req, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, Req, UseGuards, UsePipes, ValidationPipe, Param } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuardAdmin } from '../admin-auth/jwt-auth.guard';
 import { ContestService } from './contest.service';
 import { DRAFT_GROUP, DraftContestDto } from './dto/draft-contest.dto';
 import { SubmitContestDto } from './dto/submit-contest.dto';
 import { Request } from 'express';
-import { User } from '@prisma/client';
+import { User, Prisma } from '@prisma/client';
 
 interface RequestWithUser extends Request {
     user: Pick<User, 'id' | 'email' | 'name' | 'type'>;
 }
 
 @Controller('contest')
-@UseGuards(JwtAuthGuard)
 export class ContestController {
     private readonly logger = new Logger(ContestController.name);
 
     constructor(private readonly contestService: ContestService) {}
 
     @Post('draft')
+    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
     @UsePipes(new ValidationPipe({ transform: true, whitelist: true, groups: [DRAFT_GROUP] }))
     async saveDraft(
@@ -31,6 +32,7 @@ export class ContestController {
     }
 
     @Post('submit')
+    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
     async submitContest(
         @Req() req: RequestWithUser,
@@ -43,6 +45,7 @@ export class ContestController {
     }
 
     @Get('profile')
+    @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
     async getContestProfile(@Req() req: RequestWithUser) {
         const userId = req.user.id;
@@ -52,5 +55,32 @@ export class ContestController {
              return {};
         }
         return profileData;
+    }
+
+    @Get('internal')
+    @UseGuards(JwtAuthGuardAdmin)
+    @HttpCode(HttpStatus.OK)
+    async getAllInternalContest() {
+        this.logger.log(`Fetching all Internal Contest Participant`);
+        // await this.contestService.getAllInternal();
+        return this.contestService.getAllInternal();
+    }
+
+    @Get('external')
+    @UseGuards(JwtAuthGuardAdmin)
+    @HttpCode(HttpStatus.OK)
+    async getAllExternalContest() {
+        this.logger.log(`Fetching all External Contest Participant`);
+        // await this.contestService.getAllExternal();
+        return this.contestService.getAllExternal();
+    }
+
+    @Post('validate/:id')
+    @UseGuards(JwtAuthGuardAdmin)
+    @HttpCode(HttpStatus.OK)
+    async validate(@Param('id') id: string, @Body() updateContestDto: Prisma.ContestUpdateInput) {
+        this.logger.log(`Validating Contest Participant`);
+        // await this.contestService.getAllExternal();
+        return this.contestService.validate(id, updateContestDto);
     }
 }

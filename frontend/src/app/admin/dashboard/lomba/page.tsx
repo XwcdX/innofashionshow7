@@ -19,19 +19,21 @@ const AdminHomePage = () => {
         if (dataPetra.length === 0) {
             setLoadingPetra(true);
             try {
-            const resPetra = await fetch('/api/lomba/petra', {
+            const resPetra = await fetch('/api/lomba/internal', {
                 credentials: 'include'
             })
             const rawDataPetra = await resPetra.json();
 
             const modifiedDataPetra = rawDataPetra.map((item: any) => ({
-                Nama: item.name,
-                Email: item.email,
-                NRP: item.internalProfile.nrp,
-                Angkatan: item.internalProfile.batch,
-                Jurusan: item.internalProfile.major,
+                Nama: item.user.name,
+                Email: item.user.email,
+                NRP: item.nrp,
+                Angkatan: item.batch,
+                Jurusan: item.major,
                 Whatsapp: item.whatsapp,
                 Category: item.category,
+                KTM:`<a href="${item.ktmPath}" class="text-blue-600 hover:underline">View</a>`,
+                BuktiPembayaran:`<a href="${item.proofOfPayment}" class="text-blue-600 hover:underline">View</a>`,
                 Pembayaran: item.valid === false
                 ? `<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded" data-href="lomba" data-id="${item.id}">Validasi</button>`
                 : '<span class="text-green-500">Validated</span>',
@@ -47,17 +49,19 @@ const AdminHomePage = () => {
         if (dataUmum.length === 0) {
             setLoadingUmum(true);
             try {
-            const resUmum = await fetch('/api/lomba/umum', {
+            const resUmum = await fetch('/api/lomba/external', {
                 credentials: 'include'
             })
             const rawDataUmum = await resUmum.json();
 
             const modifiedDataUmum = rawDataUmum.map((item: any) => ({
-                Nama: item.name,
-                Email: item.email,
-                Instance: item.externalProfile.instance,
+                Nama: item.user.name,
+                Email: item.user.email,
+                Instance: item.instance,
+                IDCard:`<a href="${item.idCard}" class="text-blue-600 hover:underline">View</a>`,
                 Whatsapp: item.whatsapp,
                 Category: item.category,
+                BuktiPembayaran:`<a href="${item.proofOfPayment}" class="text-blue-600 hover:underline">View</a>`,
                 Pembayaran: item.valid === false
                 ? `<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded" data-href="lomba" data-id="${item.id}">Validasi</button>`
                 : '<span class="text-green-500">Validated</span>',
@@ -128,7 +132,7 @@ const AdminHomePage = () => {
                 id="dataTablePetra"
                 data={dataPetra}
                 loading={loadingPetra}
-                renderColumns={['Pembayaran']} // render kolom HTML
+                renderColumns={['KTM','BuktiPembayaran', 'Pembayaran']} // render kolom HTML
                 hideColumns={['status_pembayaran']} // hide kolom yang tidak mau ditampilkan
                 />
             </div>

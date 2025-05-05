@@ -9,9 +9,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!token) {
         return res.status(401).json({ message: 'Authentication token not found.' });
     }
-    console.log(`${process.env.NEXT_PUBLIC_API_URL}/users/validate/${id}`)
+    console.log(`${process.env.NEXT_PUBLIC_API_URL}/contest/validate/${id}`)
     try {
-        const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/validate/${id}`, {
+        const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/contest/validate/${id}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
