@@ -8,13 +8,12 @@ generator client {
 }
 
 model Division {
-  id     String   @id @default(uuid())
-  name   String
-  slug   String   @unique
-  admins Admin[]
-
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  admins    Admin[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Admin {
@@ -23,10 +22,10 @@ model Admin {
   name       String
   division   Division @relation(fields: [divisionId], references: [id])
   divisionId String
-  users      User[]
-  
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+  Contest    Contest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum UserType {
@@ -39,42 +38,45 @@ enum Category {
   ADVANCED
 }
 
+// --- Simplified User Model ---
 model User {
-  id               String     @id @default(uuid())
-  email            String     @unique
-  name             String
-  type             UserType   @default(EXTERNAL)
-  category         Category?   @default(INTERMEDIATE)
-  age              Int?
-  whatsapp         String?
-  proofOfPayment   String?
-  valid            Boolean?    @default(false)
-  Admin            Admin?      @relation(fields: [adminId], references: [id])
-  adminId          String?
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String
+  type      UserType @default(EXTERNAL)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  internalProfile  Internal?  @relation("UserInternal")
-  externalProfile  External?  @relation("UserExternal")
-
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
+  contest   Contest? @relation("UserContest")
 }
 
-model Internal {
-  userId  String   @id
-  nrp     String?   @unique
-  batch   Int?
-  major   String?
-  ktm     String?
+model Contest {
+  id             String    @id @default(uuid())
+  userId         String    @unique
+  user           User      @relation("UserContest", fields: [userId], references: [id])
 
-  user    User     @relation("UserInternal", fields: [userId], references: [id])
-}
+  category       Category? @default(INTERMEDIATE)
+  age            Int?
+  whatsapp       String?
+  proofOfPayment String?
+  valid          Boolean?
 
-model External {
-  userId   String   @id
-  instance String?
-  idCard   String?
+  nrp            String?
+  batch          Int?
+  major          String?
+  ktmPath        String?
 
-  user     User     @relation("UserExternal", fields: [userId], references: [id])
+  instance       String?
+  idCardPath     String?
+
+  adminId        String?
+  admin          Admin?    @relation(fields: [adminId], references: [id])
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([adminId])
 }
 
 enum AsalType {
@@ -113,4 +115,3 @@ model Workshop {
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
 }
-

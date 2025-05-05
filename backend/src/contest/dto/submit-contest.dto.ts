@@ -1,12 +1,13 @@
 import {
     IsString,
-    IsOptional,
     IsEnum,
     IsInt,
     Min,
     Matches,
     MaxLength,
     IsNotEmpty,
+    IsDefined,
+    IsOptional,
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -15,35 +16,26 @@ enum Category {
     ADVANCED = 'ADVANCED',
 }
 
-export class DraftUserDto {
-    @IsOptional()
+export class SubmitContestDto {
+    @IsNotEmpty({ message: 'Category must be selected.' })
     @IsEnum(Category)
-    category?: Category;
+    category: Category;
 
-    @IsOptional()
+    @IsDefined({ message: 'Age is required.' })
     @Type(() => Number)
     @IsInt({ message: 'Age must be a whole number.' })
     @Min(1, { message: 'Age must be at least 1.' })
-    age?: number;
+    age: number;
 
-    @IsOptional()
+    @IsNotEmpty({ message: 'WhatsApp number is required.' })
     @IsString()
     @MaxLength(25)
     @Matches(/^\+?[0-9\s\-()]*$/, { message: 'Invalid WhatsApp number format.' })
-    whatsapp?: string;
+    whatsapp: string;
 
-    // --- File Paths (received from frontend) ---
-    @IsOptional()
+    @IsNotEmpty({ message: 'Proof of payment path is required.' })
     @IsString()
-    proofPath?: string;
-
-    @IsOptional()
-    @IsString()
-    ktmPath?: string;
-
-    @IsOptional()
-    @IsString()
-    idCardPath?: string;
+    proofOfPayment: string;
 
     // --- Internal User Specific ---
     @IsOptional()
@@ -62,9 +54,17 @@ export class DraftUserDto {
     @IsNotEmpty({ message: 'Major cannot be empty if provided.' })
     major?: string;
 
+    @IsOptional()
+    @IsString()
+    ktmPath?: string;
+
     // --- External User Specific ---
     @IsOptional()
     @IsString()
     @IsNotEmpty({ message: 'Instance/School cannot be empty if provided.' })
     instance?: string;
+
+    @IsOptional()
+    @IsString()
+    idCardPath?: string;
 }
