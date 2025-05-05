@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, HttpStatus, Logger, Post, Req, UseGuar
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { JwtAuthGuardAdmin } from '../admin-auth/jwt-auth.guard';
 import { ContestService } from './contest.service';
-import { DRAFT_GROUP, DraftContestDto } from './dto/draft-contest.dto';
+import { DraftContestDto } from './dto/draft-contest.dto';
 import { SubmitContestDto } from './dto/submit-contest.dto';
 import { Request } from 'express';
 import { User, Prisma } from '@prisma/client';
@@ -20,7 +20,6 @@ export class ContestController {
     @Post('draft')
     @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
-    @UsePipes(new ValidationPipe({ transform: true, whitelist: true, groups: [DRAFT_GROUP] }))
     async saveDraft(
         @Req() req: RequestWithUser,
         @Body() draftDto: DraftContestDto,

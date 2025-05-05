@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import PageHeader from '../components/PageHeader';
 import Datatable from '../components/Datatable';
 
+export const dynamic = 'force-dynamic';
+
 const WorkshopPage = () => {
     const [dataPetra, setDataPetra] = useState<any[]>([]);
     const [dataUmum, setDataUmum] = useState<any[]>([]);

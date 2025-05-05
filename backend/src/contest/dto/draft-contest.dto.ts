@@ -11,61 +11,51 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-export const DRAFT_GROUP = 'draft_validation_group';
-export const SUBMIT_GROUP = 'submit_validation_group';
-
 enum Category {
     INTERMEDIATE = 'INTERMEDIATE',
     ADVANCED = 'ADVANCED',
 }
 
 export class DraftContestDto {
-    @IsOptional({ groups: [DRAFT_GROUP] })
-    @IsDefined({ groups: [SUBMIT_GROUP], message: 'Category must be selected.' })
+    @IsOptional()
     @IsEnum(Category, { always: true })
     category?: Category;
 
-    @IsOptional({ groups: [DRAFT_GROUP] })
-    @IsDefined({ groups: [SUBMIT_GROUP], message: 'Age is required.' })
+    @IsOptional()
     @Type(() => Number)
     @IsInt({ always: true, message: 'Age must be a whole number.' })
     @Min(1, { always: true, message: 'Age must be at least 1.' })
     age?: number;
 
-    @IsOptional({ groups: [DRAFT_GROUP] })
-    @IsDefined({ groups: [SUBMIT_GROUP], message: 'WhatsApp is required.' })
+    @IsOptional()
     @IsString({ always: true })
     @MaxLength(25, { always: true })
-    @Matches(/^\+?[0-9\s\-()]*$/, { groups: [SUBMIT_GROUP], message: 'Invalid WhatsApp number format.' })
     whatsapp?: string;
 
-    @IsOptional({ groups: [DRAFT_GROUP] })
-    @IsDefined({ groups: [SUBMIT_GROUP], message: 'Proof of Payment is required.' })
+    @IsOptional()
     @IsString({ always: true })
     proofOfPayment?: string;
 
-    @IsOptional({ groups: [DRAFT_GROUP, SUBMIT_GROUP] })
+    @IsOptional()
     @IsString({ always: true }) ktmPath?: string;
 
-    @IsOptional({ groups: [DRAFT_GROUP, SUBMIT_GROUP] })
+    @IsOptional()
     @IsString({ always: true }) idCardPath?: string;
 
-    @IsOptional({ groups: [DRAFT_GROUP] })
+    @IsOptional()
     @IsString({ always: true })
-    @Matches(/^[A-Za-z]\d{8}$/, { groups: [SUBMIT_GROUP], message: 'Invalid NRP format (e.g., c14200001).' })
     nrp?: string;
 
-    @IsOptional({ groups: [DRAFT_GROUP] })
+    @IsOptional()
     @Type(() => Number)
     @IsInt({ always: true, message: 'Batch must be a whole number.' })
-    @Min(2000, { groups: [SUBMIT_GROUP], message: 'Batch year seems too early.' })
     batch?: number;
 
-    @IsOptional({ groups: [DRAFT_GROUP] })
+    @IsOptional()
     @IsString({ always: true })
     major?: string;
 
-    @IsOptional({ groups: [DRAFT_GROUP] })
+    @IsOptional()
     @IsString({ always: true })
     instance?: string;
 }
