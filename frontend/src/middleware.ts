@@ -35,13 +35,13 @@ export async function middleware(req: NextRequest) {
   }
 
   const session = await getToken({ req, secret: NEXTAUTH_SECRET })
-  if (!session) {
+  const userCookie = req.cookies.get('ACCESS_TOKEN')?.value
+  if (!session || !userCookie) {
     const url = req.nextUrl.clone()
     url.pathname = '/login'
     url.searchParams.set('next', pathname + search)
     return NextResponse.redirect(url)
   }
-
   return NextResponse.next()
 }
 
