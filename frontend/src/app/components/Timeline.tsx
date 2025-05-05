@@ -108,7 +108,11 @@ export function Timeline() {
   const [currentTimeline, setCurrentTimeline] = useState<keyof typeof TIMELINES>("lomba")
 
   return (
-    <div className="bg-[#202021] py-16 px-4 min-h-screen">
+    <div
+  className="py-16 px-4 min-h-screen"
+  style={{ background: "linear-gradient(180deg, #A30A99 0%, #281660 100%)" }}
+>
+
       <div className="max-w-4xl mx-auto relative">
         
         {/* Navigation Dots */}
@@ -126,7 +130,8 @@ export function Timeline() {
         </div>
 
         {/* Timeline Title */}
-        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#a6ff4d] mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-center text-[#a6ff4d] mb-12"
+        style={{ fontFamily: "Moderniz, sans-serif" }}>
           {TIMELINES[currentTimeline].title}
         </h2>
 

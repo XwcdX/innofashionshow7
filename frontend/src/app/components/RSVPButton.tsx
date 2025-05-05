@@ -7,7 +7,7 @@ export default function RSVPButton() {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <section className="bg-[#202021] min-h-[70vh] flex flex-col justify-center items-center p-8">
+    <section className="bg-[#202021] min-h-[70vh] flex flex-col justify-center items-center p-8"style={{ background: "linear-gradient(180deg, #A30A99 0%, #281660 100%)" }}>
       <motion.button
         className="
           relative

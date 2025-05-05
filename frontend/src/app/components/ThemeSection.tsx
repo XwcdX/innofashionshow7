@@ -53,7 +53,10 @@ export default function ThemeSection() {
   )
 
   return (
-    <div className="bg-[#202021] min-h-screen p-8 flex flex-col justify-center items-center">
+    <div
+  className="min-h-screen p-8 flex flex-col justify-center items-center"
+  style={{ background: "linear-gradient(180deg, #A30A99 0%, #281660 100%)" }}
+>
       {/* Headline */}
       <ScrollReveal
         baseOpacity={0}
@@ -80,8 +83,9 @@ export default function ThemeSection() {
         delay={0.2}
         className="w-full text-center"
       >
+        {/* "text-[#8f03d1] */}
         <p
-          className="text-[#8f03d1] text-xl mb-6"
+          className="text-white text-xl mb-6"
           style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}
         >
           <span className="font-semibold">
@@ -90,7 +94,7 @@ export default function ThemeSection() {
         </p>
       </ScrollReveal>
 
-      {/* Divider */}
+      {/* Divider
       <ScrollReveal
         baseOpacity={0}
         enableBlur={true}
@@ -104,7 +108,7 @@ export default function ThemeSection() {
         >
           ───────────────────────────────
         </p>
-      </ScrollReveal>
+      </ScrollReveal> */}
 
       {/* Event info */}
       <ScrollReveal
@@ -116,13 +120,13 @@ export default function ThemeSection() {
         className="w-full text-center"
       >
         <p
-          className="text-[#8f03d1] text-lg max-w-xl mx-auto"
+          className="text-white text-lg max-w-xl mx-auto"
           style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}
         >
           <GlitchText>
-            See you on <span className="text-[#c306aa] font-semibold">15th June 2025</span> at{' '}
-            <span className="text-[#c306aa] font-semibold">Tunjungan Plaza Convention Hall</span> or watch our{' '}
-            <span className="text-[#c306aa] font-semibold">live streaming</span>.
+            See you on <span className="text-white font-semibold">15th June 2025</span> at{' '}
+            <span className="text-white font-semibold">Tunjungan Plaza Convention Hall</span> or watch our{' '}
+            <span className="text-white font-semibold">live streaming</span>.
           </GlitchText>
         </p>
       </ScrollReveal>

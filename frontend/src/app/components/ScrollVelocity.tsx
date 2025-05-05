@@ -119,8 +119,14 @@ export const ScrollVelocity: React.FC<ScrollVelocityProps> = ({
 
     const x = useTransform(baseX, (v) => {
       if (copyWidth === 0) return "0px";
-      return `${wrap(-copyWidth, 0, v)}px`;
+      const totalWidth = copyWidth * numCopies;
+      return `${wrap(-totalWidth, 0, v)}px`;
     });
+
+    // const x = useTransform(baseX, (v) => {
+    //   if (copyWidth === 0) return "0px";
+    //   return `${wrap(-copyWidth, 0, v)}px`;
+    // }); SALAHH
 
     const directionFactor = useRef<number>(1);
     useAnimationFrame((t, delta) => {

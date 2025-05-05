@@ -81,7 +81,8 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="text-center text-[10px] text-gray-400 mt-4 tracking-wide">
-        ©2025 INNOFASHION SHOW. All Right Reserved
+        ©2025 INNOFASHION SHOW. 
+        All Right Reserved
       </div>
     </footer>
   )
