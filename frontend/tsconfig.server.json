@@ -1,0 +1,32 @@
+{
+    "extends": "./tsconfig.json", // Optional: Inherit base settings if needed, but local settings override
+    "compilerOptions": {
+      // --- Crucial Settings for Node Server ---
+      "module": "CommonJS",           // Output format for Node.js
+      "outDir": ".",                  // Output .js file in the root directory
+      "target": "ES2017",             // Good target for Node 18 compatibility
+      "moduleResolution": "node",     // Use standard Node module resolution (NOT 'bundler')
+      "esModuleInterop": true,        // Allows cleaner imports from CommonJS/ESM modules
+      "strict": true,                 // Recommended for catching errors
+      "skipLibCheck": true,           // Speeds up compilation by not checking libs
+      "forceConsistentCasingInFileNames": true,
+      // --- Ensure JS is Emitted ---
+      "noEmit": false,                // MUST be false to actually create server.js
+      "declaration": false,           // No need for .d.ts files for the server build
+      // --- Server Specific ---
+      "isolatedModules": false,       // Custom servers often aren't isolated modules
+      // Remove "jsx" if inherited and not needed for server
+      "jsx": "preserve" // Or remove if no JSX in server.ts
+    },
+    "include": [
+      "server.ts"                     // Only compile this specific file
+    ],
+    "exclude": [                      // Explicitly exclude everything else
+      "node_modules",
+      ".next",
+      "src",                          // Assuming your Next app code is in 'src'
+      "public",
+      "**/*.test.ts",                 // Exclude test files
+      "next-env.d.ts"
+    ]
+  }

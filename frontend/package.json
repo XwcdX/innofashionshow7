@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "tsc --project tsconfig.server.json && next build",
     "start": "next start",
     "lint": "next lint"
   },
@@ -18,7 +18,7 @@
     "next-auth": "^4.24.11",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sweetalert2": "^11.21.0"
+    "sweetalert2": "^11.6.13"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -32,6 +32,6 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5.8.3"
   }
 }
