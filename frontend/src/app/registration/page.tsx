@@ -15,9 +15,9 @@ export default function RegistrationSelectionPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 p-4">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-transparent p-4">
 
-      <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-10 text-center">
+      <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
         Choose Your Registration
       </h1>
 

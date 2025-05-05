@@ -43,7 +43,7 @@ export const InputField: React.FC<InputFieldProps> = ({
         case 'tel':
         case 'number':
             return (
-                <div>
+                <div className='!my-0'>
                     {label}
                     <input
                         type={field.type}
@@ -61,7 +61,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 
         case 'textarea':
             return (
-                <div>
+                <div className='!my-0'>
                     {label}
                     <textarea
                         value={value ?? ''}
@@ -75,7 +75,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 
         case 'select':
             return (
-                <div>
+                <div className='!my-0'>
                     {label}
                     <select
                         value={value ?? ''}
@@ -93,7 +93,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 
         case 'radio':
             return (
-                <div>
+                <div className='!my-0'>
                     <span className="block text-sm font-medium text-gray-700 mb-1">
                         {field.label} {field.required && <span className="text-red-500">*</span>}
                     </span>
@@ -145,7 +145,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 
         case 'file':
             return (
-                <div>
+                <div className='!my-0'>
                     {label}
                     <input
                         type="file"
@@ -169,7 +169,7 @@ export const InputField: React.FC<InputFieldProps> = ({
                     />
                      {/* Display uploaded file info */}
                      {uploadedFilePath && (
-                         <div className="text-xs text-green-700 mt-1 flex items-center">
+                         <div className="text-xs text-green-700 mt-1 flex items-center break-all">
                              <svg className="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"></path></svg>
                              Uploaded: {uploadedFilePath.split('/').pop()} {/* Show filename */}
                              {/* Add a "Remove" button? Requires backend support or just clears state */}
@@ -186,7 +186,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 
         case 'readonly':
              return (
-                 <div>
+                 <div className='!my-0'>
                     <label className="block text-sm font-medium text-gray-600 mb-1">{field.label}</label>
                     <input value={value ?? ''} readOnly {...commonProps} />
                     {/* No error message needed typically */}
