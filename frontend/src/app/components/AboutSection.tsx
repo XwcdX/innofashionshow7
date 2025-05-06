@@ -5,9 +5,9 @@ export default function AboutSection() {
   return (
     <section className="flex flex-col md:flex-row w-full min-h-screen text-white">
       {/* Left Section */}
-      <div className="w-full md:w-1/2 relative bg-gradient-to-br from-purple-700 to-fuchsia-800 p-10 md:p-16">
+      <div className="w-full md:w-1/2 relative bg-gradient-to-br from-purple-700 to-fuchsia-800 p-10 md:p-16"style={{ background: "linear-gradient(180deg, #281660 0%, #A30A99 100%)" }}>
         {/* Lines Asset (bottom-left corner) */}
-        <div className="transform scale-210 absolute bottom-0 left-0 w-40 h-40">
+        <div className="transform scale-210 absolute bottom-7 left-0 w-40 h-40">
           <Image
             src="/assets/lines1.png"
             alt=""

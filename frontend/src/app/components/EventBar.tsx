@@ -10,7 +10,7 @@ export default function EventBar() {
       style={{ background: "linear-gradient(180deg, #A30A99 0%, #281660 100%)" }}
     >
       <div className="mx-auto">
-        <h2 className="font-moderniz text-4xl md:text-5xl font-bold mb-12 text-[#a6ff4d] text-center">
+        <h2 className="font-moderniz text-4xl md:text-5xl font-bold mb-12 text-[#a6ff4d] text-center" style={{ fontFamily: "Moderniz, sans-serif" }}>
           Our Events
         </h2>
 
@@ -25,7 +25,7 @@ export default function EventBar() {
         />
       </div>
             {/* Decorative Image (bottom-right corner) */}
-            <div className="transform scale-300 absolute -bottom-3   right-0 w-40 h-40">
+            <div className="transform scale-300 absolute -bottom-5 right-6 w-40 h-40">
         <Image
           src="/assets/lines2.png" // Make sure this is in your /public/assets folder
           alt="Decoration"

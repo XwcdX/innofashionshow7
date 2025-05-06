@@ -110,7 +110,7 @@ export function Timeline() {
   return (
     <div
   className="py-16 px-4 min-h-screen"
-  style={{ background: "linear-gradient(180deg, #A30A99 0%, #281660 100%)" }}
+  style={{ background: "linear-gradient(180deg,  #281660 0%, #A30A99 100%)" }}
 >
 
       <div className="max-w-4xl mx-auto relative">
