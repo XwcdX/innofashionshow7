@@ -111,14 +111,14 @@ export function Timeline() {
   return (
     <div
   className="py-16 px-4 min-h-screen"
-  style={{ background: "linear-gradient(180deg,  #281660 0%, #A30A99 100%)" }}
+  style={{ background: "linear-gradient(180deg, #A30A99 0%,rgb(0, 0, 0) 100%)" }}
 >
 
       <div className="max-w-4xl mx-auto relative">
         {/* Lines Asset (bottom-left corner) */}
-        <div className="transform scale-210 absolute -bottom-5 -left-25 w-40 h-40">
+        <div className="transform scale-210 absolute -bottom-3 -left-25 w-40 h-40">
           <Image
-          src="/assets/lines3.png"
+          src="/assets/lines1.png"
           alt=""
           fill
           className="object-contain"
