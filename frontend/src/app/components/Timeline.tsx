@@ -11,6 +11,7 @@ import {
   TimelineTitle,
 } from "@/app/components/ui/timelinedetails"
 import { useState } from "react"
+import Image from "next/image"
 
 
 const TIMELINES = {
@@ -114,7 +115,17 @@ export function Timeline() {
 >
 
       <div className="max-w-4xl mx-auto relative">
-        
+        {/* Lines Asset (bottom-left corner) */}
+        <div className="transform scale-210 absolute -bottom-5 -left-25 w-40 h-40">
+          <Image
+          src="/assets/lines3.png"
+          alt=""
+          fill
+          className="object-contain"
+          priority
+          />
+        </div>
+      
         {/* Navigation Dots */}
         <div className="flex justify-center gap-3 mb-8">
           {Object.keys(TIMELINES).map((key) => (
@@ -128,6 +139,7 @@ export function Timeline() {
             />
           ))}
         </div>
+        
 
         {/* Timeline Title */}
         <h2 className="text-3xl md:text-4xl font-bold text-center text-[#a6ff4d] mb-12"

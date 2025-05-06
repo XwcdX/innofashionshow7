@@ -70,7 +70,8 @@ export default function ThemeSection() {
           className="text-[#a6ff4d] font-bold text-6xl mb-4 relative"
           style={{ fontFamily: "Moderniz, sans-serif", opacity: pageLoaded ? 1 : 0 }}
         >
-          <GlitchText>ILLUMINÉ</GlitchText>
+          <GlitchText>ILLUMINE</GlitchText> 
+          {/* É */}
         </h1>
       </ScrollReveal>
 

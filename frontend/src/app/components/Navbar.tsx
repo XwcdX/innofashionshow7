@@ -96,14 +96,22 @@
 //     </motion.nav>
 //   )
 // }
-// components/Navbar.tsx
+
+'use client'
+
 import Link from "next/link"
 import Image from "next/image"
-import GlitchText from "./GlitchText" // <-- Tambahkan ini
+import GlitchText from "./GlitchText"
+import { motion } from "framer-motion"
 
 export default function Navbar() {
   return (
-    <header className="bg-[#1A1A1A] text-white px-8 py-5">
+    <motion.header
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className="fixed top-0 left-0 w-full z-50 bg-[#1A1A1A]/90 backdrop-blur-sm shadow-md border-b border-white/10 text-white px-8 py-5"
+      >
       <div className="max-w-screen-xl mx-auto flex items-center justify-between">
         {/* Left: Logo */}
         <Link href="/">
@@ -137,6 +145,6 @@ export default function Navbar() {
           Sign In / Register
         </Link>
       </div>
-    </header>
+    </motion.header>
   )
 }

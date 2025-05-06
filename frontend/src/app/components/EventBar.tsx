@@ -25,7 +25,7 @@ export default function EventBar() {
         />
       </div>
             {/* Decorative Image (bottom-right corner) */}
-            <div className="transform scale-300 absolute -bottom-5 right-6 w-40 h-40">
+            <div className="transform scale-300 absolute -bottom-10 right-40 w-40 h-40">
         <Image
           src="/assets/lines2.png" // Make sure this is in your /public/assets folder
           alt="Decoration"
