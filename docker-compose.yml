@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  # Backend Service (NestJS)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: test-backend
+    container_name: innofashion-backend
+    ports:
+      - "3001:3000"
+    env_file:
+      - ./backend/.env
+    # === Environment section for overrides/docker-specific ===
+    environment:
+      # This ensures the container listens on 3000 internally
+      PORT: 3000
+      # --- IMPORTANT for DB Connection ---
+      DATABASE_URL: "mysql://${DB_USERNAME}:${DB_PASSWORD}@host.docker.internal:${DB_PORT}/${DB_DATABASE}"
+      # DATABASE_URL: "mysql://root:@host.docker.internal:3306/innofashionshow7"
+      # -----------------------------------
+      FRONTEND_URL: http://localhost:3000
+    restart: unless-stopped
+
+  # Frontend Service (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: test-frontend
+    container_name: innofashion-frontend
+    ports:
+      - "3000:3000"
+    # === Add env_file to load frontend .env ===
+    env_file:
+      - ./frontend/.env # Path relative to docker-compose.yml
+    # === Environment section for overrides/docker-specific ===
+    environment:
+      # This overrides any value in .env to ensure frontend talks to the backend CONTAINER
+      NEXT_PUBLIC_API_URL: http://backend:3000
+      PORT: 3000 # Port Next.js listens on *inside* container
+    depends_on:
+      - backend
+    restart: unless-stopped

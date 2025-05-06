@@ -1,0 +1,32 @@
+# Docker ignore for NestJS backend
+
+# Node specific
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build output
+dist
+
+# Env files (handle secrets via Docker Compose environment or secrets)
+.env
+.env.*
+
+# Git files
+.git
+.gitignore
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor specific
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# Test files (if you don't run tests in build)
+test/
+*.spec.ts
