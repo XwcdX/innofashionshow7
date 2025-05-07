@@ -54,7 +54,8 @@ export default function LoginPage() {
                     onClick={() => {
                         if (!isClient) return;
                         signIn('google', {
-                            callbackUrl: '/auth/callback'
+                            callbackUrl: '/auth/callback',
+                            method: 'POST'
                         })
                     }}
                     disabled={!isClient}

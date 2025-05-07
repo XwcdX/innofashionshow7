@@ -10,7 +10,8 @@ export default function AdminLoginPage() {
             <button
                 onClick={() =>
                     signIn('google', {
-                        callbackUrl: '/admin/auth/callback'
+                        callbackUrl: '/admin/auth/callback',
+                        method: 'POST',
                     })
                 }
                 className="flex items-center space-x-2 bg-white hover:bg-gray-100 border border-gray-300 text-gray-800 font-medium py-3 px-6 rounded-lg shadow-sm transition">
