@@ -27,7 +27,7 @@ const CompetitionsSection = () => (
   >
     <div className="max-w-7xl mx-auto text-center px-4">
       {/* Layer Asset (bottom-left corner) */}
-              <div className="transform scale-210 absolute -bottom-10 left-0 w-40 h-40">
+              <div className="transform scale-210 absolute -bottom-10 -left-3 w-40 h-40">
                 <Image
                   src="/assets/layer3.png"
                   alt=""

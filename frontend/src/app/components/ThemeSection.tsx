@@ -210,6 +210,7 @@ export default function ThemeSection() {
   className="min-h-screen p-8 flex flex-col justify-center items-center"
   style={{ background: "linear-gradient(180deg, #A30A99 0%, #281660 100%)" }}
 >
+    
       {/* Layer Asset (bottom-left corner) */}
                     <div className="transform scale-210 absolute bottom-17 left-0 w-40 h-40 opacity-75">
                       <Image
@@ -229,7 +230,9 @@ export default function ThemeSection() {
                         className="object-contain"
                         priority
                       />
-                    </div>        
+                    </div>   
+                    
+                         
       {/* Headline */}
       <ScrollReveal
         baseOpacity={0}

@@ -25,7 +25,7 @@
 //   )
 // }
 
-"use client";
+'use client'
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import ThemeSection from './components/ThemeSection';
@@ -40,24 +40,25 @@ import Lenis from 'lenis';
 export default function Home() {
   useEffect(() => {
     const lenis = new Lenis({
-      lerp: 0.1, // Smoothness
-      smoothWheel: true, // Make mouse wheel smooth
+      lerp: 0.1,
+      smoothWheel: true,
     });
-
-    // Request Animation Frame for updating lenis
-    function raf(time) {
+  
+    let animationFrame: number;
+  
+    const raf = (time: number): void => {
       lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    
-    requestAnimationFrame(raf);
-
-    // Cleanup on unmount
+      animationFrame = requestAnimationFrame(raf);
+    };
+  
+    animationFrame = requestAnimationFrame(raf);
+  
     return () => {
-      cancelAnimationFrame(raf);
+      cancelAnimationFrame(animationFrame);
       lenis.destroy();
     };
   }, []);
+  
 
   return (
     <>
