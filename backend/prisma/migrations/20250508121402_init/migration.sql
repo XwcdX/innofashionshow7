@@ -52,6 +52,7 @@ CREATE TABLE `Contest` (
     `instance` VARCHAR(191) NULL,
     `idCardPath` VARCHAR(191) NULL,
     `adminId` VARCHAR(191) NULL,
+    `submitted` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
