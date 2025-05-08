@@ -684,8 +684,8 @@ export function RegistrationForm({
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 py-8 px-4">
-            <div className="max-w-2xl mx-auto bg-white p-6 md:p-8 shadow-xl rounded-lg border border-gray-200">
+        <div className="min-h-screen py-8 px-4">
+            <div className="max-w-2xl mx-auto bg-white backdrop-blur-md p-6 md:p-8 shadow-xl rounded-lg border border-gray-200">
                 <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 capitalize">
                     {registrationType} Registration
                 </h1>
