@@ -110,11 +110,11 @@ export function Timeline() {
 
   return (
     <div
-  className="py-16 px-4 min-h-screen"
+  className="py-16 px-4 min-h-screen "
   style={{ background: "linear-gradient(180deg, #A30A99 0%,rgb(0, 0, 0) 100%)" }}
 >
 
-      <div className="max-w-4xl mx-auto relative">
+      <div className="max-w-4xl mx-auto relative ">
         {/* Lines Asset (bottom-left corner) */}
         <div className="transform scale-210 absolute -bottom-3 -left-25 w-40 h-40">
           <Image
@@ -149,19 +149,19 @@ export function Timeline() {
 
         
         {/* Timeline Content */}
-        <ShadcnTimeline defaultValue={1} className="flex flex-col items-center w-full">
+        <ShadcnTimeline defaultValue={1} className="flex flex-col items-center w-full ">
           {TIMELINES[currentTimeline].items.map((item) => (
             <TimelineItem
               key={item.id}
               step={item.id}
-              className="grid sm:grid-cols-[150px_1fr] gap-4 items-start sm:items-center"
+              className="grid sm:grid-cols-[150px_1fr] gap-4 items-start sm:items-center "
             >
               <TimelineHeader>
                 <TimelineSeparator className="bg-[#8F8F8F]" />
                 <TimelineDate className="text-white group-data-[orientation=vertical]/timeline:sm:absolute group-data-[orientation=vertical]/timeline:sm:-left-32 group-data-[orientation=vertical]/timeline:sm:w-20 group-data-[orientation=vertical]/timeline:sm:text-right">
                   {item.date}
                 </TimelineDate>
-                <TimelineTitle className="text-white sm:-mt-0.5">
+                <TimelineTitle className="text-white sm:-mt-0.5 ">
                   {item.title}
                 </TimelineTitle>
                 <TimelineContent className="text-[#8F8F8F]">

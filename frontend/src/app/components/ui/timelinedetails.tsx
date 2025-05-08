@@ -53,7 +53,7 @@ function Timeline({
       <div
         data-slot="timeline"
         className={cn(
-          "group/timeline flex data-[orientation=horizontal]:w-full data-[orientation=horizontal]:flex-row data-[orientation=vertical]:flex-col",
+          "group/timeline flex data-[orientation=horizontal]:w-full data-[orientation=horizontal]:flex-row data-[orientation=vertical]:flex-col ",
           className
         )}
         data-orientation={orientation}

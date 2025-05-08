@@ -207,11 +207,11 @@ export default function ThemeSection() {
 
   return (
     <div
-  className="min-h-screen p-8 flex flex-col justify-center items-center"
+  className="min-h-screen p-8 flex flex-col justify-center items-center "
   style={{ background: "linear-gradient(180deg, #A30A99 0%, #281660 100%)" }}
 >
     
-      {/* Layer Asset (bottom-left corner) */}
+      {/* Layer Asset (bottom-left corner)
                     <div className="transform scale-210 absolute bottom-17 left-0 w-40 h-40 opacity-75">
                       <Image
                         src="/assets/layer3.png"
@@ -222,7 +222,7 @@ export default function ThemeSection() {
                       />
                     </div>
             {/* Layer Asset (upper-right corner) */}
-            <div className="transform scale-210 absolute bottom-100 -right-15 w-40 h-40 opacity-60">
+            {/* <div className="transform scale-210 absolute bottom-100 -right-15 w-40 h-40 opacity-60 ">
                       <Image
                         src="/assets/layer2.png"
                         alt=""
@@ -230,7 +230,7 @@ export default function ThemeSection() {
                         className="object-contain"
                         priority
                       />
-                    </div>   
+                    </div>    */} 
                     
                          
       {/* Headline */}
