@@ -42,29 +42,39 @@ const Sponsor = () => {
   ];
 
   const [glitchActive, setGlitchActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const interval = setInterval(() => {
       setGlitchActive(true);
       setTimeout(() => setGlitchActive(false), 100);
     }, 3000);
-    return () => clearInterval(interval);
+    
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   return (
     <section 
       className="min-h-screen flex items-center justify-center p-4"
       style={{ 
+        fontFamily: "'Neue Montreal', sans-serif",
         background: 'transparent',
-        //backgroundColor: '#202021',
         scrollSnapAlign: 'start'
       }}
       id="sponsor"
     >
       <div className="w-full max-w-6xl px-4">
-        <div className="relative mb-16 md:mb-16 text-center">
+        {/* Shiny Glitch Title */}
+        <div className="relative mb-12 md:mb-16 text-center">
           <h2 
-            className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
+            className={`text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
               glitchActive ? 'glitch-active' : ''
             }`}
             style={{ 
@@ -102,28 +112,31 @@ const Sponsor = () => {
           </h2>
         </div>
         
-        <div className="flex flex-wrap justify-center items-center gap-6">
+        {/* Logos - Responsive grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
           {sponsors.map((sponsor, index) => (
             <a
               key={index}
               href={sponsor.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-[150px] h-[80px] flex items-center justify-center relative group"
+              className={`flex items-center justify-center relative group ${isMobile ? 'h-20' : 'h-24 md:h-32'}`}
             >
+              {/* Grayscale Logo */}
               <img
                 src={sponsor.logo}
                 alt={sponsor.name}
-                className="w-full h-full object-contain opacity-100 transition-all duration-300 group-hover:opacity-0"
+                className="w-full h-full object-contain opacity-100 transition-all duration-300 group-hover:opacity-0 px-2"
                 style={{
                   filter: 'grayscale(100%) brightness(1.5)'
                 }}
               />
               
+              {/* Color Logo */}
               <img
                 src={sponsor.logo}
                 alt={sponsor.name}
-                className="absolute w-full h-full object-contain opacity-0 transition-all duration-300 group-hover:opacity-100"
+                className="absolute w-full h-full object-contain opacity-0 transition-all duration-300 group-hover:opacity-100 px-2"
                 style={{
                   filter: 'none',
                   transform: 'scale(1.1)'
@@ -133,6 +146,7 @@ const Sponsor = () => {
           ))}
         </div>
 
+        {/* Glitch Animation Styles */}
         <style jsx>{`
           .glitch-active {
             animation: glitch-anim 0.3s linear infinite;
@@ -152,4 +166,6 @@ const Sponsor = () => {
   );
 };
 
-export default Sponsor;
+export default Sponsor; 
+
+// font awal sponsor buat besar agar penuh full page

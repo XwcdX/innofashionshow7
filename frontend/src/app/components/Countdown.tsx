@@ -22,6 +22,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
   });
   const [glitchActive, setGlitchActive] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const maxDaysRef = useRef(0);
 
   function calculateTimeRemaining(): CountdownState {
@@ -41,6 +42,10 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
   }
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     setHasMounted(true);
     
     const initial = calculateTimeRemaining();
@@ -65,6 +70,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
     return () => {
       clearInterval(interval);
       clearInterval(glitchTimer);
+      window.removeEventListener('resize', checkMobile);
     };
   }, [onComplete]);
 
@@ -72,7 +78,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
     return Math.min((current / max) * 100, 100);
   };
 
-  const radius = 40;
+  const radius = isMobile ? 35 : 45;
   const circumference = 2 * Math.PI * radius;
 
   if (!hasMounted) {
@@ -88,7 +94,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
       >
         <div className="container mx-auto px-4">
           <div className="relative mb-16 text-center" style={{ height: '56px' }}></div>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+          <div className="flex flex-wrap justify-center gap-8">
             {[...Array(4)].map((_, i) => (
               <div key={i} className="flex flex-col items-center">
                 <div className="relative w-32 h-32 md:w-40 md:h-40 bg-gray-800 rounded-full"></div>
@@ -105,13 +111,13 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
     <section 
       className="min-h-screen flex items-center justify-center py-16 font-neue-montreal"
       style={{ 
-        //backgroundColor: '#202021',
         background: 'transparent',
         scrollSnapAlign: 'start'
       }}
       id="countdown"
     >
       <div className="container mx-auto px-4">
+        {/* Glitch Title */}
         <div className="relative mb-16 text-center">
           <h2 
             className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
@@ -152,9 +158,9 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
         </div>
         
         <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-          {/* days */}
+          {/* Days */}
           <div className="flex flex-col items-center">
-            <div className="relative w-40 h-40 md:w-48 md:h-48">
+            <div className="relative w-32 h-32 md:w-40 md:h-40">
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -195,9 +201,9 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
 
-          {/* hours */}
+          {/* Hours */}
           <div className="flex flex-col items-center">
-            <div className="relative w-40 h-40 md:w-48 md:h-48">
+            <div className="relative w-32 h-32 md:w-40 md:h-40">
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -238,9 +244,9 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
 
-          {/* minutes */}
+          {/* Minutes */}
           <div className="flex flex-col items-center">
-            <div className="relative w-40 h-40 md:w-48 md:h-48">
+            <div className="relative w-32 h-32 md:w-40 md:h-40">
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -281,9 +287,9 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
 
-          {/* seconds */}
+          {/* Seconds */}
           <div className="flex flex-col items-center">
-            <div className="relative w-40 h-40 md:w-48 md:h-48">
+            <div className="relative w-32 h-32 md:w-40 md:h-40">
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"

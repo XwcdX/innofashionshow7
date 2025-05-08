@@ -4,10 +4,15 @@ import React, { useState, useEffect } from 'react';
 const PrizePool: React.FC = () => {
   const [prizePool, setPrizePool] = useState<number>(0);
   const [showShadow, setShowShadow] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState(false);
   const targetPrize: number = 5000000;
   const [glitchActive, setGlitchActive] = useState<boolean>(false);
 
   useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const duration: number = 2000;
     const increment: number = targetPrize / (duration / 16);
     
@@ -33,7 +38,10 @@ const PrizePool: React.FC = () => {
       setTimeout(() => setGlitchActive(false), 100);
     }, 3000);
     
-    return () => clearInterval(glitchTimer);
+    return () => {
+      clearInterval(glitchTimer);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   return (
@@ -42,15 +50,14 @@ const PrizePool: React.FC = () => {
       style={{ 
         fontFamily: "'Neue Montreal', sans-serif",
         background: 'transparent',
-        //backgroundColor: '#202021',
         scrollSnapAlign: 'start'
       }}
       id="prize"
     >
-      <div className="text-center w-full max-w-6xl">
+      <div className="text-center w-full max-w-6xl px-4">
         <div className="relative">
-          {/* judul */}
-          <div className="relative mb-12 md:mb-16">
+          {/* Glitch Title */}
+          <div className="relative mb-16 text-center">
             <h2 
               className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
                 glitchActive ? 'glitch-active' : ''
