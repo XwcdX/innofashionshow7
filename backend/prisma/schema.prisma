@@ -52,6 +52,7 @@ model User {
 
 model Contest {
   id             String    @id @default(uuid())
+  creation       Creation?
   userId         String    @unique
   user           User      @relation("UserContest", fields: [userId], references: [id])
 
@@ -79,6 +80,20 @@ model Contest {
 
   @@index([userId])
   @@index([adminId])
+}
+
+model Creation{
+  id             String    @id @default(uuid())
+  creationPath   String?
+  conceptPath    String?
+
+  contestId      String    @unique  // <--- Enforces one-to-one relationship
+  contest        Contest?  @relation(fields: [contestId], references: [id])
+
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([contestId])
 }
 
 enum AsalType {

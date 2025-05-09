@@ -1,6 +1,6 @@
 export type RegistrationType = 'contest' | 'workshop' | 'talkshow';
 
-export type FilePurpose = 'payment' | 'ktm' | 'idCard';
+export type FilePurpose = 'payment' | 'ktm' | 'idCard' | 'creation' | 'concept';
 
 export type UserType = 'INTERNAL' | 'EXTERNAL';
 

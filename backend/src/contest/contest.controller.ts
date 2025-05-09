@@ -17,6 +17,18 @@ export class ContestController {
 
     constructor(private readonly contestService: ContestService) {}
 
+    @Get('getCategory')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async getCategory(@Req() req: RequestWithUser) {
+        const userId = req.user.id;
+        const category = await this.contestService.getCategory(userId);
+        if (!category) {
+             return {};
+        }
+        return category;
+    }
+
     @Post('draft')
     @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
@@ -27,6 +39,19 @@ export class ContestController {
         const userId = req.user.id;
         this.logger.log(`Received contest draft save request from user ID: ${userId}`);
         await this.contestService.saveDraft(userId, draftDto);
+        return { message: 'Contest draft saved successfully.' };
+    }
+
+    @Post('draftCreation')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async saveCreationDraft(
+        @Req() req: RequestWithUser,
+        @Body() draftDto: Prisma.CreationCreateInput,
+    ) {
+        const userId = req.user.id;
+        this.logger.log(`Received contest draft save request from user ID: ${userId}`);
+        await this.contestService.saveCreationDraft(userId, draftDto);
         return { message: 'Contest draft saved successfully.' };
     }
 
@@ -52,6 +77,19 @@ export class ContestController {
         const profileData = await this.contestService.getContestProfile(userId);
         if (!profileData) {
              return {};
+        }
+        return profileData;
+    }
+
+    @Get('profileCreation')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async getCreationProfile(@Req() req: RequestWithUser) {
+        const userId = req.user.id;
+        this.logger.log(`Fetching creation profile data for user ID: ${userId}`);
+        const profileData = await this.contestService.getCreationProfile(userId);
+        if (!profileData) {
+            return {};
         }
         return profileData;
     }

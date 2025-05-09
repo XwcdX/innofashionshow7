@@ -2,13 +2,31 @@ import { Injectable, NotFoundException, InternalServerErrorException, Logger, Ba
 import { PrismaService } from '../../prisma/prisma.service';
 import { DraftContestDto } from './dto/draft-contest.dto';
 import { SubmitContestDto } from './dto/submit-contest.dto';
-import { Prisma, Contest, UserType, Category } from '@prisma/client';
+import { Prisma, Contest, UserType, Category, Creation } from '@prisma/client';
 
 @Injectable()
 export class ContestService {
     private readonly logger = new Logger(ContestService.name);
 
     constructor(private readonly prisma: PrismaService) { }
+
+    async getCategory(userId: string): Promise<{ category: string | null } | null> {
+        this.logger.log(`Fetching contest profile for user ID: ${userId}`);
+        // Fetch only the 'category' field from the contest record
+        const contestRegistration = await this.prisma.contest.findUnique({
+            where: { userId: userId },
+            select: {
+                category: true,  // Only select the 'category' field
+            },
+        });
+
+        if (!contestRegistration) {
+            this.logger.log(`No contest registration found for user ID: ${userId}`);
+            return null;
+        }
+
+        return { category: contestRegistration.category }; 
+    }
 
     async saveDraft(userId: string, dto: DraftContestDto): Promise<Contest | null> {
         this.logger.log(`Attempting to save contest draft for user ID: ${userId}`);
@@ -58,6 +76,49 @@ export class ContestService {
             this.logger.log(`Upserting contest draft for user ${userId}`);
             const savedContest = await this.prisma.contest.upsert({
                 where: { userId: userId },
+                create: createData,
+                update: updateData,
+            });
+            this.logger.log(`Successfully saved contest draft for user ID: ${userId}`);
+            return savedContest;
+        } catch (error) {
+            this.logger.error(`Failed to save contest draft for user ${userId}: ${error.message}`, error.stack);
+            throw new InternalServerErrorException('Failed to save contest draft data.');
+        }
+    }
+
+    async saveCreationDraft(userId: string, dto: Prisma.CreationCreateInput): Promise<Creation | null> {
+        this.logger.log(`Attempting to save creation draft for user ID: ${userId}`);
+
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            this.logger.warn(`User not found for ID: ${userId} while saving draft.`);
+            throw new NotFoundException(`User with ID ${userId} not found.`);
+        }
+        const contest = await this.prisma.contest.findUnique({ where: { userId: userId } });
+
+        const updateData: Prisma.CreationUpdateInput = {
+            ...(dto.creationPath !== undefined && { creationPath: dto.creationPath }),
+            ...(dto.conceptPath !== undefined && { conceptPath: dto.conceptPath }),
+            updatedAt: new Date(),
+        };
+
+
+        if (Object.keys(updateData).length <= 1) {
+            this.logger.log(`No actual draft data provided to update for user ${userId}. Skipping creation update.`);
+            return this.prisma.creation.findUnique({ where: { contestId: contest?.id } });
+        }
+
+        const createData: Prisma.CreationCreateInput = {
+            contest: { connect: { id: contest?.id } },
+            creationPath: dto.creationPath ?? null,
+            conceptPath: dto.conceptPath ?? null,
+        };
+
+        try {
+            this.logger.log(`Upserting creation draft for user ${userId}`);
+            const savedContest = await this.prisma.creation.upsert({
+                where: { contestId: contest?.id },
                 create: createData,
                 update: updateData,
             });
@@ -165,6 +226,24 @@ export class ContestService {
             return null;
         }
         return contestRegistration;
+    }
+
+    async getCreationProfile(userId: string): Promise<Creation | null> {
+        this.logger.log(`Fetching creation profile for user ID: ${userId}`);
+        const contestRegistration = await this.prisma.contest.findUnique({
+            where: { userId: userId },
+        });
+
+        if (!contestRegistration) {
+            this.logger.log(`No contest registration found for user ID: ${userId}`);
+            return null;
+        }
+
+        const creation = await this.prisma.creation.findUnique({
+            where: { contestId: contestRegistration?.id },
+            include: {contest: true},
+        });
+        return creation;
     }
 
     async getAllInternal(): Promise<Contest[]> {

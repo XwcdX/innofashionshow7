@@ -72,3 +72,49 @@ export const contestSchema: FormSchema = [
     //      ]
     //  }
 ];
+
+export const contestSubmitSchema: FormSchema = [
+    {
+        id: 'userInfo',
+        title: 'Your Information',
+        fields: [
+            { id: 'name', label: 'Name', type: 'readonly', defaultValue: '' },
+            { id: 'email', label: 'Email', type: 'readonly', defaultValue: '' },
+        ],
+    },
+    {
+        id: 'karyaFile',
+        title: 'Creation Submit',
+        fields: [
+            {
+                id: 'creationPath', label: 'Your Creation', type: 'file-drag-drop', required: true,
+                accept: 'application/pdf',
+                maxFileSizeMB: 5,
+                filePurpose: 'creation',
+            },
+        ],
+    },
+    {
+        id: 'conceptFile',
+        title: 'Concept Submit',
+        fields: [
+            {
+                id: 'conceptPath', label: 'Your Concept', type: 'file-drag-drop', required: true,
+                accept: 'application/pdf',
+                maxFileSizeMB: 5,
+                filePurpose: 'concept',
+            },
+        ],
+    },
+    //  {
+    //      id: 'confirmation',
+    //      fields: [
+    //          {
+    //              id: 'confirmData',
+    //              label: 'I confirm that the data I have entered is correct.',
+    //              type: 'checkbox',
+    //              required: true,
+    //          }
+    //      ]
+    //  }
+];
