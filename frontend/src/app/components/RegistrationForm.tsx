@@ -684,7 +684,7 @@ export function RegistrationForm({
     }
 
     return (
-        <div className="min-h-screen py-8 px-4">
+        <div className="min-h-screen pt-0 pb-8 px-0 md:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto bg-white backdrop-blur-md p-6 md:p-8 shadow-xl rounded-lg border border-gray-200">
                 <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 capitalize">
                     {registrationType} Registration
@@ -697,7 +697,7 @@ export function RegistrationForm({
                             return null;
                         }
                         return (
-                            <fieldset key={section.id} className="border border-gray-300 p-4 rounded-md space-y-4 shadow-sm">
+                            <fieldset key={section.id} className="border border-gray-300 p-4 rounded-md space-y-4 shadow-sm contents">
                                 {section.title && (
                                     <legend className="text-sm font-semibold text-gray-700 px-2 -ml-2">{section.title}</legend>
                                 )}
@@ -722,7 +722,6 @@ export function RegistrationForm({
                         );
                     })}
 
-                    {/* --- Submission Button --- */}
                     <button
                         type="submit"
                         className="w-full mt-4 bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 ease-in-out shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"

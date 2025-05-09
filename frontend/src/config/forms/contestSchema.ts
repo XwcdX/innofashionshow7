@@ -23,7 +23,7 @@ export const contestSchema: FormSchema = [
             { id: 'age', label: 'Age', type: 'number', required: true, min: 1, placeholder: "Your age" },
             { id: 'whatsapp', label: 'WhatsApp', type: 'tel', required: true, placeholder: '+62 8XX XXXX XXXX', pattern: '^\\+?[0-9\\s\\-()]*$', title: "Enter a valid phone number" },
             {
-                id: 'proofOfPayment', label: 'Proof of Payment', type: 'file', required: true,
+                id: 'proofOfPayment', label: 'Proof of Payment', type: 'file-drag-drop', required: true,
                 accept: 'image/jpeg,image/png,image/gif,application/pdf',
                 maxFileSizeMB: 2,
                 filePurpose: 'payment',

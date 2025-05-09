@@ -14,28 +14,28 @@ export type FieldType =
     | 'textarea'
     | 'select'
     | 'radio'
-    | 'checkbox' // For single checkbox confirmation, not groups yet
+    | 'checkbox'
     | 'file'
-    | 'readonly'; // For displaying info like name/email
+    | 'file-drag-drop'
+    | 'readonly';
 
 export interface FormFieldOption {
     value: string | number;
     label: string;
 }
 
-// Represents a single field in the form
 export interface FormField {
-    id: string; // Unique identifier for the field (used as key/name)
+    id: string;
     label: string;
     type: FieldType;
     required?: boolean;
     placeholder?: string;
-    pattern?: string; // For input validation regex
-    title?: string; // Tooltip for pattern
-    min?: number | string; // For number/date types
-    max?: number | string; // For number/date types
-    options?: FormFieldOption[]; // For select/radio
-    accept?: string; // For file type (e.g., "image/*,application/pdf")
+    pattern?: string;
+    title?: string;
+    min?: number | string;
+    max?: number | string;
+    options?: FormFieldOption[];
+    accept?: string;
     maxFileSizeMB?: number;
     filePurpose?: FilePurpose;
     condition?: (formData: Record<string, any>, userType: UserType) => boolean;
