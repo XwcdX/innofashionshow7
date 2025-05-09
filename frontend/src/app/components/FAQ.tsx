@@ -443,7 +443,6 @@ const FAQ: React.FC = () => {
           </h2>
         </div>
 
-        {/* carousel */}
         <div className="relative flex items-center">
           <div
             ref={containerRef}

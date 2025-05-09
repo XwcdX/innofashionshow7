@@ -78,7 +78,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
     return Math.min((current / max) * 100, 100);
   };
 
-  const radius = isMobile ? 35 : 45;
+  const radius = isMobile ? 40 : 45;
   const circumference = 2 * Math.PI * radius;
 
   if (!hasMounted) {
@@ -117,7 +117,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
       id="countdown"
     >
       <div className="container mx-auto px-4">
-        {/* Glitch Title */}
+        {/* title */}
         <div className="relative mb-16 text-center">
           <h2 
             className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
@@ -158,7 +158,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
         </div>
         
         <div className="flex flex-wrap justify-center gap-8 md:gap-12">
-          {/* Days */}
+          {/* days */}
           <div className="flex flex-col items-center">
             <div className="relative w-32 h-32 md:w-40 md:h-40">
               <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -201,7 +201,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
 
-          {/* Hours */}
+          {/* hours */}
           <div className="flex flex-col items-center">
             <div className="relative w-32 h-32 md:w-40 md:h-40">
               <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -244,7 +244,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
 
-          {/* Minutes */}
+          {/* minutes */}
           <div className="flex flex-col items-center">
             <div className="relative w-32 h-32 md:w-40 md:h-40">
               <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -287,7 +287,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
 
-          {/* Seconds */}
+          {/* seconds */}
           <div className="flex flex-col items-center">
             <div className="relative w-32 h-32 md:w-40 md:h-40">
               <svg className="w-full h-full" viewBox="0 0 100 100">

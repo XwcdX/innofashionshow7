@@ -56,7 +56,7 @@ const PrizePool: React.FC = () => {
     >
       <div className="text-center w-full max-w-6xl px-4">
         <div className="relative">
-          {/* Glitch Title */}
+          {/* title*/}
           <div className="relative mb-16 text-center">
             <h2 
               className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
@@ -163,3 +163,4 @@ const PrizePool: React.FC = () => {
 };
 
 export default PrizePool;
+// belum responsive untuk tulisan Rp 5.000.000 dan bayangannya pada layar hp

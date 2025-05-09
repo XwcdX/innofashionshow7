@@ -62,7 +62,7 @@ const Sponsor = () => {
 
   return (
     <section 
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-center justify-center py-12 md:py-16" // Increased vertical padding
       style={{ 
         fontFamily: "'Neue Montreal', sans-serif",
         background: 'transparent',
@@ -70,17 +70,18 @@ const Sponsor = () => {
       }}
       id="sponsor"
     >
-      <div className="w-full max-w-6xl px-4">
-        {/* Shiny Glitch Title */}
-        <div className="relative mb-12 md:mb-16 text-center">
+      <div className="w-full max-w-6xl px-4 flex flex-col items-center">
+        {/* Large Glitch Title with more bottom margin */}
+        <div className="relative mb-1 md:mb-20 text-center">
           <h2 
-            className={`text-3xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
+            className={`text-6xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter inline-block relative ${
               glitchActive ? 'glitch-active' : ''
             }`}
             style={{ 
               color: '#4dffff',
-              textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
-              fontStyle: 'italic'
+              textShadow: '0 0 20px rgba(77, 255, 255, 0.8)',
+              fontStyle: 'italic',
+              lineHeight: '1.1'
             }}
             data-text="SPONSORS & PARTNERS"
           >
@@ -91,7 +92,7 @@ const Sponsor = () => {
                   className="absolute top-0 left-0 w-full h-full opacity-70"
                   style={{
                     color: '#a6ff4d',
-                    textShadow: '3px 0 #c306aa',
+                    textShadow: '4px 0 #c306aa',
                     clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)'
                   }}
                 >
@@ -101,7 +102,7 @@ const Sponsor = () => {
                   className="absolute top-0 left-0 w-full h-full opacity-70"
                   style={{
                     color: '#8f03d1',
-                    textShadow: '-3px 0 #4dffff',
+                    textShadow: '-4px 0 #4dffff',
                     clipPath: 'polygon(0 55%, 100% 55%, 100% 100%, 0 100%)'
                   }}
                 >
@@ -112,8 +113,8 @@ const Sponsor = () => {
           </h2>
         </div>
         
-        {/* Logos - Responsive grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
+        {/* Logo Grid with more vertical spacing */}
+        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 py-8 md:py-12">
           {sponsors.map((sponsor, index) => (
             <a
               key={index}
@@ -166,6 +167,4 @@ const Sponsor = () => {
   );
 };
 
-export default Sponsor; 
-
-// font awal sponsor buat besar agar penuh full page
+export default Sponsor;
