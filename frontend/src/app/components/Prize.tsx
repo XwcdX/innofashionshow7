@@ -56,7 +56,7 @@ const PrizePool: React.FC = () => {
     >
       <div className="text-center w-full max-w-6xl px-4">
         <div className="relative">
-          {/* Title - Significantly larger on bigger screens */}
+          {/* title */}
           <div className="relative mb-8 md:mb-12 lg:mb-16 xl:mb-20 text-center">
             <h2 
               className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
