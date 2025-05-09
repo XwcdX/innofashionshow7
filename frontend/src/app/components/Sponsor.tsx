@@ -43,11 +43,19 @@ const Sponsor = () => {
 
   const [glitchActive, setGlitchActive] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      setIsMobile(width < 640);
+      setIsTablet(width >= 640 && width < 1024);
+      setIsDesktop(width >= 1024);
+    };
+    
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
 
     const interval = setInterval(() => {
       setGlitchActive(true);
@@ -56,13 +64,13 @@ const Sponsor = () => {
     
     return () => {
       clearInterval(interval);
-      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('resize', checkScreenSize);
     };
   }, []);
 
   return (
     <section 
-      className="min-h-screen flex items-center justify-center py-12 md:py-16" // Increased vertical padding
+      className="min-h-screen flex items-center justify-center py-8 md:py-16"
       style={{ 
         fontFamily: "'Neue Montreal', sans-serif",
         background: 'transparent',
@@ -71,10 +79,10 @@ const Sponsor = () => {
       id="sponsor"
     >
       <div className="w-full max-w-6xl px-4 flex flex-col items-center">
-        {/* Large Glitch Title with more bottom margin */}
-        <div className="relative mb-1 md:mb-20 text-center">
+        {/* title */}
+        <div className="relative mb-6 md:mb-12 lg:mb-16 xl:mb-20 text-center">
           <h2 
-            className={`text-6xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter inline-block relative ${
+            className={`text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] 2xl:text-[12rem] font-bold uppercase tracking-tighter inline-block relative ${
               glitchActive ? 'glitch-active' : ''
             }`}
             style={{ 
@@ -113,41 +121,44 @@ const Sponsor = () => {
           </h2>
         </div>
         
-        {/* Logo Grid with more vertical spacing */}
-        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-6 md:gap-8 py-8 md:py-12">
+        <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-y-8 gap-x-4 sm:gap-6 md:gap-8 py-4 sm:py-8 md:py-12">
           {sponsors.map((sponsor, index) => (
-            <a
-              key={index}
-              href={sponsor.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`flex items-center justify-center relative group ${isMobile ? 'h-20' : 'h-24 md:h-32'}`}
-            >
-              {/* Grayscale Logo */}
-              <img
-                src={sponsor.logo}
-                alt={sponsor.name}
-                className="w-full h-full object-contain opacity-100 transition-all duration-300 group-hover:opacity-0 px-2"
-                style={{
-                  filter: 'grayscale(100%) brightness(1.5)'
-                }}
-              />
-              
-              {/* Color Logo */}
-              <img
-                src={sponsor.logo}
-                alt={sponsor.name}
-                className="absolute w-full h-full object-contain opacity-0 transition-all duration-300 group-hover:opacity-100 px-2"
-                style={{
-                  filter: 'none',
-                  transform: 'scale(1.1)'
-                }}
-              />
-            </a>
+            <div key={index} className="flex justify-center items-center">
+              <a
+                href={sponsor.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`flex items-center justify-center relative group ${
+                  isMobile ? 'h-20' : 
+                  isTablet ? 'h-28' : 
+                  isDesktop ? 'h-24 xl:h-28' : 'h-32'
+                } w-full`}
+              >
+
+                <img
+                  src={sponsor.logo}
+                  alt={sponsor.name}
+                  className="w-full h-full object-contain opacity-100 transition-all duration-300 group-hover:opacity-0 px-2"
+                  style={{
+                    filter: 'grayscale(100%) brightness(1.5)',
+                    transform: isDesktop ? 'scale(0.9)' : 'scale(1)'
+                  }}
+                />
+                
+                <img
+                  src={sponsor.logo}
+                  alt={sponsor.name}
+                  className="absolute w-full h-full object-contain opacity-0 transition-all duration-300 group-hover:opacity-100 px-2"
+                  style={{
+                    filter: 'none',
+                    transform: isDesktop ? 'scale(1)' : 'scale(1.1)'
+                  }}
+                />
+              </a>
+            </div>
           ))}
         </div>
 
-        {/* Glitch Animation Styles */}
         <style jsx>{`
           .glitch-active {
             animation: glitch-anim 0.3s linear infinite;
