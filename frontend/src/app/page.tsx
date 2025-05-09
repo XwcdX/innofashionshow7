@@ -58,18 +58,7 @@ export default function Home() {
   };
 
   return (
-    //<>
-    //   <Navbar />
-    //   <main className=""> {/* bg-[#202021] atau primary & className="pt-20 bg-[#202021]"*/}
-    //     <ThemeSection />
-    //     <AboutSection />
-    //     <EventBar />
-    //     <CompetitionsSection />
-    //     <Timeline />
-    //     {/* <RSVPButton /> */}
-    //     <Footer />
-    //   </main>
-    // </>
+    
     <div className="relative w-full h-full overflow-hidden">
       <img 
         src="/blending_1.png" 
@@ -101,10 +90,20 @@ export default function Home() {
       
       {currentStage >= 2 && (
         <div ref={mainRef} className="relative">
-          <Countdown />
+          <Navbar />
+        <ThemeSection />
+        <AboutSection />
+        <EventBar />
+        <CompetitionsSection />
+        <Countdown />
           <PrizePool />
           <FAQ />
           <Sponsor />
+        <Timeline />
+        {/* <RSVPButton /> */}
+        <Footer />
+          
+          
         </div>
       )}
 

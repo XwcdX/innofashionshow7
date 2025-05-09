@@ -114,65 +114,65 @@ export default function Navbar() {
       const currentScrollY = window.scrollY
 
       if (currentScrollY <= 10) {
-        setShowNavbar(true) // always show at the top
+        setShowNavbar(true)
       } else if (currentScrollY > lastScrollY) {
-        setShowNavbar(false) // scroll down → hide
+        setShowNavbar(false)
       } else {
-        setShowNavbar(true) // scroll up → show
+        setShowNavbar(true)
       }
 
       setLastScrollY(currentScrollY)
     }
 
     window.addEventListener("scroll", handleScroll)
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll)
-    }
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [lastScrollY])
 
   return (
-    <motion.header
+    <motion.div
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 w-full z-50 bg-[#1A1A1A]/90 backdrop-blur-sm shadow-md border-b border-white/10 text-white px-8 py-5 transition-transform duration-300 ${
-        showNavbar ? 'translate-y-0' : '-translate-y-full'
-      }`}
     >
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between">
-        {/* Left: Logo */}
-        <Link href="/">
-          <Image src="/innologo.png" alt="INNOFASHIONShow7 Logo" width={160} height={40} />
-        </Link>
+      <header
+        className={`fixed top-0 left-0 w-full z-50 bg-[#1A1A1A]/90 backdrop-blur-sm shadow-md border-b border-white/10 text-white px-8 py-5 
+        transform transition-all duration-300 ease-in-out 
+        ${showNavbar ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
+      >
+        <div className="max-w-screen-xl mx-auto flex items-center justify-between">
+          {/* Logo */}
+          <Link href="/">
+            <Image src="/innologo.png" alt="INNOFASHIONShow7 Logo" width={160} height={40} />
+          </Link>
 
-        {/* Center: Navigation */}
-        <nav
-          className="hidden md:flex gap-8 text-sm font-bold tracking-wide uppercase"
-          style={{ fontFamily: "Moderniz, sans-serif" }}
-        >
-          {[
-            { href: "/", label: "Home" },
-            { href: "/timeline", label: "Timeline" },
-            { href: "/events", label: "Events" },
-            { href: "/competition", label: "Competition" },
-            { href: "/about", label: "About Us" },
-          ].map(({ href, label }) => (
-            <Link href={href} key={label} className="hover:opacity-80 relative">
-              <GlitchText>{label}</GlitchText>
-            </Link>
-          ))}
-        </nav>
+          {/* Nav Links */}
+          <nav
+            className="hidden md:flex gap-8 text-sm font-bold tracking-wide uppercase"
+            style={{ fontFamily: "Moderniz, sans-serif" }}
+          >
+            {[
+              { href: "/", label: "Home" },
+              { href: "/timeline", label: "Timeline" },
+              { href: "/events", label: "Events" },
+              { href: "/competition", label: "Competition" },
+              { href: "/about", label: "About Us" },
+            ].map(({ href, label }) => (
+              <Link href={href} key={label} className="hover:opacity-80 relative">
+                <GlitchText>{label}</GlitchText>
+              </Link>
+            ))}
+          </nav>
 
-        {/* Right: Sign In / Register */}
-        <Link
-          href="/signin"
-          className="border border-white px-3 py-1.5 text-[10px] font-semibold tracking-wider uppercase hover:bg-white hover:text-black transition"
-          style={{ fontFamily: "Moderniz, sans-serif" }}
-        >
-          Sign In / Register
-        </Link>
-      </div>
-    </motion.header>
+          {/* Sign In */}
+          <Link
+            href="/signin"
+            className="border border-white px-3 py-1.5 text-[10px] font-semibold tracking-wider uppercase hover:bg-white hover:text-black transition"
+            style={{ fontFamily: "Moderniz, sans-serif" }}
+          >
+            Sign In / Register
+          </Link>
+        </div>
+      </header>
+    </motion.div>
   )
 }

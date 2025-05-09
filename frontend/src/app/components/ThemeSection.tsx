@@ -153,7 +153,7 @@
 'use client'
 import ScrollReveal from "./ScrollReveal";
 import { useState, useEffect, ReactNode } from 'react'
-import Image from "next/image";
+
 
 export default function ThemeSection() {
   const [glitchActive, setGlitchActive] = useState<boolean>(false)
