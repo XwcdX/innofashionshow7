@@ -1,6 +1,5 @@
 'use client'
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 interface FAQItem {
   id: number;
@@ -10,8 +9,8 @@ interface FAQItem {
 
 const TAP_THRESHOLD_PX = 10;
 const TAP_THRESHOLD_MS = 200;
-const MOMENTUM_MULTIPLIER = 20;
-const MOMENTUM_FRICTION = 0.95;
+const MOMENTUM_MULTIPLIER = 25;
+const MOMENTUM_FRICTION = 0.92;
 const SCROLL_WHEEL_MULTIPLIER = 1;
 const SNAP_DEBOUNCE_MS = 150;
 const CARDS_PER_VIEW_DESKTOP = 4;
@@ -37,13 +36,15 @@ const FAQ: React.FC = () => {
   const [glitchActive, setGlitchActive] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
+  const [startY, setStartY] = useState(0);
   const [scrollLeftStart, setScrollLeftStart] = useState(0);
+  const [scrollTopStart, setScrollTopStart] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const sliderRef = useRef<HTMLDivElement>(null);
   const animationRef = useRef<number | undefined>(undefined);
-  const velocityTracker = useRef<{ x: number, time: number }[]>([]);
+  const velocityTracker = useRef<{ x: number, y: number, time: number }[]>([]);
   const dragStartTimeRef = useRef<number>(0);
   const didDragRef = useRef(false);
   const wheelTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
@@ -67,27 +68,29 @@ const FAQ: React.FC = () => {
 
   const cancelAnimation = useCallback(() => {
     if (animationRef.current !== undefined) {
-        cancelAnimationFrame(animationRef.current);
-        animationRef.current = undefined;
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = undefined;
     }
   }, []);
 
   const checkScrollPosition = useCallback(() => {
     if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      const scrollEnd = scrollWidth - clientWidth;
+      const { scrollLeft, scrollTop } = containerRef.current;
     }
   }, []);
 
-  const smoothScrollTo = useCallback((target: number, duration: number = 500, ease = (t: number) => 1 - Math.pow(1 - t, 4)) => {
+  const smoothScrollTo = useCallback((targetX: number, targetY: number, duration: number = 400) => {
     if (!containerRef.current) return;
     cancelAnimation();
 
-    const start = containerRef.current.scrollLeft;
-    const change = target - start;
-    if (Math.abs(change) < 1) {
-        checkScrollPosition();
-        return;
+    const startX = containerRef.current.scrollLeft;
+    const startY = containerRef.current.scrollTop;
+    const changeX = targetX - startX;
+    const changeY = targetY - startY;
+
+    if (Math.abs(changeX) < 1 && Math.abs(changeY) < 1) {
+      checkScrollPosition();
+      return;
     }
 
     const startTime = performance.now();
@@ -95,17 +98,23 @@ const FAQ: React.FC = () => {
     const animateScroll = (currentTime: number) => {
       const elapsedTime = currentTime - startTime;
       const progress = Math.min(elapsedTime / duration, 1);
-      const easedProgress = ease(progress);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
 
       if (containerRef.current) {
-          containerRef.current.scrollLeft = start + change * easedProgress;
+        if (Math.abs(changeX) > 1) {
+          containerRef.current.scrollLeft = startX + changeX * easedProgress;
+        }
+        if (Math.abs(changeY) > 1) {
+          containerRef.current.scrollTop = startY + changeY * easedProgress;
+        }
       }
 
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animateScroll);
       } else {
         if (containerRef.current) {
-            containerRef.current.scrollLeft = target;
+          if (Math.abs(changeX) > 1) containerRef.current.scrollLeft = targetX;
+          if (Math.abs(changeY) > 1) containerRef.current.scrollTop = targetY;
         }
         checkScrollPosition();
         animationRef.current = undefined;
@@ -118,50 +127,95 @@ const FAQ: React.FC = () => {
   const snapToNearestCard = useCallback((animate = true) => {
     if (!containerRef.current || !sliderRef.current) return;
 
-    const containerWidth = containerRef.current.offsetWidth;
-    const cardWidthWithGap = containerWidth / cardsPerView;
-    const currentScroll = containerRef.current.scrollLeft;
-    const maxScroll = containerRef.current.scrollWidth - containerRef.current.clientWidth;
+    if (isMobile) {
+      const containerHeight = containerRef.current.offsetHeight;
+      const cardHeightWithGap = containerHeight / CARDS_PER_VIEW_MOBILE;
+      const currentScroll = containerRef.current.scrollTop;
+      const maxScroll = containerRef.current.scrollHeight - containerRef.current.clientHeight;
 
-    if (cardWidthWithGap <= 0) return;
+      if (cardHeightWithGap <= 0) return;
 
-    const cardIndex = Math.round(currentScroll / cardWidthWithGap);
-    const targetScroll = Math.max(0, Math.min(maxScroll, cardWidthWithGap * cardIndex));
+      const cardIndex = Math.round(currentScroll / cardHeightWithGap);
+      const targetScroll = Math.max(0, Math.min(maxScroll, cardHeightWithGap * cardIndex));
 
-    if (Math.abs(currentScroll - targetScroll) > 1) {
+      if (Math.abs(currentScroll - targetScroll) > 1) {
         if (animate) {
-            smoothScrollTo(targetScroll, 300);
-        } else if (containerRef.current) {
-            cancelAnimation();
-            containerRef.current.scrollLeft = targetScroll;
-            checkScrollPosition();
+          smoothScrollTo(containerRef.current.scrollLeft, targetScroll, 300);
+        } else {
+          cancelAnimation();
+          containerRef.current.scrollTop = targetScroll;
+          checkScrollPosition();
         }
+      } else {
+        checkScrollPosition();
+      }
     } else {
-       checkScrollPosition();
+      const containerWidth = containerRef.current.offsetWidth;
+      const cardWidthWithGap = containerWidth / cardsPerView;
+      const currentScroll = containerRef.current.scrollLeft;
+      const maxScroll = containerRef.current.scrollWidth - containerRef.current.clientWidth;
+
+      if (cardWidthWithGap <= 0) return;
+
+      const cardIndex = Math.round(currentScroll / cardWidthWithGap);
+      const targetScroll = Math.max(0, Math.min(maxScroll, cardWidthWithGap * cardIndex));
+
+      if (Math.abs(currentScroll - targetScroll) > 1) {
+        if (animate) {
+          smoothScrollTo(targetScroll, containerRef.current.scrollTop, 300);
+        } else {
+          cancelAnimation();
+          containerRef.current.scrollLeft = targetScroll;
+          checkScrollPosition();
+        }
+      } else {
+        checkScrollPosition();
+      }
     }
-  }, [cardsPerView, smoothScrollTo, checkScrollPosition, cancelAnimation]);
+  }, [cardsPerView, isMobile, smoothScrollTo, checkScrollPosition, cancelAnimation]);
 
   const handleResize = useCallback(() => {
     if (containerRef.current && sliderRef.current) {
-      const containerWidth = containerRef.current.offsetWidth;
-      if (cardsPerView <= 0 || containerWidth <= 0) return;
+      if (isMobile) {
+        const containerHeight = containerRef.current.offsetHeight;
+        const cardHeight = containerHeight / CARDS_PER_VIEW_MOBILE;
+        const gap = 8;
+        const totalSliderHeight = (cardHeight * faqs.length) - gap;
+        
+        sliderRef.current.style.width = '100%';
+        sliderRef.current.style.height = `${totalSliderHeight}px`;
 
-      const cardWidth = containerWidth / cardsPerView;
-      const gap = 16;
-      const totalSliderWidth = (cardWidth * faqs.length) - gap;
-      sliderRef.current.style.width = `${totalSliderWidth}px`;
+        const cards = sliderRef.current.querySelectorAll('.faq-card');
+        const cardElementHeight = cardHeight - gap;
+        cards.forEach(card => {
+          (card as HTMLElement).style.width = '100%';
+          (card as HTMLElement).style.height = `${cardElementHeight}px`;
+          (card as HTMLElement).style.minHeight = `${cardElementHeight}px`;
+          (card as HTMLElement).style.marginBottom = `${gap}px`;
+        });
+      } else {
+        const containerWidth = containerRef.current.offsetWidth;
+        const cardWidth = containerWidth / cardsPerView;
+        const gap = 12;
+        const totalSliderWidth = (cardWidth * faqs.length) - gap;
+        
+        sliderRef.current.style.height = 'auto';
+        sliderRef.current.style.width = `${totalSliderWidth}px`;
 
-      const cards = sliderRef.current.querySelectorAll('.faq-card');
-      const cardElementWidth = cardWidth - gap;
-      cards.forEach(card => {
-        (card as HTMLElement).style.width = `${cardElementWidth}px`;
-        (card as HTMLElement).style.minWidth = `${cardElementWidth}px`;
-      });
+        const cards = sliderRef.current.querySelectorAll('.faq-card');
+        const cardElementWidth = cardWidth - gap;
+        cards.forEach(card => {
+          (card as HTMLElement).style.width = `${cardElementWidth}px`;
+          (card as HTMLElement).style.minWidth = `${cardElementWidth}px`;
+          (card as HTMLElement).style.height = 'auto';
+          (card as HTMLElement).style.marginBottom = '0';
+        });
+      }
 
       checkScrollPosition();
       snapToNearestCard(false);
     }
-  }, [faqs.length, cardsPerView, checkScrollPosition, snapToNearestCard]);
+  }, [faqs.length, cardsPerView, isMobile, checkScrollPosition, snapToNearestCard]);
 
   useEffect(() => {
     handleResize();
@@ -174,7 +228,7 @@ const FAQ: React.FC = () => {
       container?.removeEventListener('scroll', checkScrollPosition);
       cancelAnimation();
       if (wheelTimeoutRef.current !== undefined) {
-          clearTimeout(wheelTimeoutRef.current);
+        clearTimeout(wheelTimeoutRef.current);
       }
     };
   }, [handleResize, checkScrollPosition, cancelAnimation]);
@@ -188,19 +242,22 @@ const FAQ: React.FC = () => {
 
   const startDrag = useCallback((e: React.MouseEvent | React.TouchEvent) => {
     if ((e.target as HTMLElement).closest('button')) {
-        return;
+      return;
     }
     if (!containerRef.current) return;
     cancelAnimation();
 
     setIsDragging(true);
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
     setStartX(clientX);
+    setStartY(clientY);
     setScrollLeftStart(containerRef.current.scrollLeft);
+    setScrollTopStart(containerRef.current.scrollTop);
     dragStartTimeRef.current = performance.now();
     didDragRef.current = false;
 
-    velocityTracker.current = [{ x: clientX, time: dragStartTimeRef.current }];
+    velocityTracker.current = [{ x: clientX, y: clientY, time: dragStartTimeRef.current }];
 
     document.body.style.userSelect = 'none';
     document.body.style.cursor = 'grabbing';
@@ -213,198 +270,156 @@ const FAQ: React.FC = () => {
     if (!isDragging || !containerRef.current) return;
 
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-    const walk = clientX - startX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const walkX = clientX - startX;
+    const walkY = clientY - startY;
 
-    if (!didDragRef.current && Math.abs(walk) > 2) {
-        didDragRef.current = true;
+    if (!didDragRef.current && (Math.abs(walkX) > TAP_THRESHOLD_PX || Math.abs(walkY) > TAP_THRESHOLD_PX)) {
+      didDragRef.current = true;
     }
 
-    const newScrollLeft = scrollLeftStart - walk;
+    const newScrollLeft = scrollLeftStart - walkX;
+    const newScrollTop = scrollTopStart - walkY;
 
     const now = performance.now();
-    velocityTracker.current.push({ x: clientX, time: now });
-    if (velocityTracker.current.length > 8) velocityTracker.current.shift();
+    velocityTracker.current.push({ x: clientX, y: clientY, time: now });
+    if (velocityTracker.current.length > 5) velocityTracker.current.shift();
 
     requestAnimationFrame(() => {
       if (containerRef.current && isDragging) {
-        const maxScroll = containerRef.current.scrollWidth - containerRef.current.clientWidth;
-        containerRef.current.scrollLeft = Math.max(0, Math.min(maxScroll, newScrollLeft));
-        checkScrollPosition();
+        if (isMobile) {
+          const maxScroll = containerRef.current.scrollHeight - containerRef.current.clientHeight;
+          containerRef.current.scrollTop = Math.max(0, Math.min(maxScroll, newScrollTop));
+        } else {
+          const maxScroll = containerRef.current.scrollWidth - containerRef.current.clientWidth;
+          containerRef.current.scrollLeft = Math.max(0, Math.min(maxScroll, newScrollLeft));
+        }
       }
     });
-  }, [isDragging, startX, scrollLeftStart, checkScrollPosition]);
+  }, [isDragging, startX, startY, scrollLeftStart, scrollTopStart, isMobile]);
 
   const endDrag = useCallback(() => {
     if (!isDragging || !containerRef.current) {
-        if (isDragging) {
-            document.body.style.userSelect = '';
-            document.body.style.cursor = '';
-            if (containerRef.current) containerRef.current.style.cursor = 'grab';
-            setIsDragging(false);
-        }
-        return;
+      if (isDragging) {
+        document.body.style.userSelect = '';
+        document.body.style.cursor = '';
+        if (containerRef.current) containerRef.current.style.cursor = 'grab';
+        setIsDragging(false);
+      }
+      return;
     }
 
-    const wasDragging = isDragging;
     setIsDragging(false);
     document.body.style.userSelect = '';
     document.body.style.cursor = '';
     if (containerRef.current) {
-        containerRef.current.style.cursor = 'grab';
+      containerRef.current.style.cursor = 'grab';
     }
-
-    if (!wasDragging) return;
 
     const dragEndTime = performance.now();
     const dragDuration = dragEndTime - dragStartTimeRef.current;
     const endX = velocityTracker.current[velocityTracker.current.length - 1]?.x ?? startX;
-    const dragDistance = Math.abs(endX - startX);
+    const endY = velocityTracker.current[velocityTracker.current.length - 1]?.y ?? startY;
+    const dragDistanceX = Math.abs(endX - startX);
+    const dragDistanceY = Math.abs(endY - startY);
 
-    if (!didDragRef.current && dragDistance < TAP_THRESHOLD_PX && dragDuration < TAP_THRESHOLD_MS) {
-        didDragRef.current = false;
-        return;
+    if (!didDragRef.current && dragDistanceX < TAP_THRESHOLD_PX && dragDistanceY < TAP_THRESHOLD_PX && dragDuration < TAP_THRESHOLD_MS) {
+      didDragRef.current = false;
+      return;
     }
 
-    let velocity = 0;
+    let velocityX = 0;
+    let velocityY = 0;
     if (velocityTracker.current.length >= 2) {
       const newest = velocityTracker.current[velocityTracker.current.length - 1];
-      const olderIndex = Math.max(0, velocityTracker.current.length - 4);
-      const older = velocityTracker.current[olderIndex];
+      const older = velocityTracker.current[0];
       const dx = newest.x - older.x;
+      const dy = newest.y - older.y;
       const dt = newest.time - older.time;
-      if (dt > 10) {
-        velocity = dx / dt;
+      if (dt > 0) {
+        velocityX = dx / dt;
+        velocityY = dy / dt;
       }
     }
 
-    if (Math.abs(velocity) > 0.15 && containerRef.current) {
-        const container = containerRef.current;
-        let currentVelocity = -velocity * MOMENTUM_MULTIPLIER;
-        const startTime = performance.now();
+    if ((Math.abs(velocityX) > 0.1 || Math.abs(velocityY) > 0.1) && containerRef.current) {
+      const container = containerRef.current;
+      let currentVelocityX = -velocityX * MOMENTUM_MULTIPLIER;
+      let currentVelocityY = -velocityY * MOMENTUM_MULTIPLIER;
+      const startTime = performance.now();
 
-        const animateMomentum = (currentTime: number) => {
-            if (!containerRef.current) {
-                animationRef.current = undefined;
-                return;
-            }
+      const animateMomentum = (currentTime: number) => {
+        if (!containerRef.current) {
+          animationRef.current = undefined;
+          return;
+        }
 
-            const elapsedTime = currentTime - startTime;
-            const decayFactor = Math.pow(MOMENTUM_FRICTION, elapsedTime / 16.67);
-            const deltaScroll = currentVelocity * (16.67 / 1000);
+        const elapsedTime = currentTime - startTime;
+        const decayFactor = Math.pow(MOMENTUM_FRICTION, elapsedTime / 16.67);
+        const deltaScrollX = currentVelocityX * (16.67 / 1000);
+        const deltaScrollY = currentVelocityY * (16.67 / 1000);
 
-            currentVelocity *= decayFactor;
+        currentVelocityX *= decayFactor;
+        currentVelocityY *= decayFactor;
 
-            if (Math.abs(currentVelocity) < 0.5 || elapsedTime > 2000) {
-                snapToNearestCard();
-                animationRef.current = undefined;
-                return;
-            }
+        if ((Math.abs(currentVelocityX) < 0.2 && Math.abs(currentVelocityY) < 0.2) || elapsedTime > 1500) {
+          snapToNearestCard();
+          animationRef.current = undefined;
+          return;
+        }
 
-            const maxScroll = container.scrollWidth - container.clientWidth;
-            const currentScroll = container.scrollLeft;
-            const newScrollLeft = Math.max(0, Math.min(maxScroll, currentScroll + deltaScroll));
+        if (isMobile) {
+          const maxScrollY = container.scrollHeight - container.clientHeight;
+          const newScrollTop = Math.max(0, Math.min(maxScrollY, container.scrollTop + deltaScrollY));
+          container.scrollTop = newScrollTop;
+        } else {
+          const maxScrollX = container.scrollWidth - container.clientWidth;
+          const newScrollLeft = Math.max(0, Math.min(maxScrollX, container.scrollLeft + deltaScrollX));
+          container.scrollLeft = newScrollLeft;
+        }
 
-            if (Math.abs(currentScroll - newScrollLeft) < 0.1) {
-                 snapToNearestCard();
-                 animationRef.current = undefined;
-                 return;
-            }
-
-            container.scrollLeft = newScrollLeft;
-            checkScrollPosition();
-
-            if ((newScrollLeft <= 0 || newScrollLeft >= maxScroll) && Math.abs(currentScroll - newScrollLeft) < 1) {
-                 snapToNearestCard();
-                 animationRef.current = undefined;
-                 return;
-            }
-
-            animationRef.current = requestAnimationFrame(animateMomentum);
-        };
-
-        cancelAnimation();
         animationRef.current = requestAnimationFrame(animateMomentum);
+      };
 
+      cancelAnimation();
+      animationRef.current = requestAnimationFrame(animateMomentum);
     } else {
-        snapToNearestCard();
+      snapToNearestCard();
     }
-  }, [isDragging, startX, snapToNearestCard, checkScrollPosition, cancelAnimation]);
+  }, [isDragging, startX, startY, isMobile, snapToNearestCard, cancelAnimation]);
 
   const handleWheel = useCallback((e: React.WheelEvent) => {
     if (!containerRef.current) return;
   
-    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-      e.preventDefault();
-      e.stopPropagation();
-      
-      cancelAnimation();
+    cancelAnimation();
   
-      const scrollAmount = e.deltaX * SCROLL_WHEEL_MULTIPLIER;
+    if (isMobile) {
       containerRef.current.scrollBy({
-        left: scrollAmount,
+        top: e.deltaY * SCROLL_WHEEL_MULTIPLIER,
         behavior: 'auto'
       });
-  
-      if (wheelTimeoutRef.current !== undefined) {
-        clearTimeout(wheelTimeoutRef.current);
+    } else {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        containerRef.current.scrollBy({
+          left: e.deltaX * SCROLL_WHEEL_MULTIPLIER,
+          behavior: 'auto'
+        });
       }
-      wheelTimeoutRef.current = setTimeout(() => {
-        snapToNearestCard();
-        wheelTimeoutRef.current = undefined;
-      }, SNAP_DEBOUNCE_MS);
-  
-      checkScrollPosition();
     }
-  }, [snapToNearestCard, checkScrollPosition, cancelAnimation]);
-
-  const ScrollIndicator = () => {
-    const [currentIndicator, setCurrentIndicator] = useState(0);
-
-    useEffect(() => {
-      const calculateIndicator = () => {
-        if (!containerRef.current || cardsPerView <= 0) return;
-        const containerWidth = containerRef.current.offsetWidth;
-        const cardWidthWithGap = containerWidth / cardsPerView;
-        const scrollPos = containerRef.current.scrollLeft;
-        const activeIdx = Math.round(scrollPos / cardWidthWithGap);
-        setCurrentIndicator(Math.min(faqs.length - 1, Math.max(0, activeIdx)));
-      };
-
-      const container = containerRef.current;
-      if(container) {
-          container.addEventListener('scroll', calculateIndicator, { passive: true });
-          calculateIndicator();
-      }
-
-      return () => {
-          if (container) {
-              container.removeEventListener('scroll', calculateIndicator);
-          }
-      };
-    }, [cardsPerView, faqs.length]);
-
-    const maxIndicatorsToShow = 12;
-    const indicatorsToShow = faqs.slice(0, maxIndicatorsToShow);
-
-    if (!isMobile) return null;
-
-    return (
-      <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 pointer-events-none z-10">
-        {indicatorsToShow.map((_, i) => (
-          <div
-            key={i}
-            className={`h-2 rounded-full transition-width duration-300 ${
-              i === currentIndicator ? 'bg-purple-400 w-6' : 'bg-gray-600 w-2'
-            }`}
-          />
-        ))}
-      </div>
-    );
-  };
+  
+    if (wheelTimeoutRef.current !== undefined) {
+      clearTimeout(wheelTimeoutRef.current);
+    }
+    wheelTimeoutRef.current = setTimeout(() => {
+      snapToNearestCard();
+      wheelTimeoutRef.current = undefined;
+    }, SNAP_DEBOUNCE_MS);
+  }, [snapToNearestCard, cancelAnimation, isMobile]);
 
   return (
     <section
-      className="min-h-screen w-full flex flex-col justify-center relative overflow-hidden py-16"
+      className="min-h-screen w-full flex flex-col justify-center relative overflow-hidden py-8 md:py-12"
       style={{ 
         fontFamily: "'Neue Montreal', sans-serif",
         background: 'transparent'
@@ -412,9 +427,9 @@ const FAQ: React.FC = () => {
       id="faq"
     >
       <div className="container mx-auto px-4 flex-1 flex flex-col justify-center relative z-10">
-        <div className="relative mb-12 md:mb-16 text-center">
+        <div className="relative mb-6 md:mb-8 text-center">
           <h2
-            className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
+            className={`text-4xl md:text-5xl font-bold uppercase tracking-tighter inline-block relative ${
               glitchActive ? 'glitch-active' : ''
             }`}
             style={{ 
@@ -446,7 +461,9 @@ const FAQ: React.FC = () => {
         <div className="relative flex items-center">
           <div
             ref={containerRef}
-            className="w-full overflow-x-hidden py-4 cursor-grab no-scrollbar"
+            className={`w-full overflow-x-hidden py-1 cursor-grab no-scrollbar ${
+              isMobile ? 'overflow-y-scroll h-[60vh]' : 'overflow-y-hidden h-auto'
+            }`}
             onMouseDown={startDrag}
             onMouseMove={duringDrag}
             onMouseUp={endDrag}
@@ -455,25 +472,31 @@ const FAQ: React.FC = () => {
             onTouchMove={duringDrag}
             onTouchEnd={endDrag}
             onWheel={handleWheel}
-            style={{ scrollBehavior: 'auto', WebkitOverflowScrolling: 'touch', willChange: 'scroll-position', overscrollBehaviorX: 'contain'}}
+            style={{ 
+              scrollBehavior: 'auto', 
+              WebkitOverflowScrolling: 'touch',
+              overscrollBehavior: 'contain'
+            }}
           >
             <div
               ref={sliderRef}
-              className="flex gap-4 px-2"
+              className={`flex gap-3 px-1 ${isMobile ? 'flex-col' : 'flex-row'}`}
             >
               {faqs.map((faq, index) => (
                 <div
                   key={faq.id}
                   className="faq-card flex-shrink-0 group"
-                  style={{ perspective: '1000px', touchAction: 'pan-y' }}
+                  style={{ perspective: '1000px' }}
                   onClick={() => handleCardClick(index)}
                 >
                   <div
-                    className={`relative w-full h-64 transition-transform duration-500 ease-in-out preserve-3d ${activeIndex === index ? 'rotate-y-180' : ''}`}
+                    className={`relative w-full transition-transform duration-500 ease-in-out preserve-3d ${
+                      activeIndex === index ? 'rotate-y-180' : ''
+                    } ${isMobile ? 'h-[35vh]' : 'h-56'}`}
                   >
                     {/* question */}
                     <div
-                      className={`absolute w-full h-full backface-hidden rounded-xl p-4 md:p-6 flex items-center justify-center cursor-pointer shadow-lg group-hover:shadow-xl transition-shadow duration-300 ${
+                      className={`absolute w-full h-full backface-hidden rounded-lg p-3 md:p-4 flex items-center justify-center cursor-pointer shadow-md group-hover:shadow-lg transition-shadow duration-300 ${
                         activeIndex === index ? 'bg-gradient-to-br from-purple-100 to-blue-100' : 'bg-gradient-to-b from-purple-50 to-white'
                       }`}
                       style={{ border: '1px solid rgba(143, 3, 209, 0.3)' }}
@@ -483,11 +506,12 @@ const FAQ: React.FC = () => {
                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCardClick(index); } }}
                     >
                       <h3 
-                        className="text-2xl md:text-2xl font-bold text-center px-4"
+                        className="text-xl md:text-xl font-bold text-center px-3"
                         style={{ 
                           color: '#8f03d1',
                           textShadow: '0 2px 4px rgba(143, 3, 209, 0.1)',
-                          lineHeight: '1.4'
+                          lineHeight: '1.4',
+                          fontSize: isMobile ? '1.25rem' : '1.125rem'
                         }}
                       >
                         {faq.question}
@@ -496,23 +520,34 @@ const FAQ: React.FC = () => {
 
                     {/* answer */}
                     <div
-                      className={`absolute w-full h-full backface-hidden rounded-xl p-4 md:p-6 flex flex-col shadow-lg rotate-y-180 ${
+                      className={`absolute w-full h-full backface-hidden rounded-lg p-3 md:p-4 flex flex-col shadow-md rotate-y-180 ${
                          activeIndex === index ? 'bg-gradient-to-br from-blue-100 to-purple-100' : 'bg-gradient-to-b from-blue-50 to-white'
                       }`}
                       style={{ border: '1px solid rgba(143, 3, 209, 0.3)' }}
-                       aria-hidden={activeIndex !== index}
                     >
-                      <h3 className="text-lg md:text-xl font-semibold mb-3 line-clamp-2 flex-shrink-0" style={{ color: '#8f03d1' }}>
+                      <h3 
+                        className="font-semibold mb-2 line-clamp-2" 
+                        style={{ 
+                          color: '#8f03d1',
+                          fontSize: isMobile ? '1.1rem' : '1rem'
+                        }}
+                      >
                         {faq.question}
                       </h3>
                       <div className="flex-grow overflow-y-auto pr-1 custom-scrollbar">
-                        <p className="text-sm md:text-base" style={{ color: '#0c1f6f', lineHeight: '1.6' }}>
+                        <p 
+                          className="leading-relaxed"
+                          style={{ 
+                            color: '#0c1f6f',
+                            fontSize: isMobile ? '0.95rem' : '0.875rem'
+                          }}
+                        >
                           {faq.answer}
                         </p>
                       </div>
-                       <div className="flex justify-end items-center text-gray-500 text-xs mt-2 flex-shrink-0 opacity-80 group-hover:opacity-100 transition-opacity">
+                      <div className="flex justify-end items-center text-gray-500 text-xs mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
                         Back
-                        <span className="text-xl ml-2" style={{ color: '#c306aa' }} aria-hidden="true">
+                        <span className="text-xl ml-1" style={{ color: '#c306aa' }} aria-hidden="true">
                            ×
                         </span>
                       </div>
@@ -523,8 +558,6 @@ const FAQ: React.FC = () => {
             </div>
           </div>
         </div>
-
-        <ScrollIndicator />
       </div>
 
       <style jsx>{`
@@ -538,23 +571,18 @@ const FAQ: React.FC = () => {
         .preserve-3d { transform-style: preserve-3d; }
         .rotate-y-180 { transform: rotateY(180deg); }
         .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
-        .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(143, 3, 209, 0.4); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(143, 3, 209, 0.6); }
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; height: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(143, 3, 209, 0.3); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(143, 3, 209, 0.5); }
         .faq-card:focus { outline: none; }
         .faq-card:focus-visible > div {
-            outline: 3px solid #4dffff;
-            outline-offset: 2px;
-            border-radius: 0.75rem;
-        }
-        .faq-container {
-          overscroll-behavior-x: contain;
-          touch-action: pan-y;
+            outline: 2px solid #4dffff;
+            outline-offset: 1px;
+            border-radius: 0.5rem;
         }
       `}</style>
     </section>
