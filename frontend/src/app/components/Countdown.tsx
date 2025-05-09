@@ -86,7 +86,6 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
       <section 
         className="min-h-screen flex items-center justify-center py-16"
         style={{ 
-          fontFamily: "'Neue Montreal', sans-serif",
           backgroundColor: '#202021',
           scrollSnapAlign: 'start'
         }}

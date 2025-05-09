@@ -75,9 +75,13 @@ import Image from "next/image";
 
 export default function EventBar() {
   return (
+    
     <section
       className="min-h-[50vh] text-dark py-16 relative overflow-hidden" // allows layers
-      style={{ background: "linear-gradient(180deg, #A30A99 0%, #281660 100%)" }}
+      style={{
+        background: 'transparent',
+        scrollSnapAlign: 'start',
+      }}
     >
       {/* Decorative Image (bottom-left corner, behind text) */}
       <div className="absolute bottom-30 scale-300 right-10 w-60 h-60 z-0 opacity-35">
@@ -93,14 +97,18 @@ export default function EventBar() {
       {/* Content wrapper with higher z-index */}
       <div className="mx-auto relative z-10">
         <h2
-          className="font-moderniz text-4xl md:text-5xl font-bold mb-12 text-[#a6ff4d] text-center"
-          style={{ fontFamily: "Moderniz, sans-serif" }}
+          className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
+          style={{
+            textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
+            fontStyle: 'italic',
+          }}
         >
           Our Events
         </h2>
+        
 
         <ScrollVelocity
-          texts={['Talkshow', 'Workshop', 'Competition', 'Fashion Show']}
+          texts={['Talkshow', 'Workshop', 'Contest', 'Fashion Show']}
           velocity={30}
           className="text-accent text-3xl md:text-4xl font-bold mx-4"
           parallaxClassName="relative overflow-hidden py-2"

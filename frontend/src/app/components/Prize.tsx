@@ -48,7 +48,6 @@ const PrizePool: React.FC = () => {
     <section 
       className="min-h-screen flex items-center justify-center p-4"
       style={{ 
-        fontFamily: "'Neue Montreal', sans-serif",
         background: 'transparent',
         scrollSnapAlign: 'start'
       }}

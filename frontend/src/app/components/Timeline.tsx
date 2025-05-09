@@ -110,8 +110,11 @@ export function Timeline() {
 
   return (
     <div
-  className="py-16 px-4 min-h-screen "
-  style={{ background: "linear-gradient(180deg, #A30A99 0%,rgb(0, 0, 0) 100%)" }}
+  className="min-h-screen flex items-center justify-center py-16 font-neue-montreal"
+      style={{ 
+        background: 'transparent',
+        scrollSnapAlign: 'start'
+      }}
 >
 
       <div className="max-w-4xl mx-auto relative ">

@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 const fontNeueMontreal = {
   className: "font-neue-montreal",
   style: {
-    fontFamily: "'Neue Montreal', sans-serif",
   },
 };
 

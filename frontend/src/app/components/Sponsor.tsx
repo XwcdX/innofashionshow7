@@ -72,7 +72,6 @@ const Sponsor = () => {
     <section 
       className="min-h-screen flex items-center justify-center py-8 md:py-16"
       style={{ 
-        fontFamily: "'Neue Montreal', sans-serif",
         background: 'transparent',
         scrollSnapAlign: 'start'
       }}

@@ -75,7 +75,8 @@ const FAQ: React.FC = () => {
 
   const checkScrollPosition = useCallback(() => {
     if (containerRef.current) {
-      const { scrollLeft, scrollTop } = containerRef.current;
+      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+      const scrollEnd = scrollWidth - clientWidth;
     }
   }, []);
 
@@ -421,7 +422,6 @@ const FAQ: React.FC = () => {
     <section
       className="min-h-screen w-full flex flex-col justify-center relative overflow-hidden py-8 md:py-12"
       style={{ 
-        fontFamily: "'Neue Montreal', sans-serif",
         background: 'transparent'
       }}
       id="faq"

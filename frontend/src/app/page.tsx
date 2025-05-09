@@ -17,6 +17,7 @@ import Sponsor from './components/Sponsor';
 import Lenis from '@studio-freight/lenis';
 
 
+
 export default function Home() {
   const [currentStage, setCurrentStage] = useState(0);
   const mainRef = useRef<HTMLDivElement>(null);

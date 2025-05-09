@@ -243,8 +243,11 @@ export default function ThemeSection() {
         className="w-full text-center"
       >
         <h1
-          className="text-[#a6ff4d] font-bold text-6xl mb-4 relative"
-          style={{ fontFamily: "Moderniz, sans-serif", opacity: pageLoaded ? 1 : 0 }}
+          className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
+          style={{
+            textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
+            fontStyle: 'italic',
+          }}
         >
           <GlitchText>ILLUMINE</GlitchText> 
           {/* É */}
