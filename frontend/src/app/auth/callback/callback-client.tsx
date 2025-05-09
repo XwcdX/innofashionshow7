@@ -27,7 +27,7 @@ export default function AuthCallbackClient() {
                     throw new Error(err.message || res.statusText)
                 }
                 const nextPath = searchParams?.get('next');
-                router.replace(nextPath ?? '/');
+                router.replace(nextPath ?? '/registration');
             } catch (err: any) {
                 console.error('Auth callback error:', err)
                 setError(err.message || 'Unknown error')

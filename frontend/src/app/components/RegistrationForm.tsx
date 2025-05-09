@@ -684,7 +684,7 @@ export function RegistrationForm({
     }
 
     return (
-        <div className="min-h-screen pt-0 pb-8 px-0 md:px-6 lg:px-8">
+        <div className="min-h-screen w-full pt-0 pb-8 px-0 md:px-6 lg:px-8">
             <div className="max-w-2xl mx-auto bg-white backdrop-blur-md p-6 md:p-8 shadow-xl rounded-lg border border-gray-200">
                 <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 capitalize">
                     {registrationType} Registration

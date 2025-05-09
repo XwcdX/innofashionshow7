@@ -1,36 +1,47 @@
-'use client'
-import { useSession, signIn } from 'next-auth/react'
-import { usePathname, useRouter } from 'next/navigation'
-import { ReactNode, useEffect } from 'react'
+'use client';
+
+import { useSession, signIn } from 'next-auth/react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import ManualLoader from './ManualLoader';
 
 export default function SessionGuard() {
-  const pathname = usePathname() ?? '/'
-  const isAdmin  = pathname.startsWith('/admin')
-  const router   = useRouter()
+  const pathname = usePathname() ?? '/';
+  const isAdminRoute = pathname.startsWith('/admin');
+  const router = useRouter();
+
+  const [showPageLoader, setShowPageLoader] = useState(false);
+  const [loaderMessage, setLoaderMessage] = useState<string | undefined>('Initializing...');
 
   const { status } = useSession({
-    required: false
-  })
+    required: false,
+  });
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
-      if (isAdmin) {
-        router.replace('/admin?next=' + encodeURIComponent(pathname))
+    if (status === 'loading') {
+      setLoaderMessage('Checking your session…');
+      setShowPageLoader(true);
+    } else if (status === 'unauthenticated') {
+      setLoaderMessage(isAdminRoute ? 'Redirecting to admin login...' : 'Preparing login...');
+
+      if (isAdminRoute) {
+        router.replace(`/admin/login?next=${encodeURIComponent(pathname)}`);
       } else {
         signIn(undefined, {
-          callbackUrl: '/login?next=' + encodeURIComponent(pathname)
-        })
+          callbackUrl: pathname,
+        }).finally(() => {
+            setShowPageLoader(false);
+        });
       }
+    } else if (status === 'authenticated') {
+      setShowPageLoader(false);
+      setLoaderMessage(undefined);
     }
-  }, [status, isAdmin, pathname, router])
+  }, [status, isAdminRoute, pathname, router]);
 
-  if (status === 'loading') {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p>Checking your session…</p>
-      </div>
-    )
+  if (showPageLoader) {
+    return <ManualLoader isLoading={true} message={loaderMessage} />;
   }
 
-  return <></>
+  return null;
 }

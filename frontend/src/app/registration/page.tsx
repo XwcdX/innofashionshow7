@@ -1,6 +1,7 @@
-'use client'
+'use client';
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import PixelCard from '@/app/components/PixelCard';
 
 export default function RegistrationSelectionPage() {
   const router = useRouter();
@@ -14,39 +15,48 @@ export default function RegistrationSelectionPage() {
     }
   };
 
+  const cardBaseClasses = "w-full text-white font-semibold text-xl md:text-2xl px-6 py-8 rounded-xl shadow-xl focus:outline-none transition-all duration-200 ease-in-out transform hover:-translate-y-1.5";
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-transparent p-4">
+    <div className='fixed inset-0 w-screen h-screen'>
+      <div
+        className="h-screen w-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 selection:bg-purple-500 selection:text-white overflow-hidden"
+      >
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-12 sm:mb-16 md:mb-20 text-center [text-shadow:_0_0_6px_rgba(255,255,255,0.7)]">
+          Choose Your Registration
+        </h1>
 
-      <h1 className="text-3xl md:text-4xl font-bold text-white mb-10 text-center">
-        Choose Your Registration
-      </h1>
+        <div className="w-full max-w-5xl xl:max-w-6xl space-y-8 md:space-y-0 md:grid md:grid-cols-4 md:gap-8 xl:gap-10">
+          {/* Contest Card */}
+          <PixelCard
+            variant="blue"
+            onClick={() => handleNavigation('/registration/contest')}
+            imageUrl="/assets/contest-card-bg.jpg"
+            className={`${cardBaseClasses} md:col-span-2 md:h-52 lg:h-60 focus-visible:ring-4 focus-visible:ring-blue-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900`}
+          >
+            Contest
+          </PixelCard>
 
-      {/* Button container */}
-      <div className="w-full max-w-3xl space-y-6 md:space-y-0 md:grid md:grid-cols-4 md:gap-x-6 md:gap-y-6">
-        {/* Contest Button */}
-        <button
-          onClick={() => handleNavigation('/registration/contest')}
-          className="w-full flex items-center justify-center md:col-span-2 md:justify-self-end md:h-20 bg-blue-600 text-white font-semibold text-lg px-6 py-5 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:-translate-y-1"
-        >
-          Contest
-        </button>
+          {/* Talkshow Card */}
+          <PixelCard
+            variant="teal"
+            onClick={() => handleNavigation(null)}
+            imageUrl="/assets/talkshow-card-bg.png"
+            className={`${cardBaseClasses} md:col-start-3 md:col-span-2 md:h-52 lg:h-60 focus-visible:ring-4 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900`}
+          >
+            Talkshow
+          </PixelCard>
 
-        {/* Talkshow Button */}
-        <button
-          onClick={() => handleNavigation(null)}
-          className="w-full flex items-center justify-center md:col-start-3 md:col-span-2 md:justify-self-start md:h-20 bg-teal-600 text-white font-semibold text-lg px-6 py-5 rounded-lg shadow-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:-translate-y-1"
-        >
-          Talkshow
-        </button>
-
-        {/* Workshop Button */}
-        <button
-          onClick={() => handleNavigation(null)}
-          className="w-full flex items-center justify-center md:col-start-2 md:col-span-2 md:justify-self-center md:h-20 bg-purple-600 text-white font-semibold text-lg px-6 py-5 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition duration-200 ease-in-out transform hover:-translate-y-1"
-        >
-          Workshop
-        </button>
-
+          {/* Workshop Card */}
+          <PixelCard
+            variant="purple"
+            onClick={() => handleNavigation(null)}
+            imageUrl="/assets/workshop-card-bg.webp"
+            className={`${cardBaseClasses} md:col-start-2 md:col-span-2 md:h-52 lg:h-60 focus-visible:ring-4 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900`}
+          >
+            Workshop
+          </PixelCard>
+        </div>
       </div>
     </div>
   );
