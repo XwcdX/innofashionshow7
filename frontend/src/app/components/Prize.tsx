@@ -56,10 +56,10 @@ const PrizePool: React.FC = () => {
     >
       <div className="text-center w-full max-w-6xl px-4">
         <div className="relative">
-          {/* Title */}
-          <div className="relative mb-8 md:mb-16 text-center">
+          {/* Title - Significantly larger on bigger screens */}
+          <div className="relative mb-8 md:mb-12 lg:mb-16 xl:mb-20 text-center">
             <h2 
-              className={`text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
+              className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
                 glitchActive ? 'glitch-active' : ''
               }`}
               style={{ 
@@ -101,7 +101,7 @@ const PrizePool: React.FC = () => {
             {showShadow && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <span 
-                  className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tighter"
+                  className="text-5xl md:text-6xl font-black tracking-tighter"
                   style={{ 
                     color: 'rgba(143, 3, 209, 0.3)',
                     fontStyle: 'italic',
@@ -115,7 +115,7 @@ const PrizePool: React.FC = () => {
             )}
             
             <div className="relative overflow-hidden">
-              <div className={`absolute inset-0 text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold tracking-tighter bg-clip-text text-transparent opacity-70 ${glitchActive ? 'translate-x-3' : 'translate-x-0'} transition-transform duration-75`}
+              <div className={`absolute inset-0 text-5xl md:text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent opacity-70 ${glitchActive ? 'translate-x-3' : 'translate-x-0'} transition-transform duration-75`}
                 style={{ 
                   backgroundImage: 'linear-gradient(to right, #c306aa, #8f03d1)',
                   fontStyle: 'italic',
@@ -124,7 +124,7 @@ const PrizePool: React.FC = () => {
               >
                 Rp {prizePool.toLocaleString('id-ID')}
               </div>
-              <div className={`absolute inset-0 text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold tracking-tighter bg-clip-text text-transparent opacity-70 ${glitchActive ? '-translate-x-3' : 'translate-x-0'} transition-transform duration-75`}
+              <div className={`absolute inset-0 text-5xl md:text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent opacity-70 ${glitchActive ? '-translate-x-3' : 'translate-x-0'} transition-transform duration-75`}
                 style={{ 
                   backgroundImage: 'linear-gradient(to right, #4dffff, #a6ff4d)',
                   fontStyle: 'italic',
@@ -134,7 +134,7 @@ const PrizePool: React.FC = () => {
                 Rp {prizePool.toLocaleString('id-ID')}
               </div>
               
-              <span className={`text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold tracking-tighter bg-clip-text text-transparent ${glitchActive ? 'scale-110' : 'scale-100'} transition-all duration-200`}
+              <span className={`text-5xl md:text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent ${glitchActive ? 'scale-110' : 'scale-100'} transition-all duration-200`}
                 style={{ 
                   backgroundImage: 'linear-gradient(to right, #a6ff4d, #4dffff, #8f03d1)',
                   fontStyle: 'italic',

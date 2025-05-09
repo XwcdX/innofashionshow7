@@ -82,7 +82,7 @@ const Sponsor = () => {
         {/* title */}
         <div className="relative mb-6 md:mb-12 lg:mb-16 xl:mb-20 text-center">
           <h2 
-            className={`text-6xl sm:text-7xl md:text-8xl lg:text-9xl xl:text-[10rem] 2xl:text-[12rem] font-bold uppercase tracking-tighter inline-block relative ${
+            className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
               glitchActive ? 'glitch-active' : ''
             }`}
             style={{ 
