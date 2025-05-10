@@ -12,15 +12,19 @@ const Bumper = ({ onComplete }: BumperProps) => {
   const [isMuted, setIsMuted] = useState(true);
   const [showSoundButton, setShowSoundButton] = useState(false);
   const [showSoundText, setShowSoundText] = useState(true);
-  const [isExiting, setIsExiting] = useState(false); // Ubah nama state untuk lebih jelas
+  const [isExiting, setIsExiting] = useState(false);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.preload = 'auto';
+    }
+  }, []);
 
   const startVideo = async () => {
     if (!videoRef.current) return;
 
     try {
-      videoRef.current.preload = 'auto';
       videoRef.current.muted = true;
-      
       await videoRef.current.play();
       setIsPlaying(true);
       
@@ -52,7 +56,7 @@ const Bumper = ({ onComplete }: BumperProps) => {
     setIsExiting(true);
     setTimeout(() => {
       onComplete();
-    }, 500); // durasi animasi
+    }, 500);
   };
 
   const handleSkip = () => {
