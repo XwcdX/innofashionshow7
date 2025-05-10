@@ -674,7 +674,6 @@ export function RegistrationForm({
         }
     };
 
-    // --- Render Logic ---
     if (status === 'loading' || isInitializing) {
         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold animate-pulse">Loading Registration...</p>;
     }
@@ -682,55 +681,70 @@ export function RegistrationForm({
     if (status !== 'authenticated' || !userEmail) {
         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
     }
+    const capitalizeFirstLetter = (string: string): string => {
+        if (!string) return '';
+        return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase(); // Makes sure rest is lowercase
+    };
+    const capitalizeWords = (string: string): string => {
+        if (!string) return '';
+        return string.split(' ').map(word => capitalizeFirstLetter(word)).join(' ');
+    };
+    const formattedRegistrationType = capitalizeWords(registrationType || '');
 
     return (
         <div className="min-h-screen w-full pt-0 pb-8 px-0 md:px-6 lg:px-8">
-            <div className="max-w-2xl mx-auto bg-white backdrop-blur-md p-6 md:p-8 shadow-xl rounded-lg border border-gray-200">
-                <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 capitalize">
-                    {registrationType} Registration
+            <div className="max-w-4xl mx-auto bg-white/10 backdrop-filter backdrop-blur-lg p-6 md:p-8 shadow-2xl rounded-xl border border-white/20">
+                <h1 className="text-3xl md:text-4xl font-bold text-center text-white mb-8 [text-shadow:0_0_10px_rgba(255,255,255,0.7)]">
+                    {formattedRegistrationType} Registration
                 </h1>
-
-                <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+                <form onSubmit={handleSubmit} className="space-y-8 px-0 md:px-6" noValidate>
                     {formSchema.map(section => {
                         const shouldRenderSection = !section.condition || section.condition(formData, userType);
                         if (!shouldRenderSection) {
                             return null;
                         }
                         return (
-                            <fieldset key={section.id} className="border border-gray-300 p-4 rounded-md space-y-4 shadow-sm contents">
+                            <fieldset
+                                key={section.id}
+                                className="border border-white/20 rounded-lg shadow-md min-w-0 relative">
                                 {section.title && (
-                                    <legend className="text-sm font-semibold text-gray-700 px-2 -ml-2">{section.title}</legend>
+                                    <legend
+                                        className="text-lg font-semibold ml-4 px-2 mb-[-14px] text-white [text-shadow:0_0_5px_rgba(255,255,255,0.5)] break-words 
+                                               relative z-10">
+                                        {section.title}
+                                    </legend>
                                 )}
-                                {section.fields.map(field => {
-                                    const shouldRenderField = !field.condition || field.condition(formData, userType);
-                                    if (!shouldRenderField) return null;
-
-                                    return (
-                                        <InputField
-                                            key={field.id}
-                                            field={field}
-                                            value={(field.id === 'category' && initialCategory) ? initialCategory : formData[field.id]}
-                                            uploadedFilePath={field.type === 'file' ? uploadedFilePaths[field.id] : undefined}
-                                            error={formErrors[field.id]}
-                                            onChange={handleInputChange}
-                                            onFileChange={handleFileUpload}
-                                            disabled={isSubmitting || (field.id === 'category' && !!initialCategory)}
-                                        />
-                                    );
-                                })}
+                                <div className="bg-white/5 backdrop-filter backdrop-blur-sm p-5 rounded-lg space-y-5 min-w-0">
+                                    {section.fields.map(field => {
+                                        const shouldRenderField = !field.condition || field.condition(formData, userType);
+                                        if (!shouldRenderField) return null;
+                                        return (
+                                            <InputField
+                                                key={field.id}
+                                                field={field}
+                                                value={(field.id === 'category' && initialCategory) ? initialCategory : formData[field.id]}
+                                                uploadedFilePath={(field.type === 'file' || field.type === 'file-drag-drop') ? uploadedFilePaths[field.id] : undefined}
+                                                error={formErrors[field.id]}
+                                                onChange={handleInputChange}
+                                                onFileChange={handleFileUpload}
+                                                disabled={isSubmitting || (field.id === 'category' && !!initialCategory)}
+                                            />
+                                        );
+                                    })}
+                                </div>
                             </fieldset>
                         );
                     })}
 
                     <button
                         type="submit"
-                        className="w-full mt-4 bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 ease-in-out shadow-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                        className="w-full mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition duration-200 ease-in-out shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                         disabled={isSubmitDisabled}
                     >
                         {isSubmitting ? 'Submitting...' : 'Submit Registration'}
                     </button>
                     {Object.keys(formErrors).length > 0 && (
-                        <p className="text-sm text-red-600 text-center mt-2">Please fix the errors marked above.</p>
+                        <p className="text-sm text-red-400 text-center mt-3">Please fix the errors marked above.</p>
                     )}
                 </form>
             </div>

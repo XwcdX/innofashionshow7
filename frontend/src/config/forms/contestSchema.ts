@@ -7,27 +7,8 @@ export const contestSchema: FormSchema = [
         fields: [
             { id: 'name', label: 'Name', type: 'readonly', defaultValue: '' },
             { id: 'email', label: 'Email', type: 'readonly', defaultValue: '' },
-        ],
-    },
-    {
-        id: 'contactPayment',
-        title: 'Contact & Payment',
-        fields: [
-            //  {
-            //      id: 'category', label: 'Select Tier', type: 'radio', required: true,
-            //      options: [
-            //          { value: 'INTERMEDIATE', label: 'Intermediate' },
-            //          { value: 'ADVANCED', label: 'Advanced' },
-            //      ],
-            //  },
             { id: 'age', label: 'Age', type: 'number', required: true, min: 1, placeholder: "Your age" },
-            { id: 'whatsapp', label: 'WhatsApp', type: 'tel', required: true, placeholder: '+62 8XX XXXX XXXX', pattern: '^\\+?[0-9\\s\\-()]*$', title: "Enter a valid phone number" },
-            {
-                id: 'proofOfPayment', label: 'Proof of Payment', type: 'file-drag-drop', required: true,
-                accept: 'image/jpeg,image/png,image/gif,application/pdf',
-                maxFileSizeMB: 2,
-                filePurpose: 'payment',
-            },
+            { id: 'whatsapp', label: 'WhatsApp', type: 'tel', required: true, placeholder: '08XXXXXXXXXX', pattern: '^\\+?[0-9\\s\\-()]*$', title: "Enter a valid phone number" },
         ],
     },
     {
@@ -40,7 +21,7 @@ export const contestSchema: FormSchema = [
             { id: 'major', label: 'Major', type: 'text', required: true, placeholder: "Your major" },
             {
                 id: 'ktmPath', label: 'KTM (Student ID Card)', type: 'file', required: true,
-                accept: 'image/jpeg,image/png,image/gif,application/pdf',
+                accept: 'image/jpeg,image/png,application/pdf',
                 maxFileSizeMB: 2,
                 filePurpose: 'ktm',
             },
@@ -60,17 +41,18 @@ export const contestSchema: FormSchema = [
             },
         ],
     },
-    //  {
-    //      id: 'confirmation',
-    //      fields: [
-    //          {
-    //              id: 'confirmData',
-    //              label: 'I confirm that the data I have entered is correct.',
-    //              type: 'checkbox',
-    //              required: true,
-    //          }
-    //      ]
-    //  }
+    {
+        id: 'Payment',
+        title: 'Proof of Payment',
+        fields: [
+            {
+                id: 'proofOfPayment', label: 'BCA: 8301829038901 (A/N siapa aja) sebesar 150.000', type: 'file-drag-drop', required: true,
+                accept: 'image/jpeg,image/png,application/pdf',
+                maxFileSizeMB: 2,
+                filePurpose: 'payment',
+            },
+        ],
+    },
 ];
 
 export const contestSubmitSchema: FormSchema = [
@@ -106,15 +88,4 @@ export const contestSubmitSchema: FormSchema = [
             },
         ],
     },
-    //  {
-    //      id: 'confirmation',
-    //      fields: [
-    //          {
-    //              id: 'confirmData',
-    //              label: 'I confirm that the data I have entered is correct.',
-    //              type: 'checkbox',
-    //              required: true,
-    //          }
-    //      ]
-    //  }
 ];
