@@ -25,6 +25,31 @@
   
 }
 
+/* globals.css or styles.css */
+
+/* For phones: Ensuring the image container takes full width and height adjusts properly */
+@media (max-width: 640px) {
+  .right-image {
+    width: 50% !important; /* Full width */
+    height: auto !important; /* Adjust height to keep the aspect ratio */
+  }
+
+  .right-image img {
+    object-fit: auto; /* Ensures the image is fully contained without cropping */
+  }
+}
+
+
+/* For larger screens (laptops and desktops), keeping original styles */
+@media (min-width: 641px) {
+  .right-image {
+    width: 100%;
+    height: auto; /* Allow the height to be flexible */
+  }
+}
+
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

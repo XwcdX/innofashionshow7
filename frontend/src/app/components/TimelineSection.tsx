@@ -11,20 +11,22 @@ const TimelineSection = () => {
 
   const timelineData = {
     contest: [
-      { title: "OPEN REGISTRATION", date: "TUESDAY | 18 MARCH 2024" },
-      { title: "CLOSE REGISTRATION", date: "SUNDAY | 18 APRIL 2024" },
-      { title: "TECHNICAL MEETING", date: "FRIDAY | 03 MAY 2024" },
-      { title: "COMPETITION START", date: "SATURDAY | 04 MAY 2024" },
+      { title: "OPEN REGISTRATION", date: "Tuesday | 18 MARCH 2025" },
+      { title: "CLOSE REGISTRATION", date: "Sunday | 18 APRIL 2025" },
+      { title: "TECHNICAL MEETING", date: "Friday | 03 MAY 2025" },
+      { title: "COMPETITION START", date: "Saturday | 04 MAY 2025" },
     ],
     talkshow: [
-      { title: "OPEN REGISTRATION", date: "MONDAY | 25 MARCH 2024" },
-      { title: "TALKSHOW SPEAKER REVEAL", date: "WEDNESDAY | 10 APRIL 2024" },
-      { title: "EVENT DAY", date: "SUNDAY | 28 APRIL 2024" },
+      { title: "OPEN REGISTRATION", date: "Monday| 25 MARCH 2025" },
+      { title: "TALKSHOW SPEAKER REVEAL", date: "Wednesday | 10 APRIL 2025" },
+      { title: "EVENT DAY", date: "Sunday | 28 APRIL 2025" },
+      { title: "TALKSHOW START", date: "Saturday | 01 MAY 2025" },
     ],
     workshop: [
-      { title: "OPEN REGISTRATION", date: "TUESDAY | 02 APRIL 2024" },
-      { title: "MATERIAL RELEASE", date: "THURSDAY | 18 APRIL 2024" },
-      { title: "WORKSHOP DAY", date: "SATURDAY | 11 MAY 2024" },
+      { title: "OPEN REGISTRATION", date: "Tuesday | 02 APRIL 2025" },
+      { title: "MATERIAL RELEASE", date: "Thursdau | 18 APRIL 2025" },
+      { title: "WORKSHOP DAY", date: "Saturday | 11 MAY 2025" },
+      { title: "WORKSHOP START", date: "Wednesday | 02 MAY 2025" },
     ],
   };
 
@@ -110,7 +112,7 @@ const TimelineSection = () => {
         <div className="timeline-content">
           {timelineData[active].map((item, idx) => (
             <div className="timeline-point" key={idx}>
-              <div className="circle border-4 border-white bg-purple-600"></div>
+              <div className="circle border-4 border-white bg-purple-600 "></div>
               <div className="timeline-text">
                 <h1>{item.title}</h1>
                 <p>{item.date}</p>
@@ -160,7 +162,7 @@ const TimelineSection = () => {
           background-color: white;
           color: black;
         }
-// ---
+
         .timeline-container {
           width: 90%;
           display: flex;
@@ -193,7 +195,7 @@ const TimelineSection = () => {
           border-radius: 50%;
           margin-top: 10px;
         }
-//-- 
+
         .timeline-text {
           margin-left: 30px;
           color: white;
