@@ -17,7 +17,7 @@ export default function LoadingAnimation() {
 
     animationTimeout.current = setTimeout(() => {
       setLoadingComplete(true)
-    }, 3000)
+    }, 3000) // 3 seconds
 
     return () => {
       if (animationTimeout.current) {
