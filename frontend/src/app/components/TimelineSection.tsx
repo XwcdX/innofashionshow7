@@ -1,6 +1,7 @@
 "use client";
+import React, { useLayoutEffect } from "react";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
@@ -30,58 +31,48 @@ const TimelineSection = () => {
     ],
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
   const line = document.getElementById("line");
-  const points = document.querySelectorAll(".timeline-point");
+  const timelineContents = document.querySelectorAll(".timeline-point");
 
-  if (!line || !points.length) return;
+  if (!line || timelineContents.length === 0) return;
 
-  gsap.set(points, { opacity: 0, y: 50 });
+  const timelineContainer = document.querySelector(".timeline-container");
 
-  // Animasi untuk garis (line)
+  // Clear previous triggers
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+  // Line animation
   gsap.to(line, {
     scrollTrigger: {
-      trigger: ".timeline-container",
+      trigger: timelineContainer,
       start: "top center",
-      end: "bottom center",
+      end: window.innerWidth > 768 ? "80% center" : "1000% center",
       scrub: true,
     },
     height: window.innerWidth > 768 ? "130vh" : "45vh",
-    ease: "none",
   });
 
-  // Timeline untuk setiap .timeline-point
-  points.forEach((point) => {
-    const circle = point.querySelector(".circle");
-    const text = point.querySelector(".timeline-text");
-
-    if (!circle || !text) return;
-
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: point,
-        start: "top 80%", // Lebih cepat muncul
-        end: "top 60%",
-        scrub: true,
-      },
-    });
-
-    tl.to(point, { opacity: 1, y: 0, duration: 0.3, ease: "power1.out" }, 0)
-      .fromTo(
-        circle,
-        { scale: 0.5, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)" },
-        0
-      )
-      .fromTo(
-        text,
-        { opacity: 0, x: -30 },
-        { opacity: 1, x: 0, duration: 0.3, ease: "power1.out" },
-        0.1
-      );
+  // Each point animation
+  timelineContents.forEach((content) => {
+    gsap.fromTo(
+      content,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        scrollTrigger: {
+          trigger: content,
+          start: "top 100%",
+          end: "top center",
+          scrub: true,
+        },
+      }
+    );
   });
+
   ScrollTrigger.refresh();
 }, [active]);
+
 
 
   return (
