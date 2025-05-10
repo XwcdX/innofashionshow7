@@ -80,6 +80,7 @@ const TimelineSection = () => {
         0.1
       );
   });
+  ScrollTrigger.refresh();
 }, [active]);
 
 
@@ -313,7 +314,7 @@ const TimelineSection = () => {
 .timeline-text {
   will-change: transform, opacity;
 }
-  
+
         .timeline-container {
           width: 90%;
           display: flex;
