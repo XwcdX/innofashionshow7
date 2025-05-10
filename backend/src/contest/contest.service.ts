@@ -140,10 +140,10 @@ export class ContestService {
                 create: createData,
                 update: updateData,
             });
-            this.logger.log(`Successfully saved contest draft for user ID: ${userId}`);
+            this.logger.log(`Successfully saved creation draft for user ID: ${userId}`);
             return savedContest;
         } catch (error) {
-            this.logger.error(`Failed to save contest draft for user ${userId}: ${error.message}`, error.stack);
+            this.logger.error(`Failed to save creation draft for user ${userId}: ${error.message}`, error.stack);
             throw new InternalServerErrorException('Failed to save contest draft data.');
         }
     }
@@ -230,6 +230,68 @@ export class ContestService {
              }
             this.logger.error(`Failed to submit contest registration for user ${userId}: ${error.message}`, error.stack);
             throw new InternalServerErrorException('Failed to submit contest registration.');
+        }
+    }
+
+    async submitCreation(userId: string, dto: Prisma.CreationCreateInput): Promise<Creation> {
+        this.logger.log(`Attempting final creation submission for user ID: ${userId}`);
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) {
+            this.logger.warn(`User not found for ID: ${userId} during submission attempt.`);
+            throw new NotFoundException(`User with ID ${userId} not found.`);
+        }
+
+        const contest = await this.prisma.contest.findUnique({ where: { userId: userId } });
+        if (!contest) {
+            this.logger.warn(`Contest not found for UserID: ${userId} during submission attempt.`);
+            throw new NotFoundException(`Contest with UserID ${userId} not found.`);
+        }
+
+        this.logger.log(`User type fetched in service for validation: ${user.type}`);
+
+        const missingFields: string[] = [];
+        if (!dto.creationPath) missingFields.push('Creation File');
+        if (!dto.conceptPath) missingFields.push('Concept File');
+
+        if (missingFields.length > 0) {
+            const errorMessage = `Missing required fields for ${user.type} user creation submission: ${missingFields.join(', ')}.`;
+            this.logger.warn(`Submission validation failed for user ${userId}: ${errorMessage}`);
+            throw new BadRequestException(errorMessage);
+        }
+        // --- End Validation ---
+
+        const updateData: Prisma.CreationUpdateInput = {
+            creationPath: dto.creationPath,
+            conceptPath: dto.conceptPath,
+            
+            updatedAt: new Date(),
+        };
+
+        const createData: Prisma.CreationCreateInput = {
+            contest: { connect: { id: contest.id } },
+            creationPath: dto.creationPath ?? null,
+            conceptPath: dto.conceptPath ?? null,
+        };
+
+        try {
+            this.logger.log(`Upserting creation draft for user ${userId}`);
+            const savedContest = await this.prisma.creation.upsert({
+                where: { contestId: contest?.id },
+                create: createData,
+                update: updateData,
+            });
+            this.logger.log(`Successfully saved contest draft for user ID: ${userId}`);
+            return savedContest;
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError) {
+                this.logger.error(`Prisma error during creation submission for user ${userId}: ${error.message}`, error.stack);
+                throw new InternalServerErrorException('Database error during creation submission.');
+            }
+             if (error instanceof BadRequestException || error instanceof NotFoundException) {
+                 throw error;
+             }
+            this.logger.error(`Failed to submit creation registration for user ${userId}: ${error.message}`, error.stack);
+            throw new InternalServerErrorException('Failed to submit creation registration.');
         }
     }
 

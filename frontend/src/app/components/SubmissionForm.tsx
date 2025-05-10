@@ -690,7 +690,7 @@ export function SubmissionForm({
                     Constest Submission
                 </h1>
                 <p className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 capitalize">
-                    Anda mendaftar sebagai {userType} dan mengikuti kategori {initialCategory}
+                    You registered as a {userType} and are participating in the {initialCategory} category.
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6" noValidate>
                     {formSchema.map(section => {

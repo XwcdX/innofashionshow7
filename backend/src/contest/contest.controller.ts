@@ -80,6 +80,19 @@ export class ContestController {
         return { message: 'Contest registration submitted successfully.', data: result };
     }
 
+    @Post('submitCreation')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async submitCreation(
+        @Req() req: RequestWithUser,
+        @Body() submitDto: Prisma.CreationCreateInput,
+    ) {
+        const userId = req.user.id;
+        this.logger.log(`Received Creation submission from user ID: ${userId}`);
+        const result = await this.contestService.submitCreation(userId, submitDto);
+        return { message: 'Creation registration submitted successfully.', data: result };
+    }
+
     @Get('profile')
     @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
