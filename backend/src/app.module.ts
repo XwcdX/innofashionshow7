@@ -11,6 +11,7 @@ import { TalkshowsModule } from './talkshows/talkshows.module';
 import { WorkshopsModule } from './workshops/workshops.module';
 import { ContestModule } from './contest/contest.module';
 import { PrismaService } from 'prisma/prisma.service';
+import { CreationModule } from './creation/creation.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { PrismaService } from 'prisma/prisma.service';
     DatabaseModule,
     TalkshowsModule,
     WorkshopsModule,
+    CreationModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],

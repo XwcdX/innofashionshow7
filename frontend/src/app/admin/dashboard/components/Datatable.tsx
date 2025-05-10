@@ -48,7 +48,7 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
         ]).then(([{ default: $ }]) => { // Destructure jQuery's default export
             // --- DataTable Initialization ---
             if ($.fn.DataTable.isDataTable($(`#${id}`))) {
-                 $(`#${id}`).DataTable().destroy(); // Ensure clean state
+                 $(`#${id}`).DataTable().clear().destroy(); // Ensure clean state
             }
 
             // Initialize DataTable
@@ -59,8 +59,11 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
                     data: key,
                     visible: !hideColumns.includes(key),
                     render: renderColumns.includes(key)
-                    ? function (data: any, type: any, row: any) {
-                        return data; // Allow HTML rendering
+                    ? function (data: any, type: string) {
+                        if (type === 'display' || type === 'filter') {
+                            return data;
+                        }
+                        return typeof data === 'string' ? data : '';
                         }
                     : undefined
                 })),
@@ -157,7 +160,7 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
         return () => {
             if (tableRef.current && typeof $ !== 'undefined' && $.fn.DataTable.isDataTable($(`#${id}`))) {
                  $(`#${id}`).off('click', '.btn-pay'); // Remove listener first
-                 tableRef.current.destroy();
+                 tableRef.current.clear().destroy();
                  tableRef.current = null;
             }
         };

@@ -33,8 +33,37 @@ const getCategory = async () => {
     }
 };
 
+const getValidateStatus = async () => {
+    try {
+        // Make the API request to get the category
+        const res = await fetch('/api/lomba/getValidate');
+        
+        // Check if the response is OK (status 200)
+        if (res.ok) {
+            const data = await res.json();  // Assuming the response is JSON
+            console.log("Received validation status:", data);
+
+            // You can return the category or use it directly
+            return data;
+        } else {
+            console.error("Failed to fetch validation status. Response not OK:", res.status);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching validation status:", error);
+        return null;
+    }
+};
+
 // --- Main Page Component ---
 export default function ContestSubmissionPage() {
+    const [validationStatus, setValidationStatus] = useState<boolean | null>(null);
+    // if (!validationStatus){
+    //     return (
+    //         <div></div>
+    //     );
+    // }
+
     const { data: session, status } = useSession();
     const router = useRouter();
     const userEmail = session?.user?.email;
@@ -56,6 +85,15 @@ export default function ContestSubmissionPage() {
         }
 
         if (status === 'authenticated' && userEmail) {
+            (async () => {
+                const serverData = await getValidateStatus(); // Await async function
+                if (serverData?.validateStatus) {
+                    console.log('Found validation status from server:', serverData.validateStatus);
+                    setValidationStatus(serverData.validateStatus)
+                } else {
+                    console.log('No valid category found on server.');
+                }
+            })();
             console.log('Authenticated, checking localStorage for category...');
             setIsLoadingCategory(true);
             const storageKey = getDraftStorageKey(userEmail, registrationType);
@@ -101,11 +139,15 @@ export default function ContestSubmissionPage() {
     // --- Render Logic ---
 
     if (status === 'loading' || isLoadingCategory) {
-         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold animate-pulse">Loading...</p>;
+        return <p className="flex justify-center items-center min-h-screen text-lg font-semibold animate-pulse">Loading...</p>;
     }
 
-     if (status !== 'authenticated' || !userEmail) {
-         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
+    if (status !== 'authenticated' || !userEmail) {
+        return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
+    }
+
+    if (!validationStatus){
+        return <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">Your registration has not been validated yet. </p>;
     }
 
     return (

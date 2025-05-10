@@ -24,9 +24,21 @@ export class ContestController {
         const userId = req.user.id;
         const category = await this.contestService.getCategory(userId);
         if (!category) {
-             return {};
+            return {};
         }
         return category;
+    }
+
+    @Get('getValidate')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async getValidate(@Req() req: RequestWithUser) {
+        const userId = req.user.id;
+        const validate = await this.contestService.getValidate(userId);
+        if (!validate) {
+            return {};
+        }
+        return validate;
     }
 
     @Post('draft')
@@ -66,6 +78,19 @@ export class ContestController {
         this.logger.log(`Received contest submission from user ID: ${userId}`);
         const result = await this.contestService.submitContest(userId, submitDto);
         return { message: 'Contest registration submitted successfully.', data: result };
+    }
+
+    @Post('submitCreation')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async submitCreation(
+        @Req() req: RequestWithUser,
+        @Body() submitDto: Prisma.CreationCreateInput,
+    ) {
+        const userId = req.user.id;
+        this.logger.log(`Received Creation submission from user ID: ${userId}`);
+        const result = await this.contestService.submitCreation(userId, submitDto);
+        return { message: 'Creation registration submitted successfully.', data: result };
     }
 
     @Get('profile')

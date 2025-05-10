@@ -32,8 +32,8 @@ const AdminHomePage = () => {
                 Jurusan: item.major,
                 Whatsapp: item.whatsapp,
                 Category: item.category,
-                KTM:`<a href="${item.ktmPath}" class="text-blue-600 hover:underline">View</a>`,
-                BuktiPembayaran:`<a href="${item.proofOfPayment}" class="text-blue-600 hover:underline">View</a>`,
+                KTM:`<a href="${item.ktmPath}" target="_blank" class="text-blue-600 hover:underline">View</a>`,
+                BuktiPembayaran:`<a href="${item.proofOfPayment}" target="_blank" class="text-blue-600 hover:underline">View</a>`,
                 Pembayaran: item.valid === false
                 ? `<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded" data-href="lomba" data-id="${item.id}">Validasi</button>`
                 : '<span class="text-green-500">Validated</span>',
@@ -58,10 +58,10 @@ const AdminHomePage = () => {
                 Nama: item.user.name,
                 Email: item.user.email,
                 Instance: item.instance,
-                IDCard:`<a href="${item.idCard}" class="text-blue-600 hover:underline">View</a>`,
+                IDCard:`<a href="${item.idCardPath}" target="_blank" class="text-blue-600 hover:underline">View</a>`,
                 Whatsapp: item.whatsapp,
                 Category: item.category,
-                BuktiPembayaran:`<a href="${item.proofOfPayment}" class="text-blue-600 hover:underline">View</a>`,
+                BuktiPembayaran:`<a href="${item.proofOfPayment}" target="_blank" class="text-blue-600 hover:underline">View</a>`,
                 Pembayaran: item.valid === false
                 ? `<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded" data-href="lomba" data-id="${item.id}">Validasi</button>`
                 : '<span class="text-green-500">Validated</span>',

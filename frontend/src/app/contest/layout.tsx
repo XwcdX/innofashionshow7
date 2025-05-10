@@ -2,11 +2,11 @@ import { Metadata } from 'next';
 import SessionGuard from '@/app/components/SessionGuard';
 
 export const metadata: Metadata = {
-  title: 'Registration Panel',
-  description: 'Registration dashboard.',
+  title: 'Submission Panel',
+  description: 'Submission dashboard.',
 };
 
-export default function RegistrationLayout({ children }: { children: React.ReactNode }) {
+export default function SubmissionLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <SessionGuard/>
