@@ -24,6 +24,7 @@ const sanitizeFilename = (filename: string): string => {
 // --- Type Definitions ---
 type RegistrationType = 'contest' | 'workshop' | 'talkshow';
 type FilePurpose = 'payment' | 'ktm' | 'idCard' | 'creation' | 'concept';
+type Category = 'INTERNAL' | 'EXTERNAL';
 
 const validRegistrationTypes: RegistrationType[] = ['contest', 'workshop', 'talkshow'];
 const validFilePurposes: FilePurpose[] = ['payment', 'ktm', 'idCard', 'creation', 'concept'];
@@ -70,6 +71,7 @@ export default async function handler(
 
     // --- Validate Required Fields ---
     const registrationTypeField = fields.registrationType?.[0];
+    const categoryField = fields.category?.[0];
     const filePurposeField = fields.filePurpose?.[0];
     const emailField = fields.email?.[0];
     const nameField = fields.name?.[0];
@@ -85,6 +87,7 @@ export default async function handler(
     }
 
     const registrationType = registrationTypeField as RegistrationType;
+    const category = categoryField as Category;
     const filePurpose = filePurposeField as FilePurpose;
     const email = emailField;
     const name = nameField;

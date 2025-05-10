@@ -416,6 +416,7 @@ export function SubmissionForm({
             fd.append('filePurpose', filePurposeValue);
             fd.append('email', userEmail);
             fd.append('name', userName);
+            if (initialCategory) fd.append('category', initialCategory);
             if (prevPath) fd.append('prevPath', prevPath);
 
             const res = await fetch(uploadApiUrl, { method: 'POST', body: fd });
