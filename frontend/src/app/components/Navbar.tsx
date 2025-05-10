@@ -36,11 +36,11 @@ export default function Navbar() {
   }
 
   const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/timeline", label: "Timeline" },
-    { href: "/events", label: "Events" },
-    { href: "/competition", label: "Competition" },
-    { href: "/about", label: "About Us" },
+    { href: "#Home", label: "Home" },
+    { href: "#about", label: "About Us" },
+    { href: "#events", label: "Events" },
+    { href: "#timeline", label: "Timeline" },
+    { href: "#faq", label: "FAQ" },
   ]
 
   return (

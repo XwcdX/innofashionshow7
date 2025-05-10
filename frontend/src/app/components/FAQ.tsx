@@ -420,11 +420,11 @@ const FAQ: React.FC = () => {
 
   return (
     <section
+      id = "faq"
       className="min-h-screen w-full flex flex-col justify-center relative overflow-hidden py-8 md:py-12"
       style={{ 
         background: 'transparent'
       }}
-      id="faq"
     >
       <div className="container mx-auto px-4 flex-1 flex flex-col justify-center relative z-10">
         <div className="relative mb-6 md:mb-8 text-center">
