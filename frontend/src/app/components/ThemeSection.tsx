@@ -52,6 +52,7 @@ export default function ThemeSection() {
             }}
           >
             {children}
+            
           </span>
         </>
       )}
@@ -59,6 +60,7 @@ export default function ThemeSection() {
   )
 
   return (
+    
     <div className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
       {/* Video Background */}
       <video
@@ -88,8 +90,10 @@ export default function ThemeSection() {
           background: 'linear-gradient(180deg, rgba(163, 10, 153, 0.3) 0%, rgba(40, 22, 96, 0.7) 100%)'
         }}
       />
+      
 
       {/* Content */}
+      
       <div className="relative z-10 w-full">
         {/* Headline */}
         <ScrollReveal
@@ -110,7 +114,7 @@ export default function ThemeSection() {
             <GlitchText>ILLUMINE</GlitchText>
           </h1>
         </ScrollReveal>
-
+          
         {/* Rest of your content remains the same */}
         <ScrollReveal
           baseOpacity={0}
@@ -149,7 +153,9 @@ export default function ThemeSection() {
             </GlitchText>
           </p>
         </ScrollReveal>
+        
       </div>
+      
 
       <style jsx>{`
               /* Additional texture effects */

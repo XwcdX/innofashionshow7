@@ -83,7 +83,7 @@ export default function EventBar() {
         scrollSnapAlign: 'start',
       }}
     >
-      {/* Decorative Image (bottom-left corner, behind text) */}
+      {/* Decorative Image (bottom-right corner, behind text) */}
       <div className="absolute bottom-30 scale-300 right-0 w-120 h-120 z-0 opacity-35">
         <Image
           src="/assets/lines2.png"

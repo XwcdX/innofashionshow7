@@ -108,7 +108,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
 
   return (
     <section 
-      className="min-h-screen flex items-center justify-center py-16 font-neue-montreal md:-mb-50"
+      className="min-h-screen flex items-center justify-center py-16 font-neue-montreal md:-mb-50 md:-mt-45"
       style={{ 
         background: 'transparent',
         scrollSnapAlign: 'start'
