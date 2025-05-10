@@ -1,12 +1,33 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const TimelineSection = () => {
+  const [active, setActive] = useState<"contest" | "talkshow" | "workshop">("contest");
+
+  const timelineData = {
+    contest: [
+      { title: "OPEN REGISTRATION", date: "TUESDAY | 18 MARCH 2024" },
+      { title: "CLOSE REGISTRATION", date: "SUNDAY | 18 APRIL 2024" },
+      { title: "TECHNICAL MEETING", date: "FRIDAY | 03 MAY 2024" },
+      { title: "COMPETITION START", date: "SATURDAY | 04 MAY 2024" },
+    ],
+    talkshow: [
+      { title: "OPEN REGISTRATION", date: "MONDAY | 25 MARCH 2024" },
+      { title: "TALKSHOW SPEAKER REVEAL", date: "WEDNESDAY | 10 APRIL 2024" },
+      { title: "EVENT DAY", date: "SUNDAY | 28 APRIL 2024" },
+    ],
+    workshop: [
+      { title: "OPEN REGISTRATION", date: "TUESDAY | 02 APRIL 2024" },
+      { title: "MATERIAL RELEASE", date: "THURSDAY | 18 APRIL 2024" },
+      { title: "WORKSHOP DAY", date: "SATURDAY | 11 MAY 2024" },
+    ],
+  };
+
   useEffect(() => {
     const line = document.getElementById("line");
     const timelineContents = document.querySelectorAll(".timeline-point");
@@ -36,32 +57,60 @@ const TimelineSection = () => {
     }
 
     timelineContents.forEach((content) => {
-      gsap.to(content, {
-        scrollTrigger: {
-          trigger: content,
-          start: "top 70%",
-          end: "20% center",
-          scrub: true,
-        },
-        opacity: 1,
-      });
+      gsap.fromTo(
+        content,
+        { opacity: 0 },
+        {
+          scrollTrigger: {
+            trigger: content,
+            start: "top 70%",
+            end: "20% center",
+            scrub: true,
+          },
+          opacity: 1,
+        }
+      );
     });
-  }, []);
+  }, [active]);
 
   return (
-    <section className="timeline bg-black" id="timeline">
-      <h1>Timeline</h1>
+    <section
+      className="timeline bg-black"
+      id="timeline"
+      style={{
+        background: "transparent",
+        scrollSnapAlign: "start",
+      }}
+    >
+      <h2
+        className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12"
+        style={{
+          textShadow: "0 0 15px rgba(77, 255, 255, 0.7)",
+          fontStyle: "italic",
+        }}
+      >
+        Timeline
+      </h2>
+
+      {/* Toggle Menu */}
+      <div className="menu-buttons">
+        {(["contest", "talkshow", "workshop"] as const).map((key) => (
+          <button
+            key={key}
+            onClick={() => setActive(key)}
+            className={`menu-btn ${active === key ? "active" : ""}`}
+          >
+            {key.toUpperCase()}
+          </button>
+        ))}
+      </div>
+
       <div className="timeline-container">
         <div className="timeline-line" id="line"></div>
         <div className="timeline-content">
-          {[
-            { title: "OPEN REGISTRATION", date: "TUESDAY | 18 MARCH 2024" },
-            { title: "CLOSE REGISTRATION", date: "SUNDAY | 18 APRIL 2024" },
-            { title: "TECHNICAL MEETING", date: "FRIDAY | 03 MAY 2024" },
-            { title: "COMPETITION START", date: "SATURDAY | 04 MAY 2024" },
-          ].map((item, idx) => (
+          {timelineData[active].map((item, idx) => (
             <div className="timeline-point" key={idx}>
-              <div className="circle"></div>
+              <div className="circle border-4 border-white bg-purple-600"></div>
               <div className="timeline-text">
                 <h1>{item.title}</h1>
                 <p>{item.date}</p>
@@ -86,7 +135,30 @@ const TimelineSection = () => {
           color: white;
           font-size: 60px;
           width: 80%;
-          margin-bottom: 130px;
+          margin-bottom: 30px;
+        }
+
+        .menu-buttons {
+          display: flex;
+          gap: 16px;
+          margin-bottom: 80px;
+        }
+
+        .menu-btn {
+          padding: 8px 20px;
+          font-weight: bold;
+          border: 2px solid white;
+          background: transparent;
+          color: white;
+          border-radius: 50px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .menu-btn.active,
+        .menu-btn:hover {
+          background-color: white;
+          color: black;
         }
 
         .timeline-container {
@@ -116,7 +188,6 @@ const TimelineSection = () => {
         .circle {
           width: 40px;
           height: 40px;
-          background-color: white;
           border-radius: 50%;
           margin-top: 10px;
         }
