@@ -41,7 +41,7 @@ export default function AboutSection() {
       {/* Left Section with ScrollReveal */}
       <ScrollReveal className="w-full md:w-1/2 relative p-10 md:p-16">
         {/* Lines Asset (bottom-left corner) */}
-        <div className="transform scale-210 absolute bottom-0 z-[-10] left-0 w-100 h-100 ">
+        <div className="transform scale-210 absolute bottom-0 z-[-10] left-0 w-100 h-100 opacity-35">
           <Image
             src="/assets/lines1.png"
             alt=""
