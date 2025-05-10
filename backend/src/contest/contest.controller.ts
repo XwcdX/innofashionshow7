@@ -24,9 +24,21 @@ export class ContestController {
         const userId = req.user.id;
         const category = await this.contestService.getCategory(userId);
         if (!category) {
-             return {};
+            return {};
         }
         return category;
+    }
+
+    @Get('getValidate')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async getValidate(@Req() req: RequestWithUser) {
+        const userId = req.user.id;
+        const validate = await this.contestService.getValidate(userId);
+        if (!validate) {
+            return {};
+        }
+        return validate;
     }
 
     @Post('draft')

@@ -28,6 +28,24 @@ export class ContestService {
         return { category: contestRegistration.category }; 
     }
 
+    async getValidate(userId: string): Promise<{ validateStatus: boolean | null } | null> {
+        this.logger.log(`Fetching valid status for user ID: ${userId}`);
+        // Fetch only the 'category' field from the contest record
+        const contestRegistration = await this.prisma.contest.findUnique({
+            where: { userId: userId },
+            select: {
+                valid: true,  // Only select the 'category' field
+            },
+        });
+
+        if (!contestRegistration) {
+            this.logger.log(`No valid status found for user ID: ${userId}`);
+            return null;
+        }
+
+        return { validateStatus: contestRegistration.valid }; 
+    }
+
     async saveDraft(userId: string, dto: DraftContestDto): Promise<Contest | null> {
         this.logger.log(`Attempting to save contest draft for user ID: ${userId}`);
 
