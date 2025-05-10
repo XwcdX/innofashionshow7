@@ -70,7 +70,7 @@ const Sponsor = () => {
 
   return (
     <section 
-      className="min-h-screen flex items-center justify-center py-8 md:py-16"
+      className="min-h-screen flex items-center justify-center py-8 md:py-16 -mb-20"
       style={{ 
         background: 'transparent',
         scrollSnapAlign: 'start'

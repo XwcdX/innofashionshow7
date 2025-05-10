@@ -140,8 +140,11 @@ const TimelineSection = () => {
 
         .menu-buttons {
           display: flex;
-          gap: 16px;
-          margin-bottom: 80px;
+          flex-wrap: wrap;
+          gap: 12px;
+          justify-content: center;
+          margin-bottom: 60px;
+          padding: 0 1rem;
         }
 
         .menu-btn {
@@ -153,6 +156,7 @@ const TimelineSection = () => {
           border-radius: 50px;
           cursor: pointer;
           transition: all 0.3s ease;
+          font-size: 0.875rem;
         }
 
         .menu-btn.active,
@@ -198,12 +202,52 @@ const TimelineSection = () => {
         }
 
         .timeline-text > h1 {
-          font-size: 32px;
+          font-size: 28px;
           letter-spacing: 1px;
         }
 
         .timeline-text > p {
-          font-size: 18px;
+          font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+          .timeline {
+            padding: 60px 0;
+          }
+
+          .timeline > h1 {
+            font-size: 40px;
+            text-align: center;
+          }
+
+          .timeline-container {
+            flex-direction: row;
+            align-items: flex-start;
+          }
+
+          .timeline-point {
+            height: auto;
+            flex-direction: row;
+            align-items: flex-start;
+            margin-bottom: 40px;
+          }
+
+          .timeline-text > h1 {
+            font-size: 20px;
+          }
+
+          .timeline-text > p {
+            font-size: 14px;
+          }
+
+          .circle {
+            width: 30px;
+            height: 30px;
+          }
+
+          .timeline-text {
+            margin-left: 16px;
+          }
         }
       `}</style>
     </section>
