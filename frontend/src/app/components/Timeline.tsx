@@ -4,12 +4,12 @@ import {
   Timeline as ShadcnTimeline,
   TimelineContent,
   TimelineDate,
-  TimelineHeader,
   TimelineIndicator,
+  TimelineHeader,
   TimelineItem,
   TimelineSeparator,
   TimelineTitle,
-} from "@/app/components/ui/timelinedetails"
+} from "@/app/components/timelinedetails"
 import { useState } from "react"
 import Image from "next/image"
 

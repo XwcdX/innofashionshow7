@@ -95,9 +95,9 @@ export default function EventBar() {
       </div>
 
       {/* Content wrapper with higher z-index */}
-      <div className="mx-auto relative z-10">
+      <div className="mx-auto relative z-10 ">
         <h2
-          className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
+          className="mt-10 text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-10 text-center"
           style={{
             textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
             fontStyle: 'italic',
@@ -110,7 +110,7 @@ export default function EventBar() {
         <ScrollVelocity
           texts={['Talkshow', 'Workshop', 'Contest', 'Fashion Show']}
           velocity={30}
-          className="text-accent text-3xl md:text-4xl font-bold mx-4"
+          className="text-accent text-3xl md:text-4xl font-bold mx-1 "
           parallaxClassName="relative overflow-hidden py-2"
           scrollerClassName="flex whitespace-nowrap gap-8"
           numCopies={50}
