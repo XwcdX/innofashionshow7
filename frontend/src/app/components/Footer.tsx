@@ -60,21 +60,21 @@ export default function Footer() {
     <footer className="bg-black text-white px-8 py-10">
       <div className="max-w-screen-xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         {/* Logo */}
-        <Image src="/innologo.png" alt="INNOFASHION Logo" width={160} height={40} />
+        <Image src="/assets/innologo.png" alt="INNOFASHION Logo" width={160} height={40} />
 
         {/* Social Media Icons */}
         <div className="flex gap-6 items-center">
           <a href="#" aria-label="TikTok">
-            <Image src="/tiktoklogo.png" alt="TikTok" width={24} height={24} />
+            <Image src="/assets/tiktoklogo.png" alt="TikTok" width={24} height={24} />
           </a>
           <a href="#" aria-label="Instagram">
-            <Image src="/instalogo.png" alt="Instagram" width={24} height={24} />
+            <Image src="/assets/instalogo.png" alt="Instagram" width={24} height={24} />
           </a>
           <a href="#" aria-label="Line">
-            <Image src="/linelogo.png" alt="Line" width={24} height={24} />
+            <Image src="/assets/linelogo.png" alt="Line" width={24} height={24} />
           </a>
           <a href="#" aria-label="Email">
-            <Image src="/gmaillogo.png" alt="Email" width={28} height={20} />
+            <Image src="/assets/gmaillogo.png" alt="Email" width={28} height={20} />
           </a>
         </div>
       </div>
