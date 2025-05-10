@@ -158,7 +158,7 @@ export default async function handler(
 
     // --- Specific Error Responses ---
     if (error.code === 'LIMIT_FILE_SIZE' || (error.message && error.message.includes('maxFileSize exceeded'))) {
-      return res.status(413).json({ message: 'File too large. Maximum size allowed is 2MB.' });
+      return res.status(413).json({ message: 'File too large. Maximum size allowed is 5MB.' });
     }
     if (error.message && error.message.includes('maxFieldsSize exceeded')) {
       return res.status(413).json({ message: 'Total size of form fields exceeded limit.' });
