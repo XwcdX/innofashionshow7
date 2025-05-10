@@ -63,12 +63,12 @@ export default function Home() {
   return (
     
     <div className="relative w-full h-full overflow-hidden">
-      <img 
+      {/* <img 
         src="/blending_1.png" 
         alt="Decorative blending effect"
         className="absolute top-0 left-0 w-1/3 opacity-50 mix-blend-overlay pointer-events-none"
         style={{ zIndex: -1 }}
-      />
+      /> */}
       {/* <img 
         src="/blending_2.png" 
         alt="Decorative blending effect"
