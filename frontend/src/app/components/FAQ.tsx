@@ -75,8 +75,8 @@ const FAQ: React.FC = () => {
 
   const checkScrollPosition = useCallback(() => {
     if (containerRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
-      const scrollEnd = scrollWidth - clientWidth;
+      // const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+      // const scrollEnd = scrollWidth - clientWidth;
     }
   }, []);
 

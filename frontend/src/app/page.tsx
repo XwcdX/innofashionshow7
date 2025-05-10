@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import ThemeSection from './components/ThemeSection';
 import EventBar from './components/EventBar';
-import { Timeline } from './components/Timeline';
 // import RSVPButton from './components/RSVPButton'
 import Footer from './components/Footer';
 import AboutSection from './components/AboutSection';
@@ -15,6 +14,9 @@ import PrizePool from './components/Prize';
 import FAQ from './components/FAQ';
 import Sponsor from './components/Sponsor';
 import Lenis from '@studio-freight/lenis';
+import TimelineSection from "@/app/components/TimelineSection";
+// import { Timeline } from './components/Timeline';
+
 
 
 
@@ -97,14 +99,15 @@ export default function Home() {
         <EventBar />
         <CompetitionsSection />
         <Countdown />
-          <PrizePool />
-          <FAQ />
-          <Sponsor />
-        <Timeline />
+        <PrizePool />
+        <FAQ />
+        <Sponsor />
+        <TimelineSection />
+        {/* <Timeline /> */}
         {/* <RSVPButton /> */}
         <Footer />
           
-          
+            
         </div>
       )}
 
