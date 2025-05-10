@@ -140,11 +140,8 @@ const TimelineSection = () => {
 
         .menu-buttons {
           display: flex;
-          flex-wrap: wrap;
-          gap: 12px;
-          justify-content: center;
-          margin-bottom: 60px;
-          padding: 0 1rem;
+          gap: 16px;
+          margin-bottom: 80px;
         }
 
         .menu-btn {
@@ -156,7 +153,6 @@ const TimelineSection = () => {
           border-radius: 50px;
           cursor: pointer;
           transition: all 0.3s ease;
-          font-size: 0.875rem;
         }
 
         .menu-btn.active,
@@ -164,17 +160,19 @@ const TimelineSection = () => {
           background-color: white;
           color: black;
         }
-
+// ---
         .timeline-container {
           width: 90%;
           display: flex;
+          
+          
         }
 
         .timeline-line {
-          width: 5px;
+          width: 3px;
           height: 0;
           background-color: white;
-          margin-left: 6%;
+          margin-left: 37%;
           margin-top: 30px;
         }
 
@@ -195,59 +193,19 @@ const TimelineSection = () => {
           border-radius: 50%;
           margin-top: 10px;
         }
-
+//-- 
         .timeline-text {
           margin-left: 30px;
           color: white;
         }
 
         .timeline-text > h1 {
-          font-size: 28px;
+          font-size: 32px;
           letter-spacing: 1px;
         }
 
         .timeline-text > p {
-          font-size: 16px;
-        }
-
-        @media (max-width: 768px) {
-          .timeline {
-            padding: 60px 0;
-          }
-
-          .timeline > h1 {
-            font-size: 40px;
-            text-align: center;
-          }
-
-          .timeline-container {
-            flex-direction: row;
-            align-items: flex-start;
-          }
-
-          .timeline-point {
-            height: auto;
-            flex-direction: row;
-            align-items: flex-start;
-            margin-bottom: 40px;
-          }
-
-          .timeline-text > h1 {
-            font-size: 20px;
-          }
-
-          .timeline-text > p {
-            font-size: 14px;
-          }
-
-          .circle {
-            width: 30px;
-            height: 30px;
-          }
-
-          .timeline-text {
-            margin-left: 16px;
-          }
+          font-size: 18px;
         }
       `}</style>
     </section>
