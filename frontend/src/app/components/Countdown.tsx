@@ -329,6 +329,17 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
         </div>
+        {/* Decorative image at the bottom right */}
+      <div 
+        className="absolute bottom-30 -left-20 z-0 mb-4 mr-4 opacity-35"
+        style={{
+          backgroundImage: "url('/assets/layer3.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '600px', // Adjust size as needed
+          height: '600px', // Adjust size as needed
+        }}
+      ></div>
       </div>
 
       <style jsx global>{`

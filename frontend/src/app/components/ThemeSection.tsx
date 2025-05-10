@@ -52,7 +52,6 @@ export default function ThemeSection() {
             }}
           >
             {children}
-            
           </span>
         </>
       )}
@@ -60,7 +59,6 @@ export default function ThemeSection() {
   )
 
   return (
-    
     <div className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
       {/* Video Background */}
       <video
@@ -93,7 +91,6 @@ export default function ThemeSection() {
       
 
       {/* Content */}
-      
       <div className="relative z-10 w-full">
         {/* Headline */}
         <ScrollReveal
@@ -153,12 +150,22 @@ export default function ThemeSection() {
             </GlitchText>
           </p>
         </ScrollReveal>
-        
       </div>
-      
+
+      {/* Decorative image at the bottom right */}
+      <div 
+        className="absolute  -bottom-30 -right-20 z-0 mb-4 mr-4 opacity-35"
+        style={{
+          backgroundImage: "url('/assets/layer2.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '400px', // Adjust size as needed
+          height: '400px', // Adjust size as needed
+        }}
+      ></div>
 
       <style jsx>{`
-              /* Additional texture effects */
+        /* Additional texture effects */
         @keyframes grain {
           0%, 100% { transform: translate(0, 0); }
           10% { transform: translate(-5%, -10%); }
