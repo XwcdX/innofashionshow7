@@ -31,53 +31,61 @@ const TimelineSection = () => {
   };
 
   useEffect(() => {
-    const line = document.getElementById("line");
-    const timelineContents = document.querySelectorAll(".timeline-point");
+  const line = document.getElementById("line");
+  const points = document.querySelectorAll(".timeline-point");
 
-    if (!line) return;
+  if (!line || !points.length) return;
 
-    if (window.innerWidth > 768) {
-      gsap.to(line, {
-        scrollTrigger: {
-          trigger: ".timeline-container",
-          start: "top center",
-          end: "80% center",
-          scrub: true,
-        },
-        height: "130vh",
-      });
-    } else {
-      gsap.to(line, {
-        scrollTrigger: {
-          trigger: ".timeline-container",
-          start: "top center",
-          end: "1000% center",
-          scrub: true,
-        },
-        height: "45vh",
-      });
-    }
+  gsap.set(points, { opacity: 0, y: 50 });
 
-    timelineContents.forEach((content) => {
-      gsap.fromTo(
-        content,
-        { opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: content,
-            start: "top 70%",
-            end: "20% center",
-            scrub: true,
-          },
-          opacity: 1,
-        }
-      );
+  // Animasi untuk garis (line)
+  gsap.to(line, {
+    scrollTrigger: {
+      trigger: ".timeline-container",
+      start: "top center",
+      end: "bottom center",
+      scrub: true,
+    },
+    height: window.innerWidth > 768 ? "130vh" : "45vh",
+    ease: "none",
+  });
+
+  // Timeline untuk setiap .timeline-point
+  points.forEach((point) => {
+    const circle = point.querySelector(".circle");
+    const text = point.querySelector(".timeline-text");
+
+    if (!circle || !text) return;
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: point,
+        start: "top 80%", // Lebih cepat muncul
+        end: "top 60%",
+        scrub: true,
+      },
     });
-  }, [active]);
+
+    tl.to(point, { opacity: 1, y: 0, duration: 0.3, ease: "power1.out" }, 0)
+      .fromTo(
+        circle,
+        { scale: 0.5, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.3, ease: "back.out(1.7)" },
+        0
+      )
+      .fromTo(
+        text,
+        { opacity: 0, x: -30 },
+        { opacity: 1, x: 0, duration: 0.3, ease: "power1.out" },
+        0.1
+      );
+  });
+}, [active]);
+
 
   return (
     <section
-      className="timeline bg-black"
+      className="timeline bg-black mt-20"
       id="timeline"
       style={{
         background: "transparent",
@@ -85,7 +93,7 @@ const TimelineSection = () => {
       }}
     >
       {/* Decorative image at the bottom right */}
-      <div 
+      {/* <div 
         className="absolute  -bottom-55 -right-20 z-0 mb-4 mr-4 opacity-100"
         style={{
           backgroundImage: "url('/assets/layer1.png')",
@@ -94,7 +102,7 @@ const TimelineSection = () => {
           width: '700px', // Adjust size as needed
           height: '400px', // Adjust size as needed
         }}
-      ></div>
+      ></div> */}
       <h2
         className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12"
         style={{
@@ -236,7 +244,6 @@ const TimelineSection = () => {
   .timeline-point {
     height: 43vh;
     display: flex;
-    opacity: 0;
   }
 
   .circle {
@@ -300,6 +307,13 @@ const TimelineSection = () => {
           color: black;
         }
 
+        .timeline-point,
+.timeline-line,
+.circle,
+.timeline-text {
+  will-change: transform, opacity;
+}
+  
         .timeline-container {
           width: 90%;
           display: flex;

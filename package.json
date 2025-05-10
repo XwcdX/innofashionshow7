@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "aos": "^2.3.4",
-    "gsap": "^3.13.0",
-    "react-intersection-observer": "^9.16.0"
-  },
-  "devDependencies": {
-    "@types/aos": "^3.0.7"
+    "tailwind-scrollbar": "^4.0.2"
   }
 }
-

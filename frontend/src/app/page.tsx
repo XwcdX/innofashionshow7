@@ -69,7 +69,7 @@ export default function Home() {
         className="absolute top-0 left-0 w-1/3 opacity-50 mix-blend-overlay pointer-events-none"
         style={{ zIndex: -1 }}
       />
-      <img 
+      {/* <img 
         src="/blending_2.png" 
         alt="Decorative blending effect"
         className="absolute bottom-0 right-0 w-1/4 opacity-30 mix-blend-lighten pointer-events-none"
@@ -86,7 +86,7 @@ export default function Home() {
         alt="Decorative blending effect"
         className="absolute top-1/3 right-1/4 w-1/6 opacity-60 mix-blend-soft-light pointer-events-none"
         style={{ zIndex: -1 }}
-      />
+      /> */}
 
       {currentStage === 0 && <LoadingAnimation />}
       {currentStage === 1 && <Bumper onComplete={handleBumperComplete} />}
@@ -99,10 +99,10 @@ export default function Home() {
         <EventBar />
         <CompetitionsSection />
         <Countdown />
+        <TimelineSection />
         <PrizePool />
         <FAQ />
         <Sponsor />
-        <TimelineSection />
         {/* <Timeline /> */}
         {/* <RSVPButton /> */}
         <Footer />

@@ -46,7 +46,7 @@ const PrizePool: React.FC = () => {
 
   return (
     <section 
-      className="min-h-screen flex items-center justify-center p-4"
+      className="min-h-screen flex items-center justify-center p-4 -mt-60"
       style={{ 
         background: 'transparent',
         scrollSnapAlign: 'start'
