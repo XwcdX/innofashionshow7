@@ -10,7 +10,6 @@ export default function ThemeSection() {
   useEffect(() => {
     setPageLoaded(true)
     
-    // Start glitch effect 3 seconds after page load
     const glitchTimer = setTimeout(() => {
       const interval = setInterval(() => {
         setGlitchActive(true)
@@ -20,7 +19,6 @@ export default function ThemeSection() {
       return () => clearInterval(interval)
     }, 3000)
 
-    // Try to autoplay video
     if (videoRef.current) {
       videoRef.current.play().catch(e => console.log("Autoplay prevented:", e))
     }
@@ -60,7 +58,6 @@ export default function ThemeSection() {
 
   return (
     <div className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
-      {/* Video Background */}
       <video
         ref={videoRef}
         autoPlay
@@ -73,26 +70,30 @@ export default function ThemeSection() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          opacity: 0.8, // Adjust opacity as needed
-          mixBlendMode: 'screen' // Experiment with 'overlay', 'screen', or 'lighten'
+          filter: 'brightness(1.15) contrast(1.1)',
+          opacity: 0.95
         }}
       >
         <source src="/teaser_inno_1.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
-      {/* Overlay for better text visibility */}
       <div 
         className="absolute inset-0 z-1"
         style={{
-          background: 'linear-gradient(180deg, rgba(163, 10, 153, 0.3) 0%, rgba(40, 22, 96, 0.7) 100%)'
+          background: 'linear-gradient(180deg, rgba(163, 10, 153, 0.15) 0%, rgba(40, 22, 96, 0.3) 100%)',
+          backdropFilter: 'blur(1px)'
         }}
       />
       
+      <div 
+        className="absolute inset-0 z-2 pointer-events-none"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.3) 100%)'
+        }}
+      />
 
-      {/* Content */}
       <div className="relative z-10 w-full">
-        {/* Headline */}
         <ScrollReveal
           baseOpacity={0}
           enableBlur={true}
@@ -112,7 +113,6 @@ export default function ThemeSection() {
           </h1>
         </ScrollReveal>
           
-        {/* Rest of your content remains the same */}
         <ScrollReveal
           baseOpacity={0}
           enableBlur={true}
@@ -152,18 +152,6 @@ export default function ThemeSection() {
         </ScrollReveal>
       </div>
 
-      {/* Decorative image at the bottom right */}
-      <div 
-        className="absolute  -bottom-30 -right-20 z-0 mb-4 mr-4 opacity-35"
-        style={{
-          backgroundImage: "url('/assets/layer2.png')",
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          width: '400px', // Adjust size as needed
-          height: '400px', // Adjust size as needed
-        }}
-      ></div>
-
       <style jsx>{`
         /* Additional texture effects */
         @keyframes grain {
@@ -179,7 +167,6 @@ export default function ThemeSection() {
           90% { transform: translate(-10%, 10%); }
         }
 
-        /* Add this to your global styles for better texture */
         body::before {
           content: "";
           position: fixed;
@@ -204,6 +191,17 @@ export default function ThemeSection() {
           60% { transform: translate(2px, 2px); }
           80% { transform: translate(2px, -2px); }
           100% { transform: translate(0); }
+        }
+
+        /* Video enhancement animation */
+        @keyframes video-enhance {
+          0% { filter: brightness(1.15) contrast(1.1); }
+          50% { filter: brightness(1.2) contrast(1.15); }
+          100% { filter: brightness(1.15) contrast(1.1); }
+        }
+        
+        video {
+          animation: video-enhance 8s ease-in-out infinite;
         }
       `}</style>
     </div>

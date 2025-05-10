@@ -78,8 +78,13 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
     return Math.min((current / max) * 100, 100);
   };
 
-  const radius = isMobile ? 40 : 45;
+  const radius = isMobile ? 25 : 45;
   const circumference = 2 * Math.PI * radius;
+  const circleSize = isMobile ? 'w-20 h-20' : 'w-32 h-32 md:w-40 md:h-40';
+  const numberSize = isMobile ? 'text-sm' : 'text-4xl md:text-4xl';
+  const labelSize = isMobile ? 'text-xs' : 'text-xl md:text-xl';
+  const gapSize = isMobile ? 'gap-0' : 'gap-6 md:gap-8';
+  const strokeWidth = isMobile ? '6' : '8';
 
   if (!hasMounted) {
     return (
@@ -91,13 +96,13 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
         }}
         id="countdown"
       >
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-1">
           <div className="relative mb-16 text-center" style={{ height: '56px' }}></div>
-          <div className="flex flex-wrap justify-center gap-8">
+          <div className={`flex flex-nowrap justify-center ${gapSize} overflow-x-auto py-4`}>
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="flex flex-col items-center">
-                <div className="relative w-32 h-32 md:w-40 md:h-40 bg-gray-800 rounded-full"></div>
-                <div className="mt-4 w-20 h-6 bg-gray-800 rounded"></div>
+              <div key={i} className="flex-shrink-0 flex flex-col items-center">
+                <div className={`relative ${circleSize} bg-gray-800 rounded-full`}></div>
+                <div className="mt-4 w-16 h-4 bg-gray-800 rounded"></div>
               </div>
             ))}
           </div>
@@ -108,16 +113,16 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
 
   return (
     <section 
-      className="min-h-screen flex items-center justify-center py-16 font-neue-montreal md:-mb-50 md:-mt-45"
+      className="min-h-screen flex items-center justify-center py-16 font-neue-montreal"
       style={{ 
         background: 'transparent',
         scrollSnapAlign: 'start'
       }}
       id="countdown"
     >
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-1">
         {/* title */}
-        <div className="relative mb-16 text-center">
+        <div className="relative mb-8 md:mb-16 text-center">
           <h2 
             className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
               glitchActive ? 'glitch-active' : ''
@@ -156,10 +161,10 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
           </h2>
         </div>
         
-        <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+        <div className={`flex flex-nowrap justify-center ${gapSize} overflow-x-auto py-4`}>
           {/* days */}
-          <div className="flex flex-col items-center">
-            <div className="relative w-32 h-32 md:w-40 md:h-40">
+          <div className="flex-shrink-0 flex flex-col items-center">
+            <div className={`relative ${circleSize}`}>
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -167,7 +172,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
                   r={radius}
                   fill="none"
                   stroke="#a6ff4d"
-                  strokeWidth="8"
+                  strokeWidth={strokeWidth}
                   opacity="0.3"
                 />
                 <circle
@@ -176,7 +181,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
                   r={radius}
                   fill="none"
                   stroke="#8f03d1"
-                  strokeWidth="8"
+                  strokeWidth={strokeWidth}
                   strokeLinecap="round"
                   strokeDasharray={circumference}
                   strokeDashoffset={circumference - (calculatePercentage(countdown.days, maxDaysRef.current) / 100 * circumference)}
@@ -185,7 +190,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
                 <span 
-                  className="text-4xl md:text-5xl font-bold"
+                  className={`${numberSize} font-bold`}
                   style={{ color: '#eef2ff' }}
                 >
                   {countdown.days.toString().padStart(2, '0')}
@@ -193,7 +198,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </div>
             </div>
             <span 
-              className="mt-6 text-xl uppercase tracking-widest"
+              className={`mt-2 md:mt-6 ${labelSize} uppercase tracking-widest`}
               style={{ color: '#a6ff4d', letterSpacing: '0.2em' }}
             >
               Days
@@ -201,8 +206,8 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
           </div>
 
           {/* hours */}
-          <div className="flex flex-col items-center">
-            <div className="relative w-32 h-32 md:w-40 md:h-40">
+          <div className="flex-shrink-0 flex flex-col items-center">
+            <div className={`relative ${circleSize}`}>
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -210,7 +215,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
                   r={radius}
                   fill="none"
                   stroke="#4dffff"
-                  strokeWidth="8"
+                  strokeWidth={strokeWidth}
                   opacity="0.3"
                 />
                 <circle
@@ -219,7 +224,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
                   r={radius}
                   fill="none"
                   stroke="#0c1f6f"
-                  strokeWidth="8"
+                  strokeWidth={strokeWidth}
                   strokeLinecap="round"
                   strokeDasharray={circumference}
                   strokeDashoffset={circumference - (calculatePercentage(countdown.hours, 24) / 100 * circumference)}
@@ -228,7 +233,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
                 <span 
-                  className="text-4xl md:text-5xl font-bold"
+                  className={`${numberSize} font-bold`}
                   style={{ color: '#eef2ff' }}
                 >
                   {countdown.hours.toString().padStart(2, '0')}
@@ -236,7 +241,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </div>
             </div>
             <span 
-              className="mt-6 text-xl uppercase tracking-widest"
+              className={`mt-2 md:mt-6 ${labelSize} uppercase tracking-widest`}
               style={{ color: '#4dffff', letterSpacing: '0.2em' }}
             >
               Hours
@@ -244,8 +249,8 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
           </div>
 
           {/* minutes */}
-          <div className="flex flex-col items-center">
-            <div className="relative w-32 h-32 md:w-40 md:h-40">
+          <div className="flex-shrink-0 flex flex-col items-center">
+            <div className={`relative ${circleSize}`}>
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -253,7 +258,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
                   r={radius}
                   fill="none"
                   stroke="#c306aa"
-                  strokeWidth="8"
+                  strokeWidth={strokeWidth}
                   opacity="0.3"
                 />
                 <circle
@@ -262,7 +267,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
                   r={radius}
                   fill="none"
                   stroke="#a6ff4d"
-                  strokeWidth="8"
+                  strokeWidth={strokeWidth}
                   strokeLinecap="round"
                   strokeDasharray={circumference}
                   strokeDashoffset={circumference - (calculatePercentage(countdown.minutes, 60) / 100 * circumference)}
@@ -271,7 +276,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
                 <span 
-                  className="text-4xl md:text-5xl font-bold"
+                  className={`${numberSize} font-bold`}
                   style={{ color: '#eef2ff' }}
                 >
                   {countdown.minutes.toString().padStart(2, '0')}
@@ -279,7 +284,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </div>
             </div>
             <span 
-              className="mt-6 text-xl uppercase tracking-widest"
+              className={`mt-2 md:mt-6 ${labelSize} uppercase tracking-widest`}
               style={{ color: '#c306aa', letterSpacing: '0.2em' }}
             >
               Minutes
@@ -287,8 +292,8 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
           </div>
 
           {/* seconds */}
-          <div className="flex flex-col items-center">
-            <div className="relative w-32 h-32 md:w-40 md:h-40">
+          <div className="flex-shrink-0 flex flex-col items-center">
+            <div className={`relative ${circleSize}`}>
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -296,7 +301,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
                   r={radius}
                   fill="none"
                   stroke="#4d88ff"
-                  strokeWidth="8"
+                  strokeWidth={strokeWidth}
                   opacity="0.3"
                 />
                 <circle
@@ -305,7 +310,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
                   r={radius}
                   fill="none"
                   stroke="#4dffff"
-                  strokeWidth="8"
+                  strokeWidth={strokeWidth}
                   strokeLinecap="round"
                   strokeDasharray={circumference}
                   strokeDashoffset={circumference - (calculatePercentage(countdown.seconds, 60) / 100 * circumference)}
@@ -314,7 +319,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
                 <span 
-                  className="text-4xl md:text-5xl font-bold"
+                  className={`${numberSize} font-bold`}
                   style={{ color: '#eef2ff' }}
                 >
                   {countdown.seconds.toString().padStart(2, '0')}
@@ -322,24 +327,24 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </div>
             </div>
             <span 
-              className="mt-6 text-xl uppercase tracking-widest"
+              className={`mt-2 md:mt-6 ${labelSize} uppercase tracking-widest`}
               style={{ color: '#8f03d1', letterSpacing: '0.2em' }}
             >
               Seconds
             </span>
           </div>
         </div>
-        {/* Decorative image at the bottom right */}
-      <div 
-        className="absolute bottom-30 -left-20 z-[-10] mb-4 mr-4 opacity-35"
-        style={{
-          backgroundImage: "url('/assets/layer3.png')",
-          backgroundSize: 'contain',
-          backgroundRepeat: 'no-repeat',
-          width: '600px', // Adjust size as needed
-          height: '600px', // Adjust size as needed
-        }}
-      ></div>
+        {/* Decorative image at the bottom left */}
+        <div 
+          className="absolute bottom-30 -left-20 z-[-10] mb-4 mr-4 opacity-35"
+          style={{
+            backgroundImage: "url('/assets/layer3.png')",
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+            width: '600px',
+            height: '600px',
+          }}
+        ></div>
       </div>
 
       <style jsx global>{`
