@@ -53,6 +53,28 @@ const PrizePool: React.FC = () => {
       }}
       id="prize"
     >
+            {/* Decorative image at the bottom right */}
+      <div 
+        className="absolute bottom-0 -right-40 z-0 mb-4 mr-4 opacity-35"
+        style={{
+          backgroundImage: "url('/assets/layer2.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '700px', // Adjust size as needed
+          height: '400px', // Adjust size as needed
+        }}
+      ></div>
+                  {/* Decorative image at the bottom right */}
+      <div 
+        className="absolute bottom-0 -left-40 z-0 mb-4 mr-4 opacity-35"
+        style={{
+          backgroundImage: "url('/assets/lines2.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '700px', // Adjust size as needed
+          height: '700px', // Adjust size as needed
+        }}
+      ></div>
       <div className="text-center w-full max-w-6xl px-4">
         <div className="relative">
           {/* title */}

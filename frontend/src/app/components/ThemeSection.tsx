@@ -151,10 +151,20 @@ export default function ThemeSection() {
           </p>
         </ScrollReveal>
       </div>
-
+                  {/* Decorative image at the bottom right */}
+      <div 
+        className="absolute  -bottom-55 -right-20 z-0 mb-4 mr-4 opacity-100"
+        style={{
+          backgroundImage: "url('/assets/layer1.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '700px', // Adjust size as needed
+          height: '400px', // Adjust size as needed
+        }}
+      ></div>
       {/* Decorative image at the bottom right */}
       <div 
-        className="absolute  -bottom-30 -right-20 z-0 mb-4 mr-4 opacity-35"
+        className="absolute  -bottom-30 -left-20 z-0 mb-4 mr-4 opacity-35"
         style={{
           backgroundImage: "url('/assets/layer2.png')",
           backgroundSize: 'contain',

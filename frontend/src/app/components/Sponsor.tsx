@@ -119,7 +119,17 @@ const Sponsor = () => {
             )}
           </h2>
         </div>
-        
+              {/* Decorative image at the bottom right */}
+      <div 
+        className="absolute  -bottom-49 -right-20 z-0 mb-4 mr-4 opacity-100"
+        style={{
+          backgroundImage: "url('/assets/layer1.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '500px', // Adjust size as needed
+          height: '400px', // Adjust size as needed
+        }}
+      ></div>
         <div className="w-full grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 gap-y-8 gap-x-4 sm:gap-6 md:gap-8 py-4 sm:py-8 md:py-12">
           {sponsors.map((sponsor, index) => (
             <div key={index} className="flex justify-center items-center">
