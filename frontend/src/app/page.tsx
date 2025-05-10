@@ -115,6 +115,116 @@ export default function Home() {
   html {
     scroll-behavior: auto !important;
   }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #8f03d1; /* purple thumb */
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #202021; /* dark track */
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #8f03d1 #202021;
+  }
+
+  .mix-blend-overlay {
+    mix-blend-mode: overlay;
+  }
+  .mix-blend-lighten {
+    mix-blend-mode: lighten;
+  }
+  .mix-blend-screen {
+    mix-blend-mode: screen;
+  }
+  .mix-blend-soft-light {
+    mix-blend-mode: soft-light;
+  }
+
+  body {
+    background: linear-gradient(
+      135deg,
+      #A30A99 0%,
+      #820D8C 25%,
+      #5F117F 50%,
+      #3D1472 75%,
+      #281660 100%
+    );
+    background-attachment: fixed;
+    background-size: 200% 200%;
+    min-height: 100vh;
+    animation: gradientAnimation 15s ease infinite;
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  section {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    background-color: transparent;
+  }
+
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+  }
+
+  .slide-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s ease-out forwards;
+  }
+
+  .scale-in {
+    opacity: 0;
+    transform: scale(0.95);
+    animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+  html {
+    scroll-behavior: auto !important;
+  }
   
   .mix-blend-overlay {
     mix-blend-mode: overlay;5
