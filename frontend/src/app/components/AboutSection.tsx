@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ScrollReveal from "./ScrollReveal"; // Adjust if needed
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,9 +37,8 @@ export default function AboutSection() {
 
   return (
     <section className="flex flex-col md:flex-row w-full min-h-screen text-white">
-      {/* Left Section with ScrollReveal */}
-      <ScrollReveal className="w-full md:w-1/2 relative p-10 md:p-16">
-        {/* Lines Asset (bottom-left corner) */}
+      {/* Left Section */}
+      <div className="w-full md:w-1/2 relative p-10 md:p-16">
         <div className="transform scale-210 absolute bottom-7 left-0 w-40 h-40">
           <Image
             src="/assets/lines1.png"
@@ -61,10 +59,7 @@ export default function AboutSection() {
           ABOUT US
         </h2>
 
-        <p
-          className="text-sm leading-relaxed tracking-wide text-justify"
-          style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
-        >
+        <p className="text-sm leading-relaxed tracking-wide text-justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate
           ex in dolor fringilla pellentesque. Ut ut purus semper, vehicula enim
           sit amet, porttitor arcu. Quisque hendrerit maximus mattis. Donec
@@ -81,12 +76,12 @@ export default function AboutSection() {
           risus eu, feugiat molestie neque. Vivamus odio velit, pretium
           vulputate ligula eget.
         </p>
-      </ScrollReveal>
+      </div>
 
-      {/* Right Section Image with custom GSAP fade + slide */}
+      {/* Right Section Image with GSAP fade + slide */}
       <div
         ref={rightImageRef}
-        className="w-full md:w-1/2 relative h-[500px] md:h-auto"
+        className="right-image w-full md:w-1/2 relative h-[500px] md:h-auto"
       >
         <Image
           src="/assets/runway.jpg"

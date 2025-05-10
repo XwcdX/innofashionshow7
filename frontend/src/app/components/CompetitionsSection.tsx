@@ -5,7 +5,7 @@ const CompetitionsSection: React.FC = () => {
   return (
     <section
       id="competitions"
-      className="min-h-screen flex items-center justify-center py-16 font-neue-montreal"
+      className="min-h-screen flex items-center justify-center py-16 font-neue-montreal md:-mb-150"
       style={{
         background: 'transparent',
         scrollSnapAlign: 'start',
