@@ -77,7 +77,7 @@ export default function EventBar() {
   return (
     
     <section
-      className="min-h-[50vh] text-dark py-16 relative overflow-hidden md:-mb-40" // allows layers
+      className="min-h-[50vh] text-dark py-16 relative overflow-hidden md:-mb-40 mt-65 sm:mt-0" // allows layers
       style={{
         background: 'transparent',
         scrollSnapAlign: 'start',
