@@ -1,10 +1,14 @@
 'use client'
 import ScrollReveal from "./ScrollReveal";
 import { useState, useEffect, ReactNode, useRef } from 'react'
+import SplitText from "./SplitText";
+import { gsap } from 'gsap';
+
 
 export default function ThemeSection() {
   const [glitchActive, setGlitchActive] = useState<boolean>(false)
   const [pageLoaded, setPageLoaded] = useState<boolean>(false)
+  const [splitTextUsed, setSplitTextUsed] = useState<boolean>(true) // To manage SplitText rendering
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -25,6 +29,17 @@ export default function ThemeSection() {
 
     return () => clearTimeout(glitchTimer)
   }, [])
+
+  useEffect(() => {
+    if (pageLoaded) {
+      // After the page loads, stop using SplitText and switch to GlitchText
+      setTimeout(() => setSplitTextUsed(false), 3000);
+    }
+  }, [pageLoaded]);
+
+  const handleAnimationComplete = () => {
+    console.log('All letters have animated!');
+  };
 
   const GlitchText = ({ children, className }: { children: ReactNode, className?: string }) => (
     <span className={`relative ${className}`} style={{ opacity: pageLoaded ? 1 : 0 }}>
@@ -54,10 +69,10 @@ export default function ThemeSection() {
         </>
       )}
     </span>
-  )
+  );
 
   return (
-    <div id = "Home" className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
+    <div id="Home" className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
       <video
         ref={videoRef}
         autoPlay
@@ -78,21 +93,6 @@ export default function ThemeSection() {
         Your browser does not support the video tag.
       </video>
 
-      {/* <div 
-        className="absolute inset-0 z-1"
-        style={{
-          background: 'linear-gradient(180deg, rgba(163, 10, 153, 0.15) 0%, rgba(40, 22, 96, 0.3) 100%)',
-          backdropFilter: 'blur(1px)'
-        }}
-      />
-      
-      <div 
-        className="absolute inset-0 z-2 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.3) 100%)'
-        }}
-      /> */}
-
       <div className="relative z-10 w-full">
         <ScrollReveal
           baseOpacity={0}
@@ -102,17 +102,30 @@ export default function ThemeSection() {
           delay={0.1}
           className="w-full text-center"
         >
-          <h1
-            className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
+          <h1 className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
             style={{
               textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
               fontStyle: 'italic',
-            }}
-          >
-            <GlitchText>ILLUMINE</GlitchText>
+            }}>
+            {splitTextUsed ? (
+              <SplitText
+  text="ILLUMINE"
+  className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
+  delay={150}
+  animationFrom={{ opacity: 0, transform: 'translate3d(0,50px,0)' }}
+  animationTo={{ opacity: 1, transform: 'translate3d(0,0,0)' }}
+  easing={gsap.parseEase('easeOutCubic')}
+  threshold={0.2}
+  rootMargin="-50px"
+  onLetterAnimationComplete={handleAnimationComplete}
+/>
+
+            ) : (
+              <GlitchText>ILLUMINE</GlitchText>
+            )}
           </h1>
         </ScrollReveal>
-          
+
         <ScrollReveal
           baseOpacity={0}
           enableBlur={true}
@@ -151,8 +164,8 @@ export default function ThemeSection() {
           </p>
         </ScrollReveal>
       </div>
-                  {/* Decorative image at the bottom right */}
-      <div 
+
+      <div
         className="absolute  -bottom-55 -right-20 z-0 mb-4 mr-4 opacity-100"
         style={{
           backgroundImage: "url('/assets/layer1.png')",
@@ -162,8 +175,8 @@ export default function ThemeSection() {
           height: '400px', // Adjust size as needed
         }}
       ></div>
-      {/* Decorative image at the bottom right */}
-      <div 
+
+      <div
         className="absolute  -bottom-30 -left-20 z-0 mb-4 mr-4 opacity-35"
         style={{
           backgroundImage: "url('/assets/layer2.png')",
@@ -174,23 +187,7 @@ export default function ThemeSection() {
         }}
       ></div>
 
-{/* <div
-  className="absolute -bottom-1 left-1/2 w-[100vw] h-40 rounded-lg opacity-100"
-  style={{
-    background: 'linear-gradient(135deg, #A30A99 0%, #820D8C 25%, #5F117F 50%, #3D1472 75%, #281660 100%)',
-    backgroundSize: '200% 200%', // Gradien dengan ukuran besar agar animasi berjalan dengan lancar
-    backgroundPosition: '0% 50%', // Posisi awal background
-    animation: 'gradientAnimation 15s ease infinite', // Menambahkan animasi
-    transform: 'translateX(-50%)', // Menyelaraskan elemen ke tengah horizontal
-    WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 100%)',
-    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 100%)',
-  }}
-></div> */}
-
-
-
       <style jsx>{`
-        /* Additional texture effects */
         @keyframes grain {
           0%, 100% { transform: translate(0, 0); }
           10% { transform: translate(-5%, -10%); }
@@ -217,6 +214,7 @@ export default function ThemeSection() {
           z-index: 100;
           opacity: 0.25;
         }
+
         .glitch-active {
           animation: glitch-anim 0.3s linear infinite;
         }
@@ -230,7 +228,6 @@ export default function ThemeSection() {
           100% { transform: translate(0); }
         }
 
-        /* Video enhancement animation */
         @keyframes video-enhance {
           0% { filter: brightness(1.15) contrast(1.1); }
           50% { filter: brightness(1.2) contrast(1.15); }
@@ -240,17 +237,6 @@ export default function ThemeSection() {
         video {
           animation: video-enhance 8s ease-in-out infinite;
         }
-// @keyframes gradientAnimation {
-//     0% {
-//       background-position: 0% 50%;
-//     }
-//     50% {
-//       background-position: 100% 50%;
-//     }
-//     100% {
-//       background-position: 0% 50%;
-//     }
-      
       `}</style>
     </div>
   );
