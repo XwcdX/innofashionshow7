@@ -1,6 +1,7 @@
 "use client";
+import React, { useLayoutEffect } from "react";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 
@@ -30,69 +31,79 @@ const TimelineSection = () => {
     ],
   };
 
-  useEffect(() => {
-    const line = document.getElementById("line");
-    const timelineContents = document.querySelectorAll(".timeline-point");
+  useLayoutEffect(() => {
+  const line = document.getElementById("line");
+  const timelineContents = document.querySelectorAll(".timeline-point");
 
-    if (!line) return;
+  if (!line || timelineContents.length === 0) return;
 
-    if (window.innerWidth > 768) {
-      gsap.to(line, {
+  const timelineContainer = document.querySelector(".timeline-container");
+
+  // Clear previous triggers
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+  // Line animation
+  gsap.to(line, {
+    scrollTrigger: {
+      trigger: timelineContainer,
+      start: "top center",
+      end: window.innerWidth > 768 ? "80% center" : "1000% center",
+      scrub: true,
+    },
+    height: window.innerWidth > 768 ? "130vh" : "45vh",
+  });
+
+  // Each point animation
+  timelineContents.forEach((content) => {
+    gsap.fromTo(
+      content,
+      { opacity: 0 },
+      {
+        opacity: 1,
         scrollTrigger: {
-          trigger: ".timeline-container",
-          start: "top center",
-          end: "80% center",
+          trigger: content,
+          start: "top 100%",
+          end: "top center",
           scrub: true,
         },
-        height: "130vh",
-      });
-    } else {
-      gsap.to(line, {
-        scrollTrigger: {
-          trigger: ".timeline-container",
-          start: "top center",
-          end: "1000% center",
-          scrub: true,
-        },
-        height: "45vh",
-      });
-    }
+      }
+    );
+  });
 
-    timelineContents.forEach((content) => {
-      gsap.fromTo(
-        content,
-        { opacity: 0 },
-        {
-          scrollTrigger: {
-            trigger: content,
-            start: "top 70%",
-            end: "20% center",
-            scrub: true,
-          },
-          opacity: 1,
-        }
-      );
-    });
-  }, [active]);
+  ScrollTrigger.refresh();
+}, [active]);
+
+
 
   return (
     <section
-      className="timeline bg-black"
+      className="timeline bg-black mt-20"
       id="timeline"
       style={{
         background: "transparent",
         scrollSnapAlign: "start",
       }}
     >
-      {/* Decorative image at the bottom right */}
+      {/* Decorative image at the top right */}
       <div 
-        className="absolute  -bottom-55 -right-20 z-0 mb-4 mr-4 opacity-100"
+        className="absolute top-55 -right-70 z-0 mb-4 mr-4 opacity-20"
         style={{
-          backgroundImage: "url('/assets/layer1.png')",
+          backgroundImage: "url('/assets/lines3.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           width: '700px', // Adjust size as needed
-          height: '400px', // Adjust size as needed
+          height: '500px', // Adjust size as needed
+        }}
+      ></div>
+      {/* Decorative image 2 at the bottom right */}
+      <div 
+        className="absolute top-55 -left-20 z-0 mb-4 mr-4 opacity-15"
+        style={{
+          backgroundImage: "url('/assets/lines1.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '700px', // Adjust size as needed
+          height: '700px', // Adjust size as needed
         }}
       ></div>
       <h2
@@ -236,7 +247,6 @@ const TimelineSection = () => {
   .timeline-point {
     height: 43vh;
     display: flex;
-    opacity: 0;
   }
 
   .circle {
@@ -299,6 +309,13 @@ const TimelineSection = () => {
           background-color: white;
           color: black;
         }
+
+        .timeline-point,
+.timeline-line,
+.circle,
+.timeline-text {
+  will-change: transform, opacity;
+}
 
         .timeline-container {
           width: 90%;

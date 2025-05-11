@@ -189,10 +189,10 @@ const FAQ: React.FC = () => {
         const cards = sliderRef.current.querySelectorAll('.faq-card');
         const cardElementHeight = cardHeight - gap;
         cards.forEach(card => {
-          (card as HTMLElement).style.width = '100%';
+          (card as HTMLElement).style.width = 'calc(100% - 32px)';
           (card as HTMLElement).style.height = `${cardElementHeight}px`;
           (card as HTMLElement).style.minHeight = `${cardElementHeight}px`;
-          (card as HTMLElement).style.marginBottom = `${gap}px`;
+          (card as HTMLElement).style.margin = `0 16px ${gap}px 16px`;
         });
       } else {
         const containerWidth = containerRef.current.offsetWidth;
@@ -420,13 +420,13 @@ const FAQ: React.FC = () => {
 
   return (
     <section
+      id="faq"
       className="min-h-screen w-full flex flex-col justify-center relative overflow-hidden py-8 md:py-12"
       style={{ 
         background: 'transparent'
       }}
-      id="faq"
     >
-      <div className="container mx-auto px-4 flex-1 flex flex-col justify-center relative z-10">
+      <div className="container mx-auto px-0 flex-1 flex flex-col justify-center relative z-10">
         <div className="relative mb-6 md:mb-8 text-center">
           <h2
             className={`text-4xl md:text-5xl font-bold uppercase tracking-tighter inline-block relative ${
@@ -475,12 +475,13 @@ const FAQ: React.FC = () => {
             style={{ 
               scrollBehavior: 'auto', 
               WebkitOverflowScrolling: 'touch',
-              overscrollBehavior: 'contain'
+              overscrollBehavior: 'contain',
+              marginLeft: isMobile ? '-12px' : '0'
             }}
           >
             <div
               ref={sliderRef}
-              className={`flex gap-3 px-1 ${isMobile ? 'flex-col' : 'flex-row'}`}
+              className={`flex ${isMobile ? 'flex-col pl-3' : 'flex-row gap-3'}`}
             >
               {faqs.map((faq, index) => (
                 <div
@@ -496,10 +497,13 @@ const FAQ: React.FC = () => {
                   >
                     {/* question */}
                     <div
-                      className={`absolute w-full h-full backface-hidden rounded-lg p-3 md:p-4 flex items-center justify-center cursor-pointer shadow-md group-hover:shadow-lg transition-shadow duration-300 ${
+                      className={`absolute w-full h-full backface-hidden rounded-lg sm:p-2 md:p-4 flex items-center justify-center cursor-pointer shadow-md group-hover:shadow-lg transition-shadow duration-300 ${
                         activeIndex === index ? 'bg-gradient-to-br from-purple-100 to-blue-100' : 'bg-gradient-to-b from-purple-50 to-white'
                       }`}
-                      style={{ border: '1px solid rgba(143, 3, 209, 0.3)' }}
+                      style={{ 
+                        border: '1px solid rgba(143, 3, 209, 0.3)',
+                        borderRadius: '12px 12px 12px 12px'
+                      }}
                       role="button" 
                       aria-expanded={activeIndex === index}
                       tabIndex={0}
@@ -520,10 +524,13 @@ const FAQ: React.FC = () => {
 
                     {/* answer */}
                     <div
-                      className={`absolute w-full h-full backface-hidden rounded-lg p-3 md:p-4 flex flex-col shadow-md rotate-y-180 ${
-                         activeIndex === index ? 'bg-gradient-to-br from-blue-100 to-purple-100' : 'bg-gradient-to-b from-blue-50 to-white'
+                      className={`absolute w-full h-full backface-hidden rounded-lg p-4 md:p-4 flex flex-col shadow-md rotate-y-180 ${
+                        activeIndex === index ? 'bg-gradient-to-br from-blue-100 to-purple-100' : 'bg-gradient-to-b from-blue-50 to-white'
                       }`}
-                      style={{ border: '1px solid rgba(143, 3, 209, 0.3)' }}
+                      style={{ 
+                        border: '1px solid rgba(143, 3, 209, 0.3)',
+                        borderRadius: '12px 12px 12px 12px'
+                      }}
                     >
                       <h3 
                         className="font-semibold mb-2 line-clamp-2" 
@@ -548,7 +555,7 @@ const FAQ: React.FC = () => {
                       <div className="flex justify-end items-center text-gray-500 text-xs mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
                         Back
                         <span className="text-xl ml-1" style={{ color: '#c306aa' }} aria-hidden="true">
-                           ×
+                          ×
                         </span>
                       </div>
                     </div>
@@ -583,6 +590,13 @@ const FAQ: React.FC = () => {
             outline: 2px solid #4dffff;
             outline-offset: 1px;
             border-radius: 0.5rem;
+        }
+        @media (max-width: 767px) {
+          .faq-card {
+            width: calc(100% - 24px) !important;
+            margin-left: 2px !important;
+            margin-right: 2px !important;
+          }
         }
       `}</style>
     </section>

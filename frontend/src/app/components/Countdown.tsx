@@ -331,7 +331,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
         </div>
         {/* Decorative image at the bottom right */}
       <div 
-        className="absolute bottom-30 -left-20 z-0 mb-4 mr-4 opacity-35"
+        className="absolute bottom-30 -left-20 z-[-10] mb-4 mr-4 opacity-35"
         style={{
           backgroundImage: "url('/assets/layer3.png')",
           backgroundSize: 'contain',

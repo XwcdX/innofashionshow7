@@ -1,61 +1,45 @@
-'use client';
-import ScrollReveal from "./ScrollReveal"; // Assuming this component is correctly implemented
-import { useState, useEffect, ReactNode, useRef } from 'react';
+'use client'
+import ScrollReveal from "./ScrollReveal";
+import { useState, useEffect, ReactNode, useRef } from 'react'
+import SplitText from "./SplitText";
+import { gsap } from 'gsap';
+
 
 export default function ThemeSection() {
-  const [glitchActive, setGlitchActive] = useState<boolean>(false);
-  const [pageLoaded, setPageLoaded] = useState<boolean>(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  // Refs to store timer IDs for proper cleanup
-  const glitchEffectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const glitchIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [glitchActive, setGlitchActive] = useState<boolean>(false)
+  const [pageLoaded, setPageLoaded] = useState<boolean>(false)
+  const [splitTextUsed, setSplitTextUsed] = useState<boolean>(true) // To manage SplitText rendering
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
-    setPageLoaded(true);
-    const currentVideo = videoRef.current; // Capture video ref for use in cleanup
+    setPageLoaded(true)
 
-    // Start glitch effect 3 seconds after page load
-    glitchEffectTimeoutRef.current = setTimeout(() => {
-      glitchIntervalRef.current = setInterval(() => {
-        setGlitchActive(true);
-        setTimeout(() => setGlitchActive(false), 100);
-      }, 3000); // Glitch triggers every 3 seconds
-    }, 3000); // Initial delay for glitch effect
+    const glitchTimer = setTimeout(() => {
+      const interval = setInterval(() => {
+        setGlitchActive(true)
+        setTimeout(() => setGlitchActive(false), 100)
+      }, 3000)
 
-    // Autoplay background video
-    if (currentVideo) {
-      // Ensure necessary attributes for a background looping video
-      currentVideo.muted = true;
-      currentVideo.loop = true;
-      currentVideo.playsInline = true; // Important for iOS and some Android browsers
-      currentVideo.preload = 'auto'; // Good practice for videos expected to play
+      return () => clearInterval(interval)
+    }, 3000)
 
-      currentVideo.play().catch(error => {
-        // Catch potential errors, especially if autoplay is blocked or element is removed
-        if ((error as DOMException).name === 'AbortError') {
-          console.warn('ThemeSection: Background video play was aborted (likely due to unmount).');
-        } else {
-          console.error("ThemeSection: Background video autoplay prevented or error:", error);
-        }
-      });
+    if (videoRef.current) {
+      videoRef.current.play().catch(e => console.log("Autoplay prevented:", e))
     }
 
-    // Cleanup function: This runs when the component unmounts
-    return () => {
-      if (glitchEffectTimeoutRef.current) {
-        clearTimeout(glitchEffectTimeoutRef.current);
-      }
-      if (glitchIntervalRef.current) {
-        clearInterval(glitchIntervalRef.current);
-      }
+    return () => clearTimeout(glitchTimer)
+  }, [])
 
-      // Pause the video if it's playing and the component unmounts
-      if (currentVideo && !currentVideo.paused) {
-        currentVideo.pause();
-      }
-    };
-  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+  useEffect(() => {
+    if (pageLoaded) {
+      // After the page loads, stop using SplitText and switch to GlitchText
+      setTimeout(() => setSplitTextUsed(false), 3000);
+    }
+  }, [pageLoaded]);
+
+  const handleAnimationComplete = () => {
+    console.log('All letters have animated!');
+  };
 
   const GlitchText = ({ children, className }: { children: ReactNode, className?: string }) => (
     <span className={`relative ${className || ''}`} style={{ opacity: pageLoaded ? 1 : 0 }}>
@@ -90,8 +74,7 @@ export default function ThemeSection() {
   );
 
   return (
-    <div className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
-      {/* Video Background */}
+    <div id="Home" className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
       <video
         ref={videoRef}
         // autoPlay, muted, loop, playsInline are now handled by useEffect
@@ -101,25 +84,16 @@ export default function ThemeSection() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          opacity: 0.8,
-          mixBlendMode: 'screen'
+          filter: 'brightness(1.15) contrast(1.1)',
+          opacity: 0.85
         }}
       >
-        <source src="/teaser_inno_1.mp4" type="video/mp4" />
+        <source src="/teaser_inno_1 _CUT.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
-      {/* Overlay for better text visibility */}
-      <div
-        className="absolute inset-0 z-[1]" // Ensure overlay is above video (z-0)
-        style={{
-          background: 'linear-gradient(180deg, rgba(163, 10, 153, 0.3) 0%, rgba(40, 22, 96, 0.7) 100%)'
-        }}
-      />
 
-      {/* Content */}
-      <div className="relative z-[10] w-full"> {/* Ensure content is above overlay (z-1) */}
-        {/* Headline */}
+      <div className="relative z-10 w-full">
         <ScrollReveal
           baseOpacity={0}
           enableBlur={true}
@@ -128,14 +102,27 @@ export default function ThemeSection() {
           delay={0.1}
           className="w-full text-center"
         >
-          <h1
-            className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
+          <h1 className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
             style={{
               textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
               fontStyle: 'italic',
-            }}
-          >
-            <GlitchText>ILLUMINE</GlitchText>
+            }}>
+            {splitTextUsed ? (
+              <SplitText
+                text="ILLUMINE"
+                className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
+                staggerDelay={0.1}
+                animationFrom={{ opacity: 0, y: 50 }}
+                animationTo={{ opacity: 1, y: 0 }}
+                transition={{ type: "spring", stiffness: 100, damping: 15, mass: 0.5 }}
+                threshold={0.2}
+                rootMargin="-50px"
+                onAnimationComplete={handleAnimationComplete}
+              />
+
+            ) : (
+              <GlitchText>ILLUMINE</GlitchText>
+            )}
           </h1>
         </ScrollReveal>
 
@@ -178,9 +165,19 @@ export default function ThemeSection() {
         </ScrollReveal>
       </div>
 
-      {/* Decorative image at the bottom right */}
       <div
-        className="absolute -bottom-30 -right-20 z-0 mb-4 mr-4 opacity-35" // Keep z-0 if it's meant to be behind content/overlay
+        className="absolute  -bottom-55 -right-20 z-0 mb-4 mr-4 opacity-100"
+        style={{
+          backgroundImage: "url('/assets/layer1.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '700px', // Adjust size as needed
+          height: '400px', // Adjust size as needed
+        }}
+      ></div>
+
+      <div
+        className="absolute  -bottom-30 -left-20 z-0 mb-4 mr-4 opacity-35"
         style={{
           backgroundImage: "url('/assets/layer2.png')",
           backgroundSize: 'contain',
@@ -197,7 +194,6 @@ export default function ThemeSection() {
         If it's global, it should be in your global CSS file.
       */}
       <style jsx>{`
-        /* Additional texture effects */
         @keyframes grain {
           0%, 100% { transform: translate(0, 0); }
           10% { transform: translate(-5%, -10%); }
@@ -211,12 +207,6 @@ export default function ThemeSection() {
           90% { transform: translate(-10%, 10%); }
         }
 
-        /* 
-          If this body::before is only for this component's active view,
-          you might want to manage it by adding/removing a class to the body
-          via another useEffect. If it's truly global, move it to globals.css.
-        */
-        /*
         body::before {
           content: "";
           position: fixed;
@@ -230,9 +220,8 @@ export default function ThemeSection() {
           z-index: 1000; // Ensure it's on top if it's a global overlay
           opacity: 0.25;
         }
-        */
-        .glitch-active { /* This class is not currently applied to any element for animation */
-          /* If you intend for GlitchText to animate when glitchActive is true, you'd apply this class to its container */
+
+        .glitch-active {
           animation: glitch-anim 0.3s linear infinite;
         }
 
@@ -243,6 +232,16 @@ export default function ThemeSection() {
           60% { transform: translate(2px, 2px); }
           80% { transform: translate(2px, -2px); }
           100% { transform: translate(0); }
+        }
+
+        @keyframes video-enhance {
+          0% { filter: brightness(1.15) contrast(1.1); }
+          50% { filter: brightness(1.2) contrast(1.15); }
+          100% { filter: brightness(1.15) contrast(1.1); }
+        }
+        
+        video {
+          animation: video-enhance 8s ease-in-out infinite;
         }
       `}</style>
     </div>

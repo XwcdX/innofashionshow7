@@ -49,11 +49,12 @@ const ScrollReveal: React.FC<ScrollRevealProps> = ({
         rotate: 0,
         filter: "blur(0px)",
         delay,
+        duration: 1.5,
         scrollTrigger: {
           trigger: el,
           scroller,
           start: "top 80%",
-          end: "top 20%",
+          end: "top 10%",
           toggleActions: "play none none none",
         }
       }

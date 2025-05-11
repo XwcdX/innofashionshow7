@@ -13,6 +13,7 @@ import {
     Category,
 } from '@/types/registration';
 import { InputField } from './InputField';
+import BrandedLoader from '@/app/components/BrandedLoader';
 declare const Swal: any;
 
 interface RegistrationFormProps {
@@ -675,11 +676,13 @@ export function RegistrationForm({
     };
 
     if (status === 'loading' || isInitializing) {
-        return <p className="flex justify-center items-center min-h-screen text-lg font-semibold animate-pulse">Loading Registration...</p>;
+        return <BrandedLoader isLoading={true} message={'Loading Registration...'} />
+        // return <p className="flex justify-center items-center min-h-screen text-lg font-semibold animate-pulse">Loading Registration...</p>;
     }
 
     if (status !== 'authenticated' || !userEmail) {
-        return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
+        return <BrandedLoader isLoading={true} message={'Redirecting to login...'} />
+        // return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
     }
     const capitalizeFirstLetter = (string: string): string => {
         if (!string) return '';
@@ -706,7 +709,7 @@ export function RegistrationForm({
                         return (
                             <fieldset
                                 key={section.id}
-                                className="border border-white/20 rounded-lg shadow-md min-w-0 relative">
+                                className="border border-white/20 rounded-lg mt-4 shadow-md min-w-0 relative">
                                 {section.title && (
                                     <legend
                                         className="text-lg font-semibold ml-4 px-2 mb-[-14px] text-white [text-shadow:0_0_5px_rgba(255,255,255,0.5)] break-words 

@@ -69,7 +69,7 @@ export default function RootLayout({
 
       </head>
       {/* Removed fontNeueMontreal.className and .style from body, apply font-neue-montreal to html or body directly */}
-      <body className={`antialiased`}> {/* Removed Geist vars from body if already on html */}
+      <body className={`antialiased`}>
         <BrandedLoader isLoading={appIsLoading} message="Initializing Innofashionshow..." />
         
         <SplashCursor /> {/* Ensure z-index is appropriate if loader is on top */}

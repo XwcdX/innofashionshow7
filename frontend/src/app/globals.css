@@ -4,26 +4,68 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html {
+  scroll-behavior: smooth;
+}
+
+
 @layer base {
+  html {
+    scroll-behavior: auto !important;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(77, 255, 255, 0.7);
+    border-radius: 10px;
+    border: 2px solid #202021;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(77, 255, 255, 0.9);
+  }
+
+
+  ::-webkit-scrollbar-track {
+    background: #202021;
+    border-radius: 10px;
+  }
+
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(77, 255, 255, 0.7) #202021;
+  }
+
   @font-face {
     font-family: 'Moderniz';
     src: url('/fonts/Moderniz.woff2') format('woff2');
     font-weight: 700;
     font-display: swap;
   }
+
   @font-face {
     font-family: 'Eirene Sans';
     src: url('/fonts/EireneSans-Regular.woff2') format('woff2');
     font-weight: 400;
     font-display: swap;
   }
+
   @font-face {
     font-family: "Eirene Sans";
     src: url("/fonts/EireneSans-Bold.woff2") format("woff2");
     font-weight: bold;
     font-style: normal;
   }
-  
+
 }
 
 @media (max-width: 640px) {
@@ -158,6 +200,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
