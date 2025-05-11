@@ -74,7 +74,7 @@ export default function ThemeSection() {
           opacity: 0.95
         }}
       >
-        <source src="/teaser_inno_1.mp4" type="video/mp4" />
+        <source src="/teaser_inno_1 _CUT.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
 
