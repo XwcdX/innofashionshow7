@@ -32,6 +32,8 @@ const TimelineSection = () => {
   };
 
   useLayoutEffect(() => {
+  if (window.innerWidth <= 768) return; // Disable animation on small screens
+
   const line = document.getElementById("line");
   const timelineContents = document.querySelectorAll(".timeline-point");
 
@@ -39,21 +41,18 @@ const TimelineSection = () => {
 
   const timelineContainer = document.querySelector(".timeline-container");
 
-  // Clear previous triggers
   ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
-  // Line animation
   gsap.to(line, {
     scrollTrigger: {
       trigger: timelineContainer,
       start: "top center",
-      end: window.innerWidth > 768 ? "80% center" : "1000% center",
+      end: "80% center",
       scrub: true,
     },
-    height: window.innerWidth > 768 ? "130vh" : "45vh",
+    height: "130vh",
   });
 
-  // Each point animation
   timelineContents.forEach((content) => {
     gsap.fromTo(
       content,
@@ -72,6 +71,7 @@ const TimelineSection = () => {
 
   ScrollTrigger.refresh();
 }, [active]);
+
 
 
 
@@ -145,9 +145,10 @@ const TimelineSection = () => {
       </div>
 
       <style jsx>{`
-@media (max-width: 768px) {
+  @media (max-width: 768px) {
     .circle{
-    margin-left: 35px;
+    margin-left: 360px;
+    transform: translateY(-150%);
     }
     .menu-btn {
       padding: 2px 8px; /* Smaller padding for smaller buttons */
@@ -155,12 +156,14 @@ const TimelineSection = () => {
     }
     
     .timeline-line {
-      display: none; /* Hides the vertical line */
-    }
-
-    .timeline-container {
-      flex-direction: column;
-      align-items: center; /* Center the content horizontally */
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(400%);
+    width: 3px;
+    height: 100px;
+    background-color: white;
+    z-index: -1;
     }
 
     .timeline-content {
@@ -168,8 +171,13 @@ const TimelineSection = () => {
       width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: left;
     }
+
+    .timeline-container {
+     position: relative;
+     height: 1190px;
+    } 
 
     .timeline-point {
       flex-direction: column;
@@ -182,7 +190,7 @@ const TimelineSection = () => {
 
     .timeline-text {
       margin-left: 0;
-      margin-top: 10px;
+      margin-top: -140px;
     }
   }
 
@@ -231,13 +239,7 @@ const TimelineSection = () => {
     display: flex;
   }
 
-  .timeline-line {
-    width: 3px;
-    height: 0;
-    background-color: white;
-    margin-left: 37%;
-    margin-top: 30px;
-  }
+  
 
   .timeline-content {
     width: 90%;
@@ -270,53 +272,17 @@ const TimelineSection = () => {
     font-size: 18px;
   }
 
-        .timeline {
-          width: 100%;
-          height: auto;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 80px 0;
-        }
-
-        .timeline > h1 {
-          color: white;
-          font-size: 60px;
-          width: 80%;
-          margin-bottom: 30px;
-        }
-
-        .menu-buttons {
-          display: flex;
-          gap: 16px;
-          margin-bottom: 80px;
-        }
-
-        .menu-btn {
-          padding: 8px 20px;
-          font-weight: bold;
-          border: 2px solid white;
-          background: transparent;
-          color: white;
-          border-radius: 50px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-
-        .menu-btn.active,
-        .menu-btn:hover {
-          background-color: white;
-          color: black;
-        }
+        
 
         .timeline-point,
-.timeline-line,
-.circle,
-.timeline-text {
-  will-change: transform, opacity;
-}
-
+        .timeline-line,
+        .circle,
+        .timeline-text {
+        will-change: transform, opacity;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          
+        }
         .timeline-container {
           width: 90%;
           display: flex;
