@@ -3,7 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import ThemeSection from './components/ThemeSection';
 import EventBar from './components/EventBar';
-// import RSVPButton from './components/RSVPButton'
 import Footer from './components/Footer';
 import AboutSection from './components/AboutSection';
 import CompetitionsSection from './components/CompetitionsSection';
@@ -15,7 +14,6 @@ import FAQ from './components/FAQ';
 import Sponsor from './components/Sponsor';
 import Lenis from '@studio-freight/lenis';
 import TimelineSection from "@/app/components/TimelineSection";
-// import { Timeline } from './components/Timeline';
 
 
 
@@ -103,8 +101,6 @@ export default function Home() {
         <PrizePool />
         <FAQ />
         <Sponsor />
-        {/* <Timeline /> */}
-        {/* <RSVPButton /> */}
         <Footer />
           
             
@@ -121,7 +117,7 @@ export default function Home() {
     width: 10px;
   }
   ::-webkit-scrollbar-thumb {
-    background-color: #8f03d1; /* purple thumb */
+    background-color: rgba(77, 255, 255, 0.7); /* purple thumb */
     border-radius: 10px;
   }
   ::-webkit-scrollbar-track {
@@ -130,8 +126,8 @@ export default function Home() {
 
   /* For Firefox */
   * {
-    scrollbar-width: thin;
-    scrollbar-color: #8f03d1 #202021;
+    scrollbar-width: wide;
+    scrollbar-color: rgba(77, 255, 255, 0.7) #202021;
   }
 
   .mix-blend-overlay {
