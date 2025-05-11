@@ -1,10 +1,8 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
-import Bumper from './Bumper'
 import Image from 'next/image'
 
-export default function LoadingAnimation() {
-  const [loadingComplete, setLoadingComplete] = useState(false)
+export default function LoadingAnimation({ onComplete }: { onComplete: () => void }) {
   const [svgLoaded, setSvgLoaded] = useState(false)
   const animationTimeout = useRef<NodeJS.Timeout | null>(null)
 
@@ -16,19 +14,15 @@ export default function LoadingAnimation() {
     }
 
     animationTimeout.current = setTimeout(() => {
-      setLoadingComplete(true)
-    }, 3000) // 3 seconds
+      onComplete()
+    }, 3000)
 
     return () => {
       if (animationTimeout.current) {
         clearTimeout(animationTimeout.current)
       }
     }
-  }, [svgLoaded])
-
-  if (loadingComplete) {
-    return <Bumper onComplete={() => {}} />
-  }
+  }, [svgLoaded, onComplete])
 
   return (
     <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
@@ -38,7 +32,7 @@ export default function LoadingAnimation() {
           alt="Loading"
           fill
           priority
-          onLoad={() => setSvgLoaded(true)}
+          onLoadingComplete={() => setSvgLoaded(true)}
           className="object-contain"
         />
       </div>

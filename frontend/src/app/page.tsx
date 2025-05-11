@@ -7,7 +7,6 @@ import Footer from './components/Footer';
 import AboutSection from './components/AboutSection';
 import CompetitionsSection from './components/CompetitionsSection';
 import LoadingAnimation from './components/Loader';
-import Bumper from './components/Bumper';
 import Countdown from './components/Countdown';
 import PrizePool from './components/Prize';
 import FAQ from './components/FAQ';
@@ -15,17 +14,14 @@ import Sponsor from './components/Sponsor';
 import Lenis from '@studio-freight/lenis';
 import TimelineSection from "@/app/components/TimelineSection";
 import ClickSpark from './components/ClickSpark';
-// import InfiniteMenu from './components/InfiniteMenu';
-
-
 
 export default function Home() {
-  const [currentStage, setCurrentStage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
   const mainRef = useRef<HTMLDivElement>(null);
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    if (currentStage >= 2) {
+    if (!isLoading) {
       lenisRef.current = new Lenis({
         duration: 1.2,
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -44,76 +40,37 @@ export default function Home() {
         lenisRef.current?.destroy();
       };
     }
-  }, [currentStage]);
+  }, [isLoading]);
 
-  useEffect(() => {
-    if (currentStage === 0) {
-      const timer = setTimeout(() => {
-        setCurrentStage(1);
-      }, 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [currentStage]);
-
-  const handleBumperComplete = () => {
-    setCurrentStage(2);
+  const handleLoadingComplete = () => {
+    setIsLoading(false);
   };
 
   return (
-    
     <div className="relative w-full h-full overflow-hidden">
-      {/* <img 
-        src="/blending_1.png" 
-        alt="Decorative blending effect"
-        className="absolute top-0 left-0 w-1/3 opacity-50 mix-blend-overlay pointer-events-none"
-        style={{ zIndex: -1 }}
-      /> */}
-      {/* <img 
-        src="/blending_2.png" 
-        alt="Decorative blending effect"
-        className="absolute bottom-0 right-0 w-1/4 opacity-30 mix-blend-lighten pointer-events-none"
-        style={{ zIndex: -1 }}
-      />
-      <img 
-        src="/blending_3.png" 
-        alt="Decorative blending effect"
-        className="absolute top-1/2 left-1/4 w-1/5 opacity-40 mix-blend-screen pointer-events-none"
-        style={{ zIndex: -1, transform: 'translate(-50%, -50%) rotate(45deg)' }}
-      />
-      <img 
-        src="/blending_4.png" 
-        alt="Decorative blending effect"
-        className="absolute top-1/3 right-1/4 w-1/6 opacity-60 mix-blend-soft-light pointer-events-none"
-        style={{ zIndex: -1 }}
-      /> */}
-
-      {currentStage === 0 && <LoadingAnimation />}
-      {currentStage === 1 && <Bumper onComplete={handleBumperComplete} />}
-      
-      {currentStage >= 2 && (
+      {isLoading ? (
+        <LoadingAnimation onComplete={handleLoadingComplete} />
+      ) : (
         <div ref={mainRef} className="relative">
           <ClickSpark
-  sparkColor='rgba(77, 255, 255, 0.7)'
-  sparkSize={10}
-  sparkRadius={15}
-  sparkCount={8}
-  duration={400}
->
-          <Navbar />
-        <ThemeSection />
-        <AboutSection />
-        <EventBar />
-        <CompetitionsSection />
-        <Countdown />
-        <TimelineSection />
-        <PrizePool />
-        <FAQ />
-        {/* <InfiniteMenu /> */}
-        <Sponsor />
-        <Footer />
-        </ClickSpark>
-          
-            
+            sparkColor='rgba(77, 255, 255, 0.7)'
+            sparkSize={10}
+            sparkRadius={15}
+            sparkCount={8}
+            duration={400}
+          >
+            <Navbar />
+            <ThemeSection />
+            <AboutSection />
+            <EventBar />
+            <CompetitionsSection />
+            <Countdown />
+            <TimelineSection />
+            <PrizePool />
+            <FAQ />
+            <Sponsor />
+            <Footer />
+          </ClickSpark>
         </div>
       )}
 
