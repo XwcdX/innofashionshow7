@@ -2,13 +2,12 @@
 import ScrollReveal from "./ScrollReveal";
 import { useState, useEffect, ReactNode, useRef } from 'react'
 import SplitText from "./SplitText";
-import { gsap } from 'gsap';
-
 
 export default function ThemeSection() {
   const [glitchActive, setGlitchActive] = useState<boolean>(false)
   const [pageLoaded, setPageLoaded] = useState<boolean>(false)
-  const [splitTextUsed, setSplitTextUsed] = useState<boolean>(true) // To manage SplitText rendering
+  const [splitTextUsed, setSplitTextUsed] = useState<boolean>(true)
+  const [isMuted, setIsMuted] = useState<boolean>(true)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
@@ -32,10 +31,16 @@ export default function ThemeSection() {
 
   useEffect(() => {
     if (pageLoaded) {
-      // After the page loads, stop using SplitText and switch to GlitchText
       setTimeout(() => setSplitTextUsed(false), 3000);
     }
   }, [pageLoaded]);
+
+  const handleToggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsMuted(videoRef.current.muted);
+    }
+  };
 
   const handleAnimationComplete = () => {
     console.log('All letters have animated!');
@@ -47,7 +52,7 @@ export default function ThemeSection() {
       {pageLoaded && glitchActive && (
         <>
           <span
-            aria-hidden="true" // Decorative element
+            aria-hidden="true"
             className="absolute top-0 left-0 w-full h-full opacity-70 pointer-events-none"
             style={{
               color: '#a6ff4d',
@@ -58,7 +63,7 @@ export default function ThemeSection() {
             {children}
           </span>
           <span
-            aria-hidden="true" // Decorative element
+            aria-hidden="true"
             className="absolute top-0 left-0 w-full h-full opacity-70 pointer-events-none"
             style={{
               color: '#8f03d1',
@@ -77,7 +82,10 @@ export default function ThemeSection() {
     <div id="Home" className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
       <video
         ref={videoRef}
-        // autoPlay, muted, loop, playsInline are now handled by useEffect
+        autoPlay
+        muted={isMuted}
+        loop
+        playsInline
         className="absolute z-0 w-auto min-w-full min-h-full max-w-none object-cover"
         style={{
           position: 'absolute',
@@ -92,6 +100,13 @@ export default function ThemeSection() {
         Your browser does not support the video tag.
       </video>
 
+      {/* Mute/Unmute Button */}
+      <button
+  onClick={handleToggleMute}
+  className="fixed bottom-5 right-5 z-20 bg-black bg-opacity-50 text-white px-4 py-2 rounded hover:bg-opacity-75 transition"
+>
+  {isMuted ? 'Unmute' : 'Mute'}
+</button>
 
       <div className="relative z-10 w-full">
         <ScrollReveal
@@ -119,7 +134,6 @@ export default function ThemeSection() {
                 rootMargin="-50px"
                 onAnimationComplete={handleAnimationComplete}
               />
-
             ) : (
               <GlitchText>ILLUMINE</GlitchText>
             )}
@@ -134,10 +148,7 @@ export default function ThemeSection() {
           delay={0.2}
           className="w-full text-center"
         >
-          <p
-            className="text-white text-xl mb-6"
-            style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}
-          >
+          <p className="text-white text-xl mb-6" style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}>
             <span className="font-semibold">
               <GlitchText>A French-inspired take on “illuminate” for a high-fashion feel.</GlitchText>
             </span>
@@ -152,10 +163,7 @@ export default function ThemeSection() {
           delay={0.4}
           className="w-full text-center"
         >
-          <p
-            className="text-white text-lg max-w-xl mx-auto"
-            style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}
-          >
+          <p className="text-white text-lg max-w-xl mx-auto" style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}>
             <GlitchText>
               See you on <span className="text-white font-semibold">15th June 2025</span> at{' '}
               <span className="text-white font-semibold">Tunjungan Plaza Convention Hall</span> or watch our{' '}
@@ -171,8 +179,8 @@ export default function ThemeSection() {
           backgroundImage: "url('/assets/layer1.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
-          width: '700px', // Adjust size as needed
-          height: '400px', // Adjust size as needed
+          width: '700px',
+          height: '400px',
         }}
       ></div>
 
@@ -187,12 +195,6 @@ export default function ThemeSection() {
         }}
       ></div>
 
-      {/* 
-        The <style jsx> block is assumed to be correct as per your original code.
-        If the `body::before` grain effect is intended for this section only, 
-        consider scoping it more locally or using a class on the body toggle.
-        If it's global, it should be in your global CSS file.
-      */}
       <style jsx>{`
         @keyframes grain {
           0%, 100% { transform: translate(0, 0); }
@@ -217,31 +219,18 @@ export default function ThemeSection() {
           background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.1'/%3E%3C/svg%3E");
           animation: grain 8s steps(10) infinite;
           pointer-events: none;
-          z-index: 1000; // Ensure it's on top if it's a global overlay
+          z-index: 1000;
           opacity: 0.25;
         }
 
-        .glitch-active {
-          animation: glitch-anim 0.3s linear infinite;
-        }
-
-        @keyframes glitch-anim {
-          0% { transform: translate(0); }
-          20% { transform: translate(-2px, 2px); }
-          40% { transform: translate(-2px, -2px); }
-          60% { transform: translate(2px, 2px); }
-          80% { transform: translate(2px, -2px); }
-          100% { transform: translate(0); }
+        video {
+          animation: video-enhance 8s ease-in-out infinite;
         }
 
         @keyframes video-enhance {
           0% { filter: brightness(1.15) contrast(1.1); }
           50% { filter: brightness(1.2) contrast(1.15); }
           100% { filter: brightness(1.15) contrast(1.1); }
-        }
-        
-        video {
-          animation: video-enhance 8s ease-in-out infinite;
         }
       `}</style>
     </div>

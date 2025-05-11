@@ -60,7 +60,7 @@ export default function Home() {
   };
 
   return (
-
+    
     <div className="relative w-full h-full overflow-hidden">
       {/* <img 
         src="/blending_1.png" 
@@ -74,14 +74,14 @@ export default function Home() {
         className="absolute bottom-0 right-0 w-1/4 opacity-30 mix-blend-lighten pointer-events-none"
         style={{ zIndex: -1 }}
       />
-      <img
-        src="/blending_3.png"
+      <img 
+        src="/blending_3.png" 
         alt="Decorative blending effect"
         className="absolute top-1/2 left-1/4 w-1/5 opacity-40 mix-blend-screen pointer-events-none"
         style={{ zIndex: -1, transform: 'translate(-50%, -50%) rotate(45deg)' }}
       />
-      <img
-        src="/blending_4.png"
+      <img 
+        src="/blending_4.png" 
         alt="Decorative blending effect"
         className="absolute top-1/3 right-1/4 w-1/6 opacity-60 mix-blend-soft-light pointer-events-none"
         style={{ zIndex: -1 }}
@@ -89,37 +89,55 @@ export default function Home() {
 
       {currentStage === 0 && <LoadingAnimation />}
       {currentStage === 1 && <Bumper onComplete={handleBumperComplete} />}
-
+      
       {currentStage >= 2 && (
         <div ref={mainRef} className="relative">
           <ClickSpark
-            sparkColor='rgba(77, 255, 255, 0.7)'
-            sparkSize={10}
-            sparkRadius={15}
-            sparkCount={8}
-            duration={400}
-          >
-            <Navbar />
-            <ThemeSection />
-            <AboutSection />
-            <EventBar />
-            <CompetitionsSection />
-            <Countdown />
-            <TimelineSection />
-            <PrizePool />
-            <FAQ />
-            {/* <InfiniteMenu /> */}
-            <Sponsor />
-            <Footer />
-          </ClickSpark>
-
-
+  sparkColor='rgba(77, 255, 255, 0.7)'
+  sparkSize={10}
+  sparkRadius={15}
+  sparkCount={8}
+  duration={400}
+>
+          <Navbar />
+        <ThemeSection />
+        <AboutSection />
+        <EventBar />
+        <CompetitionsSection />
+        <Countdown />
+        <TimelineSection />
+        <PrizePool />
+        <FAQ />
+        {/* <InfiniteMenu /> */}
+        <Sponsor />
+        <Footer />
+        </ClickSpark>
+          
+            
         </div>
       )}
 
-      <style jsx global>{`
+<style jsx global>{`
   html {
     scroll-behavior: auto !important;
+  }
+
+  /* Scrollbar Styling */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba(77, 255, 255, 0.7); /* purple thumb */
+    border-radius: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #202021; /* dark track */
+  }
+
+  /* For Firefox */
+  * {
+    scrollbar-width: wide;
+    scrollbar-color: #8f03d1 #202021;
   }
 
   .mix-blend-overlay {

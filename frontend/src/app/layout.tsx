@@ -2,7 +2,7 @@
 'use client'; // Make RootLayout a Client Component to use useState/useEffect for the loader
 
 import { useState, useEffect } from 'react'; // Import hooks
-import type { Metadata } from "next";
+// import type { Metadata } from "next";
 import { Providers } from './providers';
 import { Geist, Geist_Mono } from "next/font/google"; // Corrected import name
 import Script from "next/script";
