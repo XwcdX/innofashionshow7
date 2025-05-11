@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement> & { className?: string }) => ( // Added className to props
@@ -15,15 +16,17 @@ const GoogleIcon = (props: React.SVGProps<SVGSVGElement> & { className?: string 
 
 
 export default function LoginPage() {
+    const searchParams = useSearchParams();
     const [isClient, setIsClient] = useState(false);
     useEffect(() => {
         setIsClient(true);
     }, []);
 
     const handleGoogleSignIn = () => {
+        const next = searchParams?.get('next') || '/registration';
         if (!isClient) return;
         signIn('google', {
-            callbackUrl: '/auth/callback',
+            callbackUrl: `/auth/callback?next=${encodeURIComponent(next)}`,
         });
     };
 
