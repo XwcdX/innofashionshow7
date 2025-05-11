@@ -104,9 +104,9 @@ export default function ContestSubmissionPage() {
                     const rawDraft = localStorage.getItem(storageKey);
                     if (rawDraft) {
                         const parsedDraft: Partial<FormData> = JSON.parse(rawDraft);
-                        if (parsedDraft.category && (parsedDraft.category === 'INTERMEDIATE' || parsedDraft.category === 'ADVANCED')) {
-                            console.log('Found category in localStorage draft:', parsedDraft.category);
-                            foundCategory = parsedDraft.category;
+                        if (parsedDraft.contest.category && (parsedDraft.contest.category === 'INTERMEDIATE' || parsedDraft.contest.category === 'ADVANCED')) {
+                            console.log('Found category in localStorage draft:', parsedDraft.contest.category);
+                            foundCategory = parsedDraft.contest.category;
                         } else {
                              console.log('Draft found, but no valid category property.');
                         }
@@ -119,7 +119,7 @@ export default function ContestSubmissionPage() {
             } else {
                  console.log('Could not generate storage key (no email?).');
             }
-            const fetchAndSetCategory = async () => {
+            const fetchAndSetCategory = (async () => {
                 const serverData = await getCategory(); // Await async function
                 if (serverData?.category === 'INTERMEDIATE' || serverData?.category === 'ADVANCED') {
                     foundCategory = serverData.category;
@@ -127,7 +127,7 @@ export default function ContestSubmissionPage() {
                 } else {
                     console.log('No valid category found on server.');
                 }
-            }
+            })()
             setSelectedCategory(foundCategory);
             setIsLoadingCategory(false);
         } else {
@@ -146,7 +146,7 @@ export default function ContestSubmissionPage() {
         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
     }
 
-    if (!validationStatus){
+    if (status === 'authenticated' && !validationStatus){
         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">Your registration has not been validated yet. </p>;
     }
 
