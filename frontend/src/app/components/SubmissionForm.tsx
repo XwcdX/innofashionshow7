@@ -133,7 +133,7 @@ export function SubmissionForm({
             setIsInitializing(true);
             hasInitialized.current = true;
             initialLoadComplete.current = false;
-            
+
 
             const storageKey = getDraftStorageKey(userEmail, registrationType);
             let localDraftData: Partial<FormData> | null = null;
@@ -685,41 +685,48 @@ export function SubmissionForm({
 
     return (
         <div className="min-h-screen w-full pt-0 pb-8 px-0 md:px-6 lg:px-8">
-            <div className="max-w-2xl mx-auto bg-white backdrop-blur-md p-6 md:p-8 shadow-xl rounded-lg border border-gray-200">
-                <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 capitalize">
+            <div className="max-w-4xl mx-auto bg-white/10 backdrop-filter backdrop-blur-lg p-6 md:p-8 shadow-2xl rounded-xl border border-white/20">
+                <h1 className="text-3xl md:text-4xl font-bold text-center text-white mb-8 [text-shadow:0_0_10px_rgba(255,255,255,0.7)] capitalize">
                     Constest Submission
                 </h1>
-                <p className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 capitalize">
+                <p className="text-3xl md:text-4xl font-bold text-center text-white mb-8 [text-shadow:0_0_10px_rgba(255,255,255,0.7)] capitalize">
                     You registered as a {userType} and are participating in the {initialCategory} category.
                 </p>
-                <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+                <form onSubmit={handleSubmit} className="space-y-8 px-0 md:px-6" noValidate>
                     {formSchema.map(section => {
                         const shouldRenderSection = !section.condition || section.condition(formData, userType);
                         if (!shouldRenderSection) {
                             return null;
                         }
                         return (
-                            <fieldset key={section.id} className="border border-gray-300 p-4 rounded-md space-y-4 shadow-sm contents">
+                            <fieldset
+                                key={section.id}
+                                className="border border-white/20 rounded-lg shadow-md min-w-0 relative">
                                 {section.title && (
-                                    <legend className="text-md font-semibold text-gray-700 px-2 -ml-2 mt-4 -mb-1">{section.title}</legend>
+                                    <legend
+                                        className="text-lg font-semibold ml-4 px-2 mb-[-14px] text-white [text-shadow:0_0_5px_rgba(255,255,255,0.5)] break-words 
+                                                                      relative z-10">
+                                        {section.title}
+                                    </legend>
                                 )}
-                                {section.fields.map(field => {
-                                    const shouldRenderField = !field.condition || field.condition(formData, userType);
-                                    if (!shouldRenderField) return null;
-
-                                    return (
-                                        <InputField
-                                            key={field.id}
-                                            field={field}
-                                            value={(field.id === 'category' && initialCategory) ? initialCategory : formData[field.id]}
-                                            uploadedFilePath={field.type === 'file' ? uploadedFilePaths[field.id] : undefined}
-                                            error={formErrors[field.id]}
-                                            onChange={handleInputChange}
-                                            onFileChange={handleFileUpload}
-                                            disabled={isSubmitting || (field.id === 'category' && !!initialCategory)}
-                                        />
-                                    );
-                                })}
+                                <div className="bg-white/5 backdrop-filter backdrop-blur-sm p-5 rounded-lg space-y-5 min-w-0">
+                                    {section.fields.map(field => {
+                                        const shouldRenderField = !field.condition || field.condition(formData, userType);
+                                        if (!shouldRenderField) return null;
+                                        return (
+                                            <InputField
+                                                key={field.id}
+                                                field={field}
+                                                value={(field.id === 'category' && initialCategory) ? initialCategory : formData[field.id]}
+                                                uploadedFilePath={(field.type === 'file' || field.type === 'file-drag-drop') ? uploadedFilePaths[field.id] : undefined}
+                                                error={formErrors[field.id]}
+                                                onChange={handleInputChange}
+                                                onFileChange={handleFileUpload}
+                                                disabled={isSubmitting || (field.id === 'category' && !!initialCategory)}
+                                            />
+                                        );
+                                    })}
+                                </div>
                             </fieldset>
                         );
                     })}

@@ -24,7 +24,6 @@ export class DraftContestDto {
     @IsOptional()
     @Type(() => Number)
     @IsInt({ always: true, message: 'Age must be a whole number.' })
-    @Min(1, { always: true, message: 'Age must be at least 1.' })
     age?: number;
 
     @IsOptional()

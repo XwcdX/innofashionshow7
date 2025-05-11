@@ -18,7 +18,7 @@ export default function RegistrationSelectionPage() {
   const cardBaseClasses = "w-full text-white font-semibold text-xl md:text-2xl px-6 py-8 rounded-xl shadow-xl focus:outline-none transition-all duration-200 ease-in-out transform hover:-translate-y-1.5";
 
   return (
-    <div className='fixed inset-0 w-screen h-screen'>
+    <div className='fixed inset-0 w-screen h-screen z-[5]'>
       <div
         className="h-screen w-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 selection:bg-purple-500 selection:text-white overflow-hidden"
       >
