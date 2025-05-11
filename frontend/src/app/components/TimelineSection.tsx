@@ -32,7 +32,7 @@ const TimelineSection = () => {
   };
 
   useLayoutEffect(() => {
-  if (window.innerWidth <= 768) return; // Disable animation on small screens
+  // if (window.innerWidth <= 768) return;
 
   const line = document.getElementById("line");
   const timelineContents = document.querySelectorAll(".timeline-point");
