@@ -102,11 +102,11 @@ export default function ThemeSection() {
 
       {/* Mute/Unmute Button */}
       <button
-  onClick={handleToggleMute}
-  className="fixed bottom-5 right-5 z-20 bg-black bg-opacity-50 text-white px-4 py-2 rounded hover:bg-opacity-75 transition"
->
-  {isMuted ? 'Unmute' : 'Mute'}
-</button>
+        onClick={handleToggleMute}
+        className="fixed bottom-5 right-5 z-20 bg-black bg-opacity-50 text-white px-4 py-2 rounded hover:bg-opacity-75 transition"
+        >
+        {isMuted ? 'Unmute' : 'Mute'}
+      </button>
 
       <div className="relative z-10 w-full">
         <ScrollReveal
