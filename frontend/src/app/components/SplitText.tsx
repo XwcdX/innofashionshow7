@@ -50,7 +50,6 @@ const SplitText: React.FC<SplitTextProps> = ({
     },
   };
 
-  // Variants for each letter
   const letterVariants: Variants = {
     hidden: animationFrom,
     visible: {
@@ -62,27 +61,27 @@ const SplitText: React.FC<SplitTextProps> = ({
   return (
     <motion.p
       ref={ref}
-      className={`split-parent overflow-hidden inline ${className}`} // 'inline' might cause issues with text wrapping, consider 'block' or 'inline-block'
+      className={`split-parent overflow-hidden inline ${className}`}
       style={{ textAlign: textAlign }}
       variants={containerVariants}
       initial="hidden"
       animate={isInView ? 'visible' : 'hidden'}
-      onAnimationComplete={onAnimationComplete} // Callback for when the parent animation (staggering) completes
+      onAnimationComplete={onAnimationComplete}
     >
       {words.map((wordObj, wordIndex) => (
         <motion.span
           key={`word-${wordIndex}`}
-          className="inline-block whitespace-nowrap" // Preserves spaces within words, handles word wrapping
-          style={{ marginRight: wordIndex < words.length - 1 ? '0.3em' : '0' }} // Add space after word, not for the last word
+          className="inline-block whitespace-nowrap"
+          style={{ marginRight: wordIndex < words.length - 1 ? '0.3em' : '0' }}
         >
           {wordObj.letters.map((letter, letterIndex) => (
             <motion.span
               key={`letter-${wordIndex}-${letterIndex}`}
               variants={letterVariants}
-              className="inline-block" // Necessary for individual letter transforms
+              className="inline-block"
               style={{ willChange: 'transform, opacity' }}
             >
-              {letter === ' ' ? '\u00A0' : letter} {/* Render non-breaking space for actual spaces */}
+              {letter === ' ' ? '\u00A0' : letter}
             </motion.span>
           ))}
         </motion.span>
