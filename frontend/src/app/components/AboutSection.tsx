@@ -24,7 +24,7 @@ export default function AboutSection() {
       {
         opacity: 1,
         x: 0,
-        duration: 1.2,
+        duration: 2.0, // Adjust duration to make the animation 2 times longer
         ease: "power2.out",
         scrollTrigger: {
           trigger: el,
@@ -39,7 +39,7 @@ export default function AboutSection() {
   return (
     <section id="about" className="flex flex-col md:flex-row w-full min-h-screen text-white ">
       {/* Left Section with ScrollReveal */}
-      <ScrollReveal className="w-full md:w-1/2 relative p-10 md:p-16">
+      <ScrollReveal className="w-full md:w-1/2 relative p-10 mt-20 md:p-16">
         {/* Lines Asset (bottom-left corner) */}
         <div className="transform scale-210 absolute bottom-0 z-[-10] left-0 w-100 h-100 opacity-35">
           <Image
@@ -85,17 +85,17 @@ export default function AboutSection() {
 
       {/* Right Section Image with custom GSAP fade + slide */}
       <div
-  ref={rightImageRef}
-  className="w-full md:w-1/2 relative aspect-[4/3] md:aspect-auto "
->
-  <Image
-    src="/assets/runway.jpg"
-    alt="Runway Fashion Show"
-    fill
-    className="object-cover"
-    priority
-  />
-</div>
+        ref={rightImageRef}
+        className="w-full md:w-1/2 relative aspect-[4/3] mt-20 md:aspect-auto "
+      >
+        <Image
+          src="/assets/runway.jpg"
+          alt="Runway Fashion Show"
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
     </section>
   );
 }

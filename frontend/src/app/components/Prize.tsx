@@ -5,24 +5,55 @@ const PrizePool: React.FC = () => {
   const [prizePool, setPrizePool] = useState<number>(0);
   const [showShadow, setShowShadow] = useState<boolean>(false);
   const [isMobile, setIsMobile] = useState(false);
-  const targetPrize: number = 5000000;
   const [glitchActive, setGlitchActive] = useState<boolean>(false);
-
+  const [hasStartedCounting, setHasStartedCounting] = useState(false);
+  const targetPrize: number = 5000000;
+  
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
-    const duration: number = 2000;
-    const increment: number = targetPrize / (duration / 16);
-    
+    const glitchTimer = setInterval(() => {
+      setGlitchActive(true);
+      setTimeout(() => setGlitchActive(false), 100);
+    }, 3000);
+
+    // Scroll event listener to detect when the section is in view
+    const handleScroll = () => {
+      const prizeSection = document.getElementById('prize');
+      if (prizeSection) {
+        const rect = prizeSection.getBoundingClientRect();
+        // Check if the section is in the viewport
+        if (rect.top <= window.innerHeight && rect.bottom >= 0) {
+          if (!hasStartedCounting) {
+            startCountUp();
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    // Cleanup the event listener
+    return () => {
+      clearInterval(glitchTimer);
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [hasStartedCounting]);
+
+  const startCountUp = () => {
+    const duration: number = 1500; // Reduced duration to 1.5 seconds for faster count-up
+    const increment: number = targetPrize / (duration / 16); // Calculate how much to increment per frame
     let prizeStart: number = 0;
     const prizeEnd: number = targetPrize;
-    
+
+    setHasStartedCounting(true);
+
     const animate = () => {
-      prizeStart += increment;
-      
       if (prizeStart < prizeEnd) {
+        prizeStart += increment;
         setPrizePool(Math.ceil(prizeStart));
         requestAnimationFrame(animate);
       } else {
@@ -30,19 +61,9 @@ const PrizePool: React.FC = () => {
         setShowShadow(true);
       }
     };
-    
-    animate();
 
-    const glitchTimer = setInterval(() => {
-      setGlitchActive(true);
-      setTimeout(() => setGlitchActive(false), 100);
-    }, 3000);
-    
-    return () => {
-      clearInterval(glitchTimer);
-      window.removeEventListener('resize', checkMobile);
-    };
-  }, []);
+    animate();
+  };
 
   return (
     <section 
@@ -53,7 +74,7 @@ const PrizePool: React.FC = () => {
       }}
       id="prize"
     >
-            {/* Decorative image at the bottom right */}
+      {/* Decorative image at the bottom right */}
       <div 
         className="absolute bottom-0 -right-40 z-0 mb-4 mr-4 opacity-35"
         style={{
@@ -64,7 +85,8 @@ const PrizePool: React.FC = () => {
           height: '400px', // Adjust size as needed
         }}
       ></div>
-                  {/* Decorative image at the bottom right */}
+
+      {/* Decorative image at the bottom left */}
       <div 
         className="absolute bottom-0 -left-40 z-0 mb-4 mr-4 opacity-35"
         style={{
@@ -75,14 +97,13 @@ const PrizePool: React.FC = () => {
           height: '700px', // Adjust size as needed
         }}
       ></div>
+
       <div className="text-center w-full max-w-6xl px-4">
         <div className="relative">
           {/* title */}
           <div className="relative mb-8 md:mb-12 lg:mb-16 xl:mb-20 text-center">
             <h2 
-              className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
-                glitchActive ? 'glitch-active' : ''
-              }`}
+              className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${glitchActive ? 'glitch-active' : ''}`}
               style={{ 
                 color: '#4dffff',
                 textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
@@ -134,7 +155,7 @@ const PrizePool: React.FC = () => {
                 </span>
               </div>
             )}
-            
+
             <div className="relative overflow-hidden">
               <div className={`absolute inset-0 text-5xl md:text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent opacity-70 ${glitchActive ? 'translate-x-3' : 'translate-x-0'} transition-transform duration-75`}
                 style={{ 

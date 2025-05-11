@@ -78,7 +78,7 @@ export default function ThemeSection() {
         Your browser does not support the video tag.
       </video>
 
-      <div 
+      {/* <div 
         className="absolute inset-0 z-1"
         style={{
           background: 'linear-gradient(180deg, rgba(163, 10, 153, 0.15) 0%, rgba(40, 22, 96, 0.3) 100%)',
@@ -91,7 +91,7 @@ export default function ThemeSection() {
         style={{
           background: 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,0.3) 100%)'
         }}
-      />
+      /> */}
 
       <div className="relative z-10 w-full">
         <ScrollReveal
