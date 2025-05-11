@@ -86,12 +86,13 @@ export default function ThemeSection() {
           left: '50%',
           transform: 'translate(-50%, -50%)',
           filter: 'brightness(1.15) contrast(1.1)',
-          opacity: 0.95
+          opacity: 0.85
         }}
       >
         <source src="/teaser_inno_1 _CUT.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
+
 
       <div className="relative z-10 w-full">
         <ScrollReveal
