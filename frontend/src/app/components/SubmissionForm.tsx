@@ -39,7 +39,7 @@ const getDraftStorageKey = (email: string | undefined | null, regType: Registrat
 export function SubmissionForm({
     registrationType,
     formSchema,
-    onSuccessRedirectPath = '/',
+    onSuccessRedirectPath = '/contest',
     initialCategory,
 }: SubmissionProps) {
     const { data: session, status } = useSession();

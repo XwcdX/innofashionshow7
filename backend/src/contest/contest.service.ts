@@ -263,6 +263,7 @@ export class ContestService {
         const updateData: Prisma.CreationUpdateInput = {
             creationPath: dto.creationPath,
             conceptPath: dto.conceptPath,
+            submitted: true,
             
             updatedAt: new Date(),
         };
@@ -271,6 +272,7 @@ export class ContestService {
             contest: { connect: { id: contest.id } },
             creationPath: dto.creationPath ?? null,
             conceptPath: dto.conceptPath ?? null,
+            submitted: true,
         };
 
         try {

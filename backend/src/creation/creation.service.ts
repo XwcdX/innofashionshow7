@@ -21,4 +21,34 @@ export class CreationService {
 
         return allCreation ; 
     }
+
+    async getCreationStatus(userId: string): Promise<{ creationStatus: boolean | null } | null> {
+        this.logger.log(`Fetching creation status for user ID: ${userId}`);
+        // Fetch only the 'category' field from the contest record
+        const contestRegistration = await this.prisma.contest.findUnique({
+            where: { userId: userId },
+            select: {
+                id: true,  // Only select the 'category' field
+            },
+        });
+
+        if(!contestRegistration){
+            this.logger.log(`No contest found for user ID: ${userId}`);
+            return null;
+        }
+
+        const creationStatus = await this.prisma.creation.findUnique({
+            where: { contestId: contestRegistration.id },
+            select: {
+                submitted: true,
+            },
+        });
+
+        if (!creationStatus) {
+            this.logger.log(`No creation found for user ID: ${userId}`);
+            return null;
+        }
+
+        return { creationStatus :  creationStatus.submitted}; 
+    }
 }

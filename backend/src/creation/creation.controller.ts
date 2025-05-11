@@ -25,4 +25,16 @@ export class CreationController {
         }
         return allCreation;
     }
+
+    @Get('getCreationStatus')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async getCreationStatus(@Req() req: RequestWithUser) {
+        const userId = req.user.id;
+        const creationData = await this.creationService.getCreationStatus(userId);
+        if (!creationData) {
+            return {};
+        }
+        return creationData;
+    }
 }
