@@ -1,17 +1,28 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, ReactNode } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ScrollReveal from "./ScrollReveal"; // Adjust if needed
+// import GlitchText from "./GlitchText";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutSection() {
+  const [glitchActive, setGlitchActive] = useState<boolean>(false);
   const rightImageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const glitchTimer = setTimeout(() => {
+      const interval = setInterval(() => {
+        setGlitchActive(true);
+        setTimeout(() => setGlitchActive(false), 100);
+      }, 3000);
+
+      return () => clearInterval(interval);
+    }, 3000);
+
     const el = rightImageRef.current;
     if (!el) return;
 
@@ -34,6 +45,8 @@ export default function AboutSection() {
         },
       }
     );
+
+    return () => clearTimeout(glitchTimer);
   }, []);
 
   return (
@@ -58,13 +71,13 @@ export default function AboutSection() {
             fontStyle: "italic",
           }}
         >
-          ABOUT US
+          <GlitchText glitchActive={glitchActive}>ABOUT US</GlitchText>
         </h2>
-
+            
         <p
           className="text-sm leading-relaxed tracking-wide text-justify"
           style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
-        >
+        > 
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate
           ex in dolor fringilla pellentesque. Ut ut purus semper, vehicula enim
           sit amet, porttitor arcu. Quisque hendrerit maximus mattis. Donec
@@ -86,7 +99,7 @@ export default function AboutSection() {
       {/* Right Section Image with custom GSAP fade + slide */}
       <div
         ref={rightImageRef}
-        className="w-full md:w-1/2 relative aspect-[4/3] mt-20 mbmd:aspect-auto "
+        className="w-full md:w-1/2 relative aspect-[4/3] mt-20 mb-10 md:aspect-auto "
       >
         <Image
           src="/assets/runway.jpg"
@@ -96,6 +109,60 @@ export default function AboutSection() {
           priority
         />
       </div>
+
+      <style jsx>{`
+        .glitch-active {
+          animation: glitch-anim 0.3s linear infinite;
+        }
+
+        @keyframes glitch-anim {
+          0% { transform: translate(0); }
+          20% { transform: translate(-2px, 2px); }
+          40% { transform: translate(-2px, -2px); }
+          60% { transform: translate(2px, 2px); }
+          80% { transform: translate(2px, -2px); }
+          100% { transform: translate(0); }
+        }
+      `}</style>
     </section>
   );
 }
+
+// GlitchText Component
+const GlitchText = ({
+  children,
+  className,
+  glitchActive,
+}: {
+  children: ReactNode;
+  className?: string;
+  glitchActive: boolean;
+}) => (
+  <span className={`relative ${className}`}>
+    {children}
+    {glitchActive && (
+      <>
+        <span
+          className="absolute top-0 left-0 w-full h-full opacity-70 pointer-events-none"
+          style={{
+            color: "#a6ff4d",
+            textShadow: "2px 0 #c306aa",
+            clipPath: "polygon(0 0, 100% 0, 100% 45%, 0 45%)",
+          }}
+        >
+          {children}
+        </span>
+        <span
+          className="absolute top-0 left-0 w-full h-full opacity-70 pointer-events-none"
+          style={{
+            color: "#8f03d1",
+            textShadow: "-2px 0 rgb(104, 255, 77)",
+            clipPath: "polygon(0 55%, 100% 55%, 100% 100%, 0 100%)",
+          }}
+        >
+          {children}
+        </span>
+      </>
+    )}
+  </span>
+);

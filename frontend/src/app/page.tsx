@@ -14,7 +14,8 @@ import FAQ from './components/FAQ';
 import Sponsor from './components/Sponsor';
 import Lenis from '@studio-freight/lenis';
 import TimelineSection from "@/app/components/TimelineSection";
-
+import ClickSpark from './components/ClickSpark';
+// import InfiniteMenu from './components/InfiniteMenu';
 
 
 
@@ -91,6 +92,13 @@ export default function Home() {
       
       {currentStage >= 2 && (
         <div ref={mainRef} className="relative">
+          <ClickSpark
+  sparkColor='rgba(77, 255, 255, 0.7)'
+  sparkSize={10}
+  sparkRadius={15}
+  sparkCount={8}
+  duration={400}
+>
           <Navbar />
         <ThemeSection />
         <AboutSection />
@@ -100,8 +108,10 @@ export default function Home() {
         <TimelineSection />
         <PrizePool />
         <FAQ />
+        {/* <InfiniteMenu /> */}
         <Sponsor />
         <Footer />
+        </ClickSpark>
           
             
         </div>
@@ -127,7 +137,7 @@ export default function Home() {
   /* For Firefox */
   * {
     scrollbar-width: wide;
-    scrollbar-color: rgba(77, 255, 255, 0.7) #202021;
+    scrollbar-color: #8f03d1 #202021;
   }
 
   .mix-blend-overlay {
