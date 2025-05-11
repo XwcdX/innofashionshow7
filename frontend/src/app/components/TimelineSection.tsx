@@ -32,45 +32,61 @@ const TimelineSection = () => {
   };
 
   useLayoutEffect(() => {
-  // if (window.innerWidth <= 768) return;
+    // if (window.innerWidth <= 768) return;
 
-  const line = document.getElementById("line");
-  const timelineContents = document.querySelectorAll(".timeline-point");
+    const line = document.getElementById("line");
+    const timelineContents = document.querySelectorAll(".timeline-point");
 
-  if (!line || timelineContents.length === 0) return;
+    if (!line || timelineContents.length === 0) return;
 
-  const timelineContainer = document.querySelector(".timeline-container");
+    const timelineContainer = document.querySelector(".timeline-container");
 
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
 
-  gsap.to(line, {
-    scrollTrigger: {
-      trigger: timelineContainer,
-      start: "top center",
-      end: "80% center",
-      scrub: true,
-    },
-    height: "130vh",
-  });
+    const mm = gsap.matchMedia();
 
-  timelineContents.forEach((content) => {
-    gsap.fromTo(
-      content,
-      { opacity: 0 },
-      {
-        opacity: 1,
+    mm.add("(min-width: 769px)", () => {
+      gsap.to(line, {
         scrollTrigger: {
-          trigger: content,
-          start: "top 100%",
-          end: "top center",
+          trigger: timelineContainer,
+          start: "top center",
+          end: "80% center",
           scrub: true,
         },
-      }
-    );
-  });
+        height: "130vh",
+      });
+    });
 
-  ScrollTrigger.refresh();
-}, [active]);
+    mm.add("(max-width: 768px)", () => {
+      gsap.to(line, {
+        scrollTrigger: {
+          trigger: timelineContainer,
+          start: "top center",
+          end: "80% center",
+          scrub: true,
+        },
+        height: "75%",
+      });
+    });
+
+    timelineContents.forEach((content) => {
+      gsap.fromTo(
+        content,
+        { opacity: 0 },
+        {
+          opacity: 1,
+          scrollTrigger: {
+            trigger: content,
+            start: "top 100%",
+            end: "top center",
+            scrub: true,
+          },
+        }
+      );
+    });
+
+    ScrollTrigger.refresh();
+  }, [active]);
 
 
 
@@ -85,7 +101,7 @@ const TimelineSection = () => {
       }}
     >
       {/* Decorative image at the top right */}
-      <div 
+      <div
         className="absolute top-55 -right-70 z-0 mb-4 mr-4 opacity-20"
         style={{
           backgroundImage: "url('/assets/lines3.png')",
@@ -96,7 +112,7 @@ const TimelineSection = () => {
         }}
       ></div>
       {/* Decorative image 2 at the bottom right */}
-      <div 
+      <div
         className="absolute top-55 -left-20 z-0 mb-4 mr-4 opacity-15"
         style={{
           backgroundImage: "url('/assets/lines1.png')",
@@ -158,7 +174,7 @@ const TimelineSection = () => {
     .timeline-line {
     position: absolute;
     top: 60px;
-    left: 50%;
+    left: 29%;
     transform: translateX(400%);
     width: 3px;
     height: 100px;
@@ -192,6 +208,42 @@ const TimelineSection = () => {
       margin-left: 0;
       margin-top: -140px;
     }
+  }
+
+  @media (max-width: 541px) {
+      .timeline-line {
+      left: 37.5%;
+      }
+  }
+  @media (max-width: 431px) {
+      .timeline-line {
+      left: 45%;
+      }
+  }
+  @media (max-width: 415px) {
+      .timeline-line {
+      left: 46.7%;
+      }
+  }
+  @media (max-width: 391px) {
+      .timeline-line {
+      left: 49%;
+      }
+  }
+  @media (max-width: 376px) {
+      .timeline-line {
+      left: 50.5%;
+      }
+  }
+  @media (max-width: 361px) {
+      .timeline-line {
+      left: 52.5%;
+      }
+  }
+  @media (max-width: 345px) {
+      .timeline-line {
+      left: 54.4%;
+      }
   }
 
   .timeline {
