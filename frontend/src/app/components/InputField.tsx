@@ -527,12 +527,20 @@ export const InputField: React.FC<InputFieldProps> = ({
         }
 
         case 'readonly':
+            const inputSpecificClasses = `w-full border border-purple-400/30 px-3 py-2 rounded-md
+                            bg-purple-500/20 backdrop-filter backdrop-blur-md
+                            text-gray-200 cursor-not-allowed`;
+            const combinedClassName = `${commonProps.className || ''} ${inputSpecificClasses}`.trim();
+
             return (
                 <div className='my-0'>
                     <label className="block text-sm font-medium text-gray-200 mb-1">{field.label}</label>
-                    <input value={value ?? ''} readOnly {...{ ...commonProps, className: undefined }} className={`w-full border border-purple-400/30 px-3 py-2 rounded-md 
-                                   bg-purple-500/20 backdrop-filter backdrop-blur-md 
-                                   text-gray-200 cursor-not-allowed`} />
+                    <input
+                        value={value ?? ''}
+                        readOnly
+                        {...commonProps}
+                        className={combinedClassName}
+                    />
                 </div>
             );
 

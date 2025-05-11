@@ -1,105 +1,208 @@
-'use client';
+'use client'
+import { useState, useEffect, useRef } from 'react';
+import Navbar from './components/Navbar';
+import ThemeSection from './components/ThemeSection';
+import EventBar from './components/EventBar';
+// import RSVPButton from './components/RSVPButton'
+import Footer from './components/Footer';
+import AboutSection from './components/AboutSection';
+import CompetitionsSection from './components/CompetitionsSection';
+import LoadingAnimation from './components/Loader';
+import Bumper from './components/Bumper';
+import Countdown from './components/Countdown';
+import PrizePool from './components/Prize';
+import FAQ from './components/FAQ';
+import Sponsor from './components/Sponsor';
+import Lenis from '@studio-freight/lenis';
+import TimelineSection from "@/app/components/TimelineSection";
+// import { Timeline } from './components/Timeline';
 
-import { useSession, signOut } from 'next-auth/react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState }
-from 'react';
-import ManualLoader from '@/app/components/ManualLoader';
 
-export default function HomePage() {
-  const { data: session, status } = useSession();
-  const router = useRouter();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [loaderMessage, setLoaderMessage] = useState<string | undefined>(undefined);
 
-  const showLoaderWithMessage = (message?: string) => {
-    setLoaderMessage(message);
-    setIsLoading(true);
-  };
-
-  const hidePageLoader = () => {
-    setIsLoading(false);
-    setLoaderMessage(undefined);
-  };
+export default function Home() {
+  const [currentStage, setCurrentStage] = useState(0);
+  const mainRef = useRef<HTMLDivElement>(null);
+  const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
-    if (status === 'loading') {
-      showLoaderWithMessage("Checking session...");
-    } else {
-      hidePageLoader();
-    }
+    if (currentStage >= 2) {
+      lenisRef.current = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        infinite: false,
+      });
 
-    return () => {
-      if (status === 'loading') {
-        hidePageLoader();
-      }
-    };
-  }, [status]);
-
-  const handleLogout = async () => {
-    showLoaderWithMessage("Logging out...");
-    try {
-      try {
-        const res = await fetch('/api/auth/clear-custom-cookies', { method: 'POST' });
-        if (!res.ok) {
-          console.error('Failed to clear custom cookies:', await res.text());
-        }
-      } catch (error) {
-        console.error('Error calling clear-custom-cookies API:', error);
+      function raf(time: number) {
+        lenisRef.current?.raf(time);
+        requestAnimationFrame(raf);
       }
 
-      await signOut({ redirect: false });
-      router.push('/login');
-    } catch (error) {
-      console.error('An error occurred during logout:', error);
-    } finally {
-      hidePageLoader();
+      requestAnimationFrame(raf);
+
+      return () => {
+        lenisRef.current?.destroy();
+      };
     }
+  }, [currentStage]);
+
+  useEffect(() => {
+    if (currentStage === 0) {
+      const timer = setTimeout(() => {
+        setCurrentStage(1);
+      }, 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [currentStage]);
+
+  const handleBumperComplete = () => {
+    setCurrentStage(2);
   };
 
   return (
-    <>
-      <ManualLoader isLoading={isLoading} message={loaderMessage} />
 
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-4 text-center">
-        {session && status === 'authenticated' ? (
-          <div>
-            <h1 className="text-4xl font-bold text-gray-800 mb-6">
-              Welcome, {session.user?.name}!
-            </h1>
-            <button
-              onClick={handleLogout}
-              disabled={isLoading}
-              className="px-6 py-2 bg-red-600 text-white font-medium rounded-md shadow hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition duration-150 ease-in-out disabled:opacity-70"
-            >
-              Logout
-            </button>
-          </div>
-        ) : (
-          status === 'unauthenticated' && (
-            <>
-              <h1 className="text-4xl font-bold text-gray-800 mb-6">
-                Welcome to Innofashionshow7
-              </h1>
-              <Link
-                href="/login"
-                className={`mt-4 px-6 py-2 bg-blue-600 text-white font-medium rounded-md shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-150 ease-in-out ${
-                  isLoading ? 'opacity-50 cursor-not-allowed' : ''
-                }`}
-                aria-disabled={isLoading}
-                onClick={(e) => {
-                  if (isLoading) e.preventDefault();
-                  console.log("Login link clicked!");
-                }}
-              >
-                Login
-              </Link>
-            </>
-          )
-        )}
-      </div>
-    </>
+    <div className="relative w-full h-full overflow-hidden">
+      <img
+        src="/blending_1.png"
+        alt="Decorative blending effect"
+        className="absolute top-0 left-0 w-1/3 opacity-50 mix-blend-overlay pointer-events-none"
+        style={{ zIndex: -1 }}
+      />
+      <img
+        src="/blending_2.png"
+        alt="Decorative blending effect"
+        className="absolute bottom-0 right-0 w-1/4 opacity-30 mix-blend-lighten pointer-events-none"
+        style={{ zIndex: -1 }}
+      />
+      <img
+        src="/blending_3.png"
+        alt="Decorative blending effect"
+        className="absolute top-1/2 left-1/4 w-1/5 opacity-40 mix-blend-screen pointer-events-none"
+        style={{ zIndex: -1, transform: 'translate(-50%, -50%) rotate(45deg)' }}
+      />
+      <img
+        src="/blending_4.png"
+        alt="Decorative blending effect"
+        className="absolute top-1/3 right-1/4 w-1/6 opacity-60 mix-blend-soft-light pointer-events-none"
+        style={{ zIndex: -1 }}
+      />
+
+      {currentStage === 0 && <LoadingAnimation />}
+      {currentStage === 1 && <Bumper onComplete={handleBumperComplete} />}
+
+      {currentStage >= 2 && (
+        <div ref={mainRef} className="relative">
+          <Navbar />
+          <ThemeSection />
+          <AboutSection />
+          <EventBar />
+          <CompetitionsSection />
+          <Countdown />
+          <PrizePool />
+          <FAQ />
+          <Sponsor />
+          <TimelineSection />
+          {/* <Timeline /> */}
+          {/* <RSVPButton /> */}
+          <Footer />
+
+
+        </div>
+      )}
+
+      <style jsx global>{`
+  html {
+    scroll-behavior: auto !important;
+  }
+  
+  .mix-blend-overlay {
+    mix-blend-mode: overlay;5
+  }
+  .mix-blend-lighten {
+    mix-blend-mode: lighten;
+  }
+  .mix-blend-screen {
+    mix-blend-mode: screen;
+  }
+  .mix-blend-soft-light {
+    mix-blend-mode: soft-light;
+  }
+
+  body {
+    background: linear-gradient(
+      135deg,
+      #A30A99 0%,
+      #820D8C 25%,
+      #5F117F 50%,
+      #3D1472 75%,
+      #281660 100%
+    );
+    background-attachment: fixed;
+    background-size: 200% 200%;
+    min-height: 100vh;
+    animation: gradientAnimation 15s ease infinite;
+    margin: 0;
+    padding: 0;
+    font-family: inherit;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  section {
+    height: 100vh;
+    width: 100%;
+    position: relative;
+    background-color: transparent;
+  }
+  
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+  }
+  
+  .slide-up {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUp 0.8s ease-out forwards;
+  }
+  
+  .scale-in {
+    opacity: 0;
+    transform: scale(0.95);
+    animation: scaleIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+  }
+  
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+  
+  @keyframes slideUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes scaleIn {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes gradientAnimation {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+`}</style>
+    </div>
   );
 }

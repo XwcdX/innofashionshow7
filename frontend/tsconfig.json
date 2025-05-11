@@ -35,10 +35,12 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.d.ts",
+    ".next/types/**/*.d.ts",
     "next-env.d.ts",
     "src/app/admin/dashboard/components/Datatable.tsx",
+    "src/app/components/PixelCard.tsx",
     ".next/types/**/*.ts"
-, "src/app/components/PixelCard.tsx"  ],
+  ],
   "exclude": [
     "node_modules"
   ]
