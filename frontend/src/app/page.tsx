@@ -122,24 +122,6 @@ export default function Home() {
     scroll-behavior: auto !important;
   }
 
-  /* Scrollbar Styling */
-  ::-webkit-scrollbar {
-    width: 10px;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: rgba(77, 255, 255, 0.7); /* purple thumb */
-    border-radius: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: #202021; /* dark track */
-  }
-
-  /* For Firefox */
-  * {
-    scrollbar-width: wide;
-    scrollbar-color: #8f03d1 #202021;
-  }
-
   .mix-blend-overlay {
     mix-blend-mode: overlay;
   }

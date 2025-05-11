@@ -40,8 +40,29 @@ html {
     border-radius: 10px;
   }
 
+  /* * {
+    scrollbar-width: wide;
+    scrollbar-color: #8f03d1 #202021;
+  } */
+
+  .mix-blend-overlay {
+    mix-blend-mode: overlay;
+  }
+
+  .mix-blend-lighten {
+    mix-blend-mode: lighten;
+  }
+
+  .mix-blend-screen {
+    mix-blend-mode: screen;
+  }
+
+  .mix-blend-soft-light {
+    mix-blend-mode: soft-light;
+  }
+
   html {
-    scrollbar-width: thin;
+    scrollbar-width: wide;
     scrollbar-color: rgba(77, 255, 255, 0.7) #202021;
   }
 
