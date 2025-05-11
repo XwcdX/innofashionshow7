@@ -84,17 +84,28 @@ const TimelineSection = () => {
         scrollSnapAlign: "start",
       }}
     >
-      {/* Decorative image at the bottom right */}
-      {/* <div 
-        className="absolute  -bottom-55 -right-20 z-0 mb-4 mr-4 opacity-100"
+      {/* Decorative image at the top right */}
+      <div 
+        className="absolute top-55 -right-70 z-0 mb-4 mr-4 opacity-20"
         style={{
-          backgroundImage: "url('/assets/layer1.png')",
+          backgroundImage: "url('/assets/lines3.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
           width: '700px', // Adjust size as needed
-          height: '400px', // Adjust size as needed
+          height: '500px', // Adjust size as needed
         }}
-      ></div> */}
+      ></div>
+      {/* Decorative image 2 at the bottom right */}
+      <div 
+        className="absolute top-55 -left-20 z-0 mb-4 mr-4 opacity-15"
+        style={{
+          backgroundImage: "url('/assets/lines1.png')",
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          width: '700px', // Adjust size as needed
+          height: '700px', // Adjust size as needed
+        }}
+      ></div>
       <h2
         className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12"
         style={{

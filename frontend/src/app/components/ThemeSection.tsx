@@ -57,7 +57,7 @@ export default function ThemeSection() {
   )
 
   return (
-    <div className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
+    <div id = "Home" className="relative min-h-screen p-8 flex flex-col justify-center items-center overflow-hidden">
       <video
         ref={videoRef}
         autoPlay
@@ -174,6 +174,21 @@ export default function ThemeSection() {
         }}
       ></div>
 
+<div
+  className="absolute -bottom-1 left-1/2 w-[100vw] h-40 rounded-lg opacity-100"
+  style={{
+    background: 'linear-gradient(135deg, #A30A99 0%, #820D8C 25%, #5F117F 50%, #3D1472 75%, #281660 100%)',
+    backgroundSize: '200% 200%', // Gradien dengan ukuran besar agar animasi berjalan dengan lancar
+    backgroundPosition: '0% 50%', // Posisi awal background
+    animation: 'gradientAnimation 15s ease infinite', // Menambahkan animasi
+    transform: 'translateX(-50%)', // Menyelaraskan elemen ke tengah horizontal
+    WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 100%)',
+    maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 100%)',
+  }}
+></div>
+
+
+
       <style jsx>{`
         /* Additional texture effects */
         @keyframes grain {
@@ -225,6 +240,17 @@ export default function ThemeSection() {
         video {
           animation: video-enhance 8s ease-in-out infinite;
         }
+// @keyframes gradientAnimation {
+//     0% {
+//       background-position: 0% 50%;
+//     }
+//     50% {
+//       background-position: 100% 50%;
+//     }
+//     100% {
+//       background-position: 0% 50%;
+//     }
+//   }
       `}</style>
     </div>
   );

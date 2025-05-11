@@ -14,16 +14,14 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-
       if (currentScrollY <= 10) {
         setShowNavbar(true)
       } else if (currentScrollY > lastScrollY) {
         setShowNavbar(false)
-        setSidebarOpen(false) // Close sidebar when scrolling down
+        setSidebarOpen(false)
       } else {
         setShowNavbar(true)
       }
-
       setLastScrollY(currentScrollY)
     }
 
@@ -31,8 +29,15 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [lastScrollY])
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen)
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
+
+  const handleSmoothScroll = (e: React.MouseEvent, href: string) => {
+    e.preventDefault()
+    const target = document.querySelector(href)
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" })
+      setSidebarOpen(false)
+    }
   }
 
   const navLinks = [
@@ -74,9 +79,14 @@ export default function Navbar() {
               style={{ fontFamily: "Moderniz, sans-serif" }}
             >
               {navLinks.map(({ href, label }) => (
-                <Link href={href} key={label} className="hover:opacity-80 relative">
+                <a
+                  href={href}
+                  key={label}
+                  onClick={(e) => handleSmoothScroll(e, href)}
+                  className="hover:opacity-80 relative cursor-pointer"
+                >
                   <GlitchText>{label}</GlitchText>
-                </Link>
+                </a>
               ))}
             </nav>
 
@@ -91,18 +101,9 @@ export default function Navbar() {
                 viewBox="0 0 100 100"
                 width="40"
               >
-                <path
-                  className="line top"
-                  d="m 30,33 h 40 c 13.100415,0 14.380204,31.80258 6.899646,33.421777 -24.612039,5.327373 9.016154,-52.337577 -12.75751,-30.563913 l -28.284272,28.284272"
-                />
-                <path
-                  className="line middle"
-                  d="m 70,50 c 0,0 -32.213436,0 -40,0 -7.786564,0 -6.428571,-4.640244 -6.428571,-8.571429 0,-5.895471 6.073743,-11.783399 12.286435,-5.570707 6.212692,6.212692 28.284272,28.284272 28.284272,28.284272"
-                />
-                <path
-                  className="line bottom"
-                  d="m 69.575405,67.073826 h -40 c -13.100415,0 -14.380204,-31.80258 -6.899646,-33.421777 24.612039,-5.327373 -9.016154,52.337577 12.75751,30.563913 l 28.284272,-28.284272"
-                />
+                <path className="line top" d="m 30,33 h 40..." />
+                <path className="line middle" d="m 70,50 c ..." />
+                <path className="line bottom" d="m 69.575405,67.073826 ..." />
               </svg>
             </button>
 
@@ -130,15 +131,15 @@ export default function Navbar() {
           <div className="h-full flex flex-col pt-20 px-6">
             <div className="flex-1 flex flex-col">
               {navLinks.map(({ href, label }) => (
-                <Link 
-                  href={href} 
+                <a
+                  href={href}
                   key={label}
+                  onClick={(e) => handleSmoothScroll(e, href)}
                   className="py-4 border-b border-white/10 text-white hover:text-[#4dffff] transition-colors uppercase font-bold tracking-wider"
                   style={{ fontFamily: "Moderniz, sans-serif" }}
-                  onClick={() => setSidebarOpen(false)}
                 >
                   <GlitchText>{label}</GlitchText>
-                </Link>
+                </a>
               ))}
             </div>
 
@@ -156,7 +157,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Add these styles to your global CSS */}
+      {/* Hamburger Animation Styles */}
       <style jsx global>{`
         .ham {
           cursor: pointer;
