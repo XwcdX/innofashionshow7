@@ -106,14 +106,12 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <BrandedLoader isLoading={appIsLoading} message="Initializing Innofashionshow7..." />
-        {!appIsLoading && (
-          <>
-            <SplashCursor />
-            <Providers>
-              {children}
-            </Providers>
-          </>
-        )}
+        <div className={appIsLoading ? 'hidden' : ''}>
+          <SplashCursor />
+          <Providers>
+            {children}
+          </Providers>
+        </div>
 
         <Script
           src="https://cdn.jsdelivr.net/npm/tw-elements@latest/dist/js/tw-elements.umd.min.js"
