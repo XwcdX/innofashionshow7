@@ -174,7 +174,7 @@ export default function ThemeSection() {
         }}
       ></div>
 
-<div
+{/* <div
   className="absolute -bottom-1 left-1/2 w-[100vw] h-40 rounded-lg opacity-100"
   style={{
     background: 'linear-gradient(135deg, #A30A99 0%, #820D8C 25%, #5F117F 50%, #3D1472 75%, #281660 100%)',
@@ -185,7 +185,7 @@ export default function ThemeSection() {
     WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 100%)',
     maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 100%)',
   }}
-></div>
+></div> */}
 
 
 
@@ -250,7 +250,7 @@ export default function ThemeSection() {
 //     100% {
 //       background-position: 0% 50%;
 //     }
-//   }
+      
       `}</style>
     </div>
   );
