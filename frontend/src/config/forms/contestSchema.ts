@@ -46,7 +46,11 @@ export const contestSchema: FormSchema = [
         title: 'Proof of Payment',
         fields: [
             {
-                id: 'proofOfPayment', label: 'BCA: 8301829038901 (A/N siapa aja) sebesar 150.000', type: 'file-drag-drop', required: true,
+                id: 'proofOfPayment',
+                label: 'BCA: 0882829187 (A/N Sharone Hendrata) sebesar [PRICE]',
+                labelTemplate: 'BCA: 0882829187 (A/N Sharone Hendrata) sebesar {PRICE}',
+                type: 'file-drag-drop',
+                required: true,
                 accept: 'image/jpeg,image/png,application/pdf',
                 maxFileSizeMB: 2,
                 filePurpose: 'payment',

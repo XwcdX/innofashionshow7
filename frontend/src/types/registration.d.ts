@@ -27,6 +27,7 @@ export interface FormFieldOption {
 export interface FormField {
     id: string;
     label: string;
+    labelTemplate?: string;
     type: FieldType;
     required?: boolean;
     placeholder?: string;

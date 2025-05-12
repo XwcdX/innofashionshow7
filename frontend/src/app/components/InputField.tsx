@@ -288,21 +288,21 @@ export const InputField: React.FC<InputFieldProps> = ({
                 previewContent = <img src={localPreviewUrl!} alt="Selected preview" className="mt-2 max-h-28 max-w-full object-contain rounded" />;
             } else if (isUploadedPdf) {
                 previewContent = (
-                    <div className="mt-2 flex items-center space-x-2 bg-purple-600/30 backdrop-filter backdrop-blur-sm border border-purple-400/50 text-slate-300 rounded p-2">
+                    <div className="mt-2 flex items-center space-x-2 bg-purple-500/30 backdrop-filter backdrop-blur-sm border border-purple-400/50 text-slate-300 rounded p-2">
                         <PdfIcon className="h-10 w-10 flex-shrink-0" />
                         <p className="text-sm truncate" title={finalDisplayFileName || ""}>{finalDisplayFileName}</p>
                     </div>
                 );
             } else if (isLocalPdf) {
                 previewContent = (
-                    <div className="mt-2 flex items-center space-x-2 bg-purple-600/30 backdrop-filter backdrop-blur-sm border border-purple-400/50 text-slate-300 rounded p-2">
+                    <div className="mt-2 flex items-center space-x-2 bg-purple-500/30 backdrop-filter backdrop-blur-sm border border-purple-400/50 text-slate-300 rounded p-2">
                         <PdfIcon className="h-10 w-10 flex-shrink-0" />
                         <p className="text-sm truncate" title={finalDisplayFileName || ""}>{finalDisplayFileName}</p>
                     </div>
                 );
             } else if (finalDisplayFileName) {
                 previewContent = (
-                    <div className="mt-2 flex items-center space-x-2 bg-purple-600/30 backdrop-filter backdrop-blur-sm border border-purple-400/50 text-slate-300 rounded p-2">
+                    <div className="mt-2 flex items-center space-x-2 bg-purple-500/30 backdrop-filter backdrop-blur-sm border border-purple-400/50 text-slate-300 rounded p-2">
                         <GenericFileIcon className="h-8 w-8 flex-shrink-0 text-gray-400" />
                         <p className="text-sm truncate" title={finalDisplayFileName || ""}>
                             {finalDisplayFileName}
@@ -480,8 +480,8 @@ export const InputField: React.FC<InputFieldProps> = ({
                     <div
                         id={`drop_container_${field.id}`}
                         className={`w-full flex flex-col items-center justify-center p-4 border-2 rounded-md transition-all text-slate-300
-                            ${dragEventsDisabled ? 'bg-gray-700/30 cursor-not-allowed opacity-60'
-                                : 'cursor-pointer bg-white/5 backdrop-filter backdrop-blur-sm'}
+                            ${dragEventsDisabled ? '!bg-gray-700/30 cursor-not-allowed opacity-60'
+                                : 'cursor-pointer !bg-purple-500/30 backdrop-filter backdrop-blur-sm'}
                             ${isDragging && !dragEventsDisabled
                                 ? 'border-indigo-400 bg-indigo-500/20 scale-105 shadow-lg'
                                 : (error ? 'border-red-500' : `border-dashed ${currentFileNameForDisplay ? 'border-white/20' : 'border-white/40'} hover:border-indigo-400`)}
@@ -528,7 +528,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 
         case 'readonly':
             const inputSpecificClasses = `w-full border border-purple-400/30 px-3 py-2 rounded-md
-                            !bg-purple-500/20 backdrop-filter backdrop-blur-md
+                            !bg-purple-500/30 backdrop-filter backdrop-blur-md
                             text-gray-200 cursor-not-allowed`;
             const combinedClassName = `${commonProps.className || ''} ${inputSpecificClasses}`.trim();
 
