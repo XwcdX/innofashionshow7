@@ -106,11 +106,13 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <BrandedLoader isLoading={appIsLoading} message="Initializing Innofashionshow7..." />
-        <div className={appIsLoading ? 'hidden' : ''}>
+        <div
+          className={`transition-opacity duration-700 ease-in-out ${
+            appIsLoading ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
+        >
           <SplashCursor />
-          <Providers>
-            {children}
-          </Providers>
+          <Providers>{children}</Providers>
         </div>
 
         <Script

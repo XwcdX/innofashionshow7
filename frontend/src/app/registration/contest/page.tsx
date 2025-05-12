@@ -7,10 +7,54 @@ import { useRouter } from 'next/navigation';
 import { RegistrationForm } from '@/app/components/RegistrationForm';
 import { contestSchema } from '@/config/forms/contestSchema';
 import { type FormData, RegistrationType, Category } from '@/types/registration';
+import BackButton from '@/app/components/BackButton';
 
 const getDraftStorageKey = (email: string | undefined | null, regType: RegistrationType): string | null => {
     if (!email) return null;
     return `${regType}-draft-${email}`;
+};
+
+const getValidateStatus = async () => {
+    try {
+        // Make the API request to get the validation status
+        const res = await fetch('/api/lomba/getValidate');
+        
+        // Check if the response is OK (status 200)
+        if (res.ok) {
+            const data = await res.json();  // Assuming the response is JSON
+            console.log("Received validation status:", data);
+
+            // You can return the category or use it directly
+            return data;
+        } else {
+            console.error("Failed to fetch validation status. Response not OK:", res.status);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching validation status:", error);
+        return null;
+    }
+};
+const getSubmittedStatus = async () => {
+    try {
+        // Make the API request to get the submission status
+        const res = await fetch('/api/lomba/getSubmitted');
+        
+        // Check if the response is OK (status 200)
+        if (res.ok) {
+            const data = await res.json();  // Assuming the response is JSON
+            console.log("Received submission status:", data);
+
+            // You can return the category or use it directly
+            return data;
+        } else {
+            console.error("Failed to fetch submission status. Response not OK:", res.status);
+            return null;
+        }
+    } catch (error) {
+        console.error("Error fetching submission status:", error);
+        return null;
+    }
 };
 
 interface CategorySelectorProps {
@@ -76,51 +120,68 @@ export default function ContestRegistrationPage() {
 
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
     const [isLoadingCategory, setIsLoadingCategory] = useState<boolean>(true);
+    
+    const [validationStatus, setValidationStatus] = useState<boolean | null>(null);
+    const [submittedStatus, setSubmittedStatus] = useState<boolean | null>(null);
 
     useEffect(() => {
-        if (status === 'loading') {
-            setIsLoadingCategory(true);
-            return;
-        }
-
-        if (status === 'unauthenticated') {
-            const nextUrl = encodeURIComponent(`/registration/${registrationType}`);
-            router.replace(`/login?next=${nextUrl}`);
-            return;
-        }
-
-        if (status === 'authenticated' && userEmail) {
-            console.log('Authenticated, checking localStorage for category...');
-            setIsLoadingCategory(true);
-            const storageKey = getDraftStorageKey(userEmail, registrationType);
-            let foundCategory: Category | null = null;
-
-            if (storageKey) {
-                try {
-                    const rawDraft = localStorage.getItem(storageKey);
-                    if (rawDraft) {
-                        const parsedDraft: Partial<FormData> = JSON.parse(rawDraft);
-                        if (parsedDraft.category && (parsedDraft.category === 'INTERMEDIATE' || parsedDraft.category === 'ADVANCED')) {
-                            console.log('Found category in localStorage draft:', parsedDraft.category);
-                            foundCategory = parsedDraft.category;
-                        } else {
-                            console.log('Draft found, but no valid category property.');
-                        }
-                    } else {
-                        console.log('No draft found in localStorage for key:', storageKey);
-                    }
-                } catch (error) {
-                    console.error('Error reading or parsing localStorage draft:', error);
-                }
-            } else {
-                console.log('Could not generate storage key (no email?).');
+        const fetchAllData = async () => {
+            if (status === 'loading') {
+                setIsLoadingCategory(true);
+                return;
             }
 
-            setSelectedCategory(foundCategory);
-            setIsLoadingCategory(false);
-        } else {
-            setIsLoadingCategory(false);
+            if (status === 'unauthenticated') {
+                const nextUrl = encodeURIComponent(`/registration/${registrationType}`);
+                router.replace(`/login?next=${nextUrl}`);
+                return;
+            }
+
+            if (status === 'authenticated' && userEmail) {
+                try {
+                    const [validateData, submittedData] = await Promise.all([
+                        getValidateStatus(),
+                        getSubmittedStatus()
+                    ]);
+    
+                    setValidationStatus(validateData?.validateStatus ?? null);
+                    setSubmittedStatus(submittedData?.submittedStatus ?? null);
+                } catch (error) {
+                    console.error("Error during fetching status data", error);
+                }
+                console.log('Authenticated, checking localStorage for category...');
+                setIsLoadingCategory(true);
+                const storageKey = getDraftStorageKey(userEmail, registrationType);
+                let foundCategory: Category | null = null;
+
+                if (storageKey) {
+                    try {
+                        const rawDraft = localStorage.getItem(storageKey);
+                        if (rawDraft) {
+                            const parsedDraft: Partial<FormData> = JSON.parse(rawDraft);
+                            if (parsedDraft.category && (parsedDraft.category === 'INTERMEDIATE' || parsedDraft.category === 'ADVANCED')) {
+                                console.log('Found category in localStorage draft:', parsedDraft.category);
+                                foundCategory = parsedDraft.category;
+                            } else {
+                                console.log('Draft found, but no valid category property.');
+                            }
+                        } else {
+                            console.log('No draft found in localStorage for key:', storageKey);
+                        }
+                    } catch (error) {
+                        console.error('Error reading or parsing localStorage draft:', error);
+                    }
+                } else {
+                    console.log('Could not generate storage key (no email?).');
+                }
+
+                setSelectedCategory(foundCategory);
+                setIsLoadingCategory(false);
+            } else {
+                setIsLoadingCategory(false);
+            }
         }
+        fetchAllData();
 
     }, [status, userEmail, registrationType, router]);
     const handleCategorySelect = useCallback((category: Category) => {
@@ -196,8 +257,30 @@ export default function ContestRegistrationPage() {
         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
     }
 
+    if (status === 'authenticated' && !validationStatus && submittedStatus){
+        return (
+        <>
+            <BackButton
+                    href='/registration'/>
+            <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">Your registration has been submitted and waiting for validation.</p>;
+        </>
+        )
+    }
+
+    if (status === 'authenticated' && validationStatus && submittedStatus){
+        return (
+        <>
+            <BackButton
+                    href='/registration'/>
+            <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">Your registration has been submitted and validated. Now you can submit your creation&nbsp; <a href="/contest" className="inline-block font-semibold text-pink-400 hover:text-pink-300 underline underline-offset-4 transition-colors duration-300">here</a>.</p>;
+        </>
+        )
+    }
+
     return (
         <div className="min-h-screen py-8 relative z-10">
+            <BackButton
+                    href='/registration'/>
             {!selectedCategory ? (
                 <CategorySelector onSelectCategory={handleCategorySelect} />
             ) : (
