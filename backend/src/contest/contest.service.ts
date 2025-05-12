@@ -40,10 +40,28 @@ export class ContestService {
 
         if (!contestRegistration) {
             this.logger.log(`No valid status found for user ID: ${userId}`);
-            return null;
+            return {validateStatus: null};
         }
 
         return { validateStatus: contestRegistration.valid }; 
+    }
+
+    async getSubmitted(userId: string): Promise<{ submittedStatus: boolean | null } | null> {
+        this.logger.log(`Fetching submitted status for user ID: ${userId}`);
+        // Fetch only the 'category' field from the contest record
+        const contestRegistration = await this.prisma.contest.findUnique({
+            where: { userId: userId },
+            select: {
+                submitted: true,  // Only select the 'category' field
+            },
+        });
+
+        if (!contestRegistration) {
+            this.logger.log(`No submitted status found for user ID: ${userId}`);
+            return null;
+        }
+
+        return { submittedStatus: contestRegistration.submitted }; 
     }
 
     async saveDraft(userId: string, dto: DraftContestDto): Promise<Contest | null> {

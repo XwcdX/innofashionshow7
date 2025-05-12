@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { SubmissionForm } from '@/app/components/SubmissionForm';
+import BackButton from '@/app/components/BackButton';
 import { contestSubmitSchema } from '@/config/forms/contestSchema';
 import { type FormData, RegistrationType, Category } from '@/types/registration';
 
@@ -177,17 +178,42 @@ export default function ContestSubmissionPage() {
         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
     }
 
+    if (status === 'authenticated' && validationStatus === null){
+        return (
+        <>
+            <BackButton
+                    href='/'/>
+            <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">You have not registered yet.&nbsp;
+                    <a href="/registration" className="inline-block font-semibold text-pink-400 hover:text-pink-300 underline underline-offset-4 transition-colors duration-300">Register here</a>.</p>;
+        </>
+        )
+    }
+
     if (status === 'authenticated' && !validationStatus){
-        return <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">Your registration has not been validated yet. </p>;
+        return (
+        <>
+            <BackButton
+                    href='/registration'/>
+            <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">Your registration has not been validated yet. </p>;
+        </>
+        )
     }
 
     if (status === 'authenticated' && creationStatus){
-        return <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">Your submission has been received and will now proceed to the judging process. </p>;
+        return(
+        <>
+            <BackButton
+                    href='/registration'/>
+            <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">Your submission has been received and will now proceed to the judging process. </p>;
+        </>
+        )
     }
 
     return (
         <div className="min-h-screen py-8 px-4 relative z-10">
                 <>
+                    <BackButton
+                    href='/'/>
                     {/* Render the actual form */}
                     <SubmissionForm
                         registrationType='contest'

@@ -18,7 +18,7 @@ export default function SubmissionLayout({ children }: { children: React.ReactNo
         src="/assets/Frame 7.png"
         className="fixed -top-35 -right-45 sm:-top-45 sm:-right-55 md:-top-60 md:-right-65 lg:-top-80 lg:-right-75 m-4 sm:w-[600px] sm:h-[450px] md:w-[750px] md:h-[550px] lg:w-[917px] lg:h-[666px] object-cover"
       />
-      <main className="!bg-gradient-to-b !from-[#a30a99] !to-[#281660] py-8 px-4 overflow-hidden min-h-screen">{children}</main>
+      <main className="!bg-gradient-to-b !from-[#a30a99] !to-[#281660] px-4 overflow-hidden min-h-screen">{children}</main>
     </>
   );
 }

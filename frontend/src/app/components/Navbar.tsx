@@ -2,31 +2,25 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import GlitchText from "./GlitchText" // Assuming GlitchText is imported correctly
+import GlitchText from "./GlitchText"
 import { motion } from "framer-motion"
 import { useEffect, useState, ReactNode } from "react"
-import { useSession, signOut } from 'next-auth/react'; // Import useSession and signOut
-
-// Assuming GlitchText component definition is available or imported.
-// If GlitchText requires `glitchActive`, you might need to add state or pass `false`.
-// For now, assuming it works with just children and className.
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Navbar() {
-  const { data: session, status } = useSession(); // Get session data and loading status
-  const isLoggedIn = status === 'authenticated'; // Check if user is authenticated
-  const isLoading = status === 'loading'; // Check if session is still loading
+  const { data: session, status } = useSession();
+  const isLoggedIn = status === 'authenticated';
+  const isLoading = status === 'loading';
 
   // --- DEBUG LOGS START ---
-  // This useEffect only logs when status/login state changes, NOT when session object reference changes
   useEffect(() => {
       console.log("Navbar: Session Status:", status);
       console.log("Navbar: Is Logged In:", isLoggedIn);
       console.log("Navbar: Is Loading:", isLoading);
       if (!isLoading) {
-          console.log("Navbar: Session Data:", session); // Accessing session here is fine
+          console.log("Navbar: Session Data:", session);
       }
-  }, [status, isLoggedIn, isLoading]); // <-- 'session' IS CORRECTLY REMOVED from dependencies
-  // --- DEBUG LOGS END ---
+  }, [status, isLoggedIn, isLoading]);
 
 
   const [showNavbar, setShowNavbar] = useState(true)
@@ -37,12 +31,12 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY
-      if (currentScrollY <= 10) { // Always show at the very top
+      if (currentScrollY <= 10) {
         setShowNavbar(true)
-      } else if (currentScrollY > lastScrollY) { // Scrolling down
+      } else if (currentScrollY > lastScrollY) {
         setShowNavbar(false)
-        setSidebarOpen(false) // Close sidebar when scrolling down
-      } else { // Scrolling up
+        setSidebarOpen(false) 
+      } else { 
         setShowNavbar(true)
       }
       setLastScrollY(currentScrollY)
@@ -50,16 +44,15 @@ export default function Navbar() {
 
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
-  }, [lastScrollY]) // Only re-run if lastScrollY changes
+  }, [lastScrollY])
 
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen)
 
   const handleSmoothScroll = (e: React.MouseEvent, href: string) => {
-    e.preventDefault() // Prevent default anchor click
+    e.preventDefault()
     const target = document.querySelector(href)
     if (target) {
-      // Using window.scrollTo ensures compatibility and can offset for fixed header if needed
-      const offset = 80; // Adjust based on your fixed header's height + padding
+      const offset = 80; 
       const elementPosition = (target as HTMLElement).getBoundingClientRect().top; // Cast to HTMLElement
       const offsetPosition = elementPosition + window.scrollY - offset; // Use window.scrollY for current scroll position
 
@@ -76,12 +69,10 @@ export default function Navbar() {
       console.log('Logout button clicked, calling signOut...'); // Debug log
       setSidebarOpen(false); // Close sidebar before logging out
       try {
-        // signOut() handles the logout and typically redirects automatically
-        // Check Network tab for /api/auth/signout POST request and redirects
-        await signOut({ callbackUrl: '/' }); // Redirect to home page after logout
-        console.log('signOut call finished.'); // Debug log
+        await signOut({ callbackUrl: '/' });
+        console.log('signOut call finished.');
       } catch (error) {
-        console.error('Error during signOut:', error); // Log potential errors
+        console.error('Error during signOut:', error);
       }
   };
 
@@ -95,10 +86,9 @@ export default function Navbar() {
   ];
 
   // --- UPDATED LOGIC FOR NAV LINKS ---
-  // Add Registration link to navLinks ONLY if the user IS logged in and NOT loading (as per user's latest instruction)
    const navLinks = (isLoggedIn && !isLoading)
-    ? [...baseNavLinks, { href: "/registration", label: "Registration" }] // Add Registration if logged IN
-    : baseNavLinks; // Otherwise, just show base links (when logged out or loading)
+    ? [...baseNavLinks, { href: "/registration", label: "Registration" }, { href: "/contest", label: "Submission" }]
+    : baseNavLinks;
   // --- END UPDATED LOGIC ---
 
 
@@ -113,7 +103,6 @@ export default function Navbar() {
       >
         <header
           className={`w-full bg-[#1A1A1A]/90 backdrop-blur-sm shadow-md border-b border-white/10 text-white px-4 md:px-8 py-3 md:py-5`}
-          // CSS transitions are now handled by motion.div above
         >
           <div className="max-w-screen-xl mx-auto flex items-center justify-between">
             {/* Logo */}
