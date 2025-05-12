@@ -174,14 +174,14 @@ export default function RootLayout({
   }, [appIsLoading]);
 
 
-  const handleClick = (e: React.MouseEvent) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const now = performance.now();
-  };
+  // const handleClick = (e: React.MouseEvent) => {
+  //   // const canvas = canvasRef.current;
+  //   // if (!canvas) return;
+  //   // const rect = canvas.getBoundingClientRect();
+  //   // const x = e.clientX - rect.left;
+  //   // const y = e.clientY - rect.top;
+  //   // const now = performance.now();
+  // };
 
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} font-neue-montreal`}>
@@ -209,7 +209,7 @@ export default function RootLayout({
         />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
       </head>
-      <body className="antialiased" onClick={handleClick}>
+      <body className="antialiased" >
         <BrandedLoader isLoading={appIsLoading} message="Initializing Innofashionshow7..." />
 
         <div

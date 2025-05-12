@@ -8,10 +8,10 @@ import ScrollTrigger from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const TimelineSection = () => {
-  const [active, setActive] = useState<"contest" | "talkshow" | "workshop">("contest");
+  const [active, setActive] = useState<"competition" | "talkshow" | "workshop">("competition");
 
   const timelineData = {
-    contest: [
+    competition: [
       { title: "Open Registration", date: "Tuesday | 13 Mei 2025" },
       { title: "Close Registration", date: "Saturday | 28 June 2025" },
       { title: "Last Submission of Works", date: "Monday | 30 June 2025" },
@@ -53,7 +53,7 @@ const TimelineSection = () => {
           end: "80% center",
           scrub: true,
         },
-        height: "130vh",
+        height: "216vh",
       });
     });
 
@@ -132,9 +132,9 @@ const TimelineSection = () => {
         Timeline
       </h2>
 
-      {/* Toggle Menu */}
+      {/* Toggle Menu */} 
       <div className="menu-buttons">
-        {(["contest", "talkshow", "workshop"] as const).map((key) => (
+        {(["competition"] as const).map((key) => (
           <button
             key={key}
             onClick={() => setActive(key)}
@@ -177,7 +177,7 @@ const TimelineSection = () => {
     left: 29%;
     transform: translateX(400%);
     width: 3px;
-    height: 100px;
+    height: 1220px;
     background-color: white;
     z-index: -1;
     }
@@ -192,7 +192,7 @@ const TimelineSection = () => {
 
     .timeline-container {
      position: relative;
-     height: 1190px;
+     height: 1220px;
     } 
 
     .timeline-point {
@@ -348,6 +348,8 @@ const TimelineSection = () => {
           background-color: white;
           margin-left: 37%;
           margin-top: 30px;
+
+          
         }
 
         .timeline-content {

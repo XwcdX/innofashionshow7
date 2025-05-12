@@ -117,7 +117,8 @@ export default function ThemeSection() {
           delay={0.1}
           className="w-full text-center"
         >
-          <h1 className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-white mb-12 text-center"
+          <h1 className="text-6xl md:text-7xl lg:!text-9xl  font-bold uppercase tracking-tight text-white mb-12 text-center"
+
             style={{
               textShadow: '0 0 15px rgba(255, 255, 255, 0.9)',
               fontStyle: 'italic',
@@ -125,7 +126,7 @@ export default function ThemeSection() {
             {splitTextUsed ? (
               <SplitText
                 text="ILLUMINE"
-                className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-white mb-12 text-center"
+                  className="text-6xl md:text-7xl lg:!text-9xl font-bold uppercase tracking-tight text-white mb-12 text-center"
                 staggerDelay={0.1}
                 animationFrom={{ opacity: 0, y: 50 }}
                 animationTo={{ opacity: 1, y: 0 }}
@@ -135,7 +136,7 @@ export default function ThemeSection() {
                 onAnimationComplete={handleAnimationComplete}
               />
             ) : (
-              <GlitchText>ILLUMINE</GlitchText>
+              <GlitchText >ILLUMINE</GlitchText>
             )}
           </h1>
         </ScrollReveal>
@@ -148,14 +149,14 @@ export default function ThemeSection() {
           delay={0.2}
           className="w-full text-center"
         >
-          <p className="text-white text-xl mb-6" style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}>
+          <p className="text-white text-2xl mb-6" style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}>
             <span className="font-semibold">
               <GlitchText>Glow beyond, inspire more</GlitchText>
             </span>
           </p>
         </ScrollReveal>
 
-        <ScrollReveal
+        {/* <ScrollReveal
           baseOpacity={0}
           enableBlur={true}
           baseRotation={5}
@@ -170,7 +171,7 @@ export default function ThemeSection() {
               <span className="text-white font-semibold">live streaming</span>.
             </GlitchText>
           </p>
-        </ScrollReveal>
+        </ScrollReveal> */}
       </div>
 
       <div
