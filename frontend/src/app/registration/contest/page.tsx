@@ -272,7 +272,22 @@ export default function ContestRegistrationPage() {
         <>
             <BackButton
                     href='/registration'/>
-            <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">Your registration has been submitted and validated. Now you can submit your creation&nbsp; <a href="/contest" className="inline-block font-semibold text-pink-400 hover:text-pink-300 underline underline-offset-4 transition-colors duration-300">here</a>.</p>;
+            <p className="flex flex-col justify-center items-center min-h-screen text-lg font-semibold text-white text-center space-y-4">
+                <span>
+                    Your registration has been submitted and validated. Now you can submit your creation&nbsp;
+                    <a href="/contest" className="inline-block font-semibold text-pink-400 hover:text-pink-300 underline underline-offset-4 transition-colors duration-300">here</a>.
+                </span>
+                <span className="flex items-center gap-2">
+                    <a href="https://chat.whatsapp.com/CXmwa7XNqyZAPgbDjdujaK" className="inline-flex items-center font-semibold text-pink-400 hover:text-pink-300 underline underline-offset-4 transition-colors duration-300">
+                    <svg className="w-5 h-5 mr-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.198.297-.767.967-.94 1.165-.173.198-.347.223-.644.075-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.134.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.372-.025-.52-.075-.149-.669-1.612-.916-2.206-.242-.581-.487-.502-.67-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.693.625.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.291.173-1.413-.074-.123-.273-.198-.57-.347z"/>
+                        <path d="M20.52 3.48A11.962 11.962 0 0012 0C5.373 0 0 5.373 0 12c0 2.12.555 4.122 1.609 5.916L0 24l6.27-1.646A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12 0-3.194-1.247-6.208-3.48-8.52zM12 21.75c-1.826 0-3.61-.49-5.18-1.416l-.37-.218-3.725.976.996-3.63-.24-.373C2.525 15.153 2.25 13.592 2.25 12c0-5.376 4.374-9.75 9.75-9.75 2.604 0 5.048 1.016 6.875 2.855S21.75 9.396 21.75 12c0 5.376-4.374 9.75-9.75 9.75z"/>
+                    </svg>
+                    &nbsp;Join our WhatsApp Group for the next information
+                    </a>
+                </span>
+            </p>
+
         </>
         )
     }
