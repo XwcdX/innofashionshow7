@@ -528,7 +528,7 @@ export const InputField: React.FC<InputFieldProps> = ({
 
         case 'readonly':
             const inputSpecificClasses = `w-full border border-purple-400/30 px-3 py-2 rounded-md
-                            bg-purple-500/20 backdrop-filter backdrop-blur-md
+                            !bg-purple-500/20 backdrop-filter backdrop-blur-md
                             text-gray-200 cursor-not-allowed`;
             const combinedClassName = `${commonProps.className || ''} ${inputSpecificClasses}`.trim();
 

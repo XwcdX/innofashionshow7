@@ -35,7 +35,7 @@ export default function AboutSection() {
       {
         opacity: 1,
         x: 0,
-        duration: 2.0, // Adjust duration to make the animation 2 times longer
+        duration: 2.0,
         ease: "power2.out",
         scrollTrigger: {
           trigger: el,
@@ -63,43 +63,31 @@ export default function AboutSection() {
             priority
           />
         </div>
+        <div className="w-full h-full flex flex-col items-center justify-center">
+          <h2
+            className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-white mb-12 text-center"
+            style={{
+              textShadow: "0 0 15px rgba(77, 255, 255, 0.7)",
+              fontStyle: "italic",
+            }}
+          >
+            <GlitchText glitchActive={glitchActive}>ABOUT US</GlitchText>
+          </h2>
 
-        <h2
-          className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
-          style={{
-            textShadow: "0 0 15px rgba(77, 255, 255, 0.7)",
-            fontStyle: "italic",
-          }}
-        >
-          <GlitchText glitchActive={glitchActive}>ABOUT US</GlitchText>
-        </h2>
-            
-        <p
-          className="text-sm leading-relaxed tracking-wide text-justify"
-          style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
-        > 
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam vulputate
-          ex in dolor fringilla pellentesque. Ut ut purus semper, vehicula enim
-          sit amet, porttitor arcu. Quisque hendrerit maximus mattis. Donec
-          vitae sapien nisi. Quisque sed laoreet ipsum, congue volutpat ipsum.
-          Class aptent taciti sociosqu ad litora torquent per conubia nostra,
-          per inceptos himenaeos. Nullam non dui ultrices mi scelerisque finibus
-          nec id nunc. Vestibulum euismod blandit risus.
-          <br />
-          <br />
-          Phasellus interdum, elit eu pulvinar tempus, lacus metus fermentum
-          leo, lacinia mattis nibh odio vel est. Ut bibendum tellus nec
-          consequat rutrum. Fusce at mi orci. Etiam vestibulum tincidunt
-          suscipit. Aliquam vitae quam sem. Fusce lorem elit, sollicitudin sed
-          risus eu, feugiat molestie neque. Vivamus odio velit, pretium
-          vulputate ligula eget.
-        </p>
+          <p
+            className="text-lg leading-relaxed tracking-wide text-justify text-center"
+            style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
+          >
+            Innofashion Show
+            Innofashion Show is an annual event by the Textile and Fashion Design program at Petra Christian University, serving as a platform for final-year students to showcase their best creations. More than just an academic appreciation event, it is a stage for young talents to innovate and contribute to the fashion industry.
+          </p>
+        </div>
       </ScrollReveal>
 
       {/* Right Section Image with custom GSAP fade + slide */}
       <div
         ref={rightImageRef}
-        className="w-full md:w-1/2 relative aspect-[4/3] mt-20 mb-10 md:aspect-auto "
+        className="w-full md:w-1/2 relative aspect-[4/3] mt-20 mb-10 md:aspect-auto mr-0 lg:mr-16"
       >
         <Image
           src="/assets/runway.jpg"

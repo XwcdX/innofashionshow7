@@ -36,7 +36,7 @@ const CompetitionsSection: React.FC = () => {
                   {competition.icon}
                 </div>
                 <h3
-                  className="text-2xl font-semibold mb-3 group-hover:text-[#4dffff] transition-colors duration-300"
+                  className="text-2xl font-semibold mb-3 group-hover:text-white transition-colors duration-300"
                   style={{
                     color: '#a6ff4d',
                     fontFamily: 'MODERNIZ, sans-serif',
@@ -57,7 +57,7 @@ const CompetitionsSection: React.FC = () => {
               {/* Hover Effects */}
               <div className="absolute inset-0 rounded-2xl overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#4dffff10] to-[#a6ff4d10]"></div>
-                <div className="absolute inset-0 border border-[#4dffff] opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <div className="absolute inset-0 border border-white opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
               </div>
 
               {/* Glow Effect */}

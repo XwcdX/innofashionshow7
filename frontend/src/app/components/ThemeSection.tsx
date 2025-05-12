@@ -101,12 +101,12 @@ export default function ThemeSection() {
       </video>
 
       {/* Mute/Unmute Button */}
-      <button
+      {/* <button
         onClick={handleToggleMute}
         className="fixed bottom-5 right-5 z-20 bg-black bg-opacity-50 text-white px-4 py-2 rounded hover:bg-opacity-75 transition"
         >
         {isMuted ? 'Unmute' : 'Mute'}
-      </button>
+      </button> */}
 
       <div className="relative z-10 w-full">
         <ScrollReveal
@@ -117,15 +117,15 @@ export default function ThemeSection() {
           delay={0.1}
           className="w-full text-center"
         >
-          <h1 className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
+          <h1 className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-white mb-12 text-center"
             style={{
-              textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
+              textShadow: '0 0 15px rgba(255, 255, 255, 0.9)',
               fontStyle: 'italic',
             }}>
             {splitTextUsed ? (
               <SplitText
                 text="ILLUMINE"
-                className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12 text-center"
+                className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-white mb-12 text-center"
                 staggerDelay={0.1}
                 animationFrom={{ opacity: 0, y: 50 }}
                 animationTo={{ opacity: 1, y: 0 }}
@@ -150,7 +150,7 @@ export default function ThemeSection() {
         >
           <p className="text-white text-xl mb-6" style={{ fontFamily: "Eirene Sans Bold, sans-serif", opacity: pageLoaded ? 1 : 0 }}>
             <span className="font-semibold">
-              <GlitchText>A French-inspired take on “illuminate” for a high-fashion feel.</GlitchText>
+              <GlitchText>Glow beyond, inspire more</GlitchText>
             </span>
           </p>
         </ScrollReveal>
