@@ -41,6 +41,18 @@ export class ContestController {
         return validate;
     }
 
+    @Get('getSubmitted')
+    @UseGuards(JwtAuthGuard)
+    @HttpCode(HttpStatus.OK)
+    async getSubmitted(@Req() req: RequestWithUser) {
+        const userId = req.user.id;
+        const submitted = await this.contestService.getSubmitted(userId);
+        if (!submitted) {
+            return {};
+        }
+        return submitted;
+    }
+
     @Post('draft')
     @UseGuards(JwtAuthGuard)
     @HttpCode(HttpStatus.OK)
