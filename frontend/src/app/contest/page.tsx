@@ -178,6 +178,17 @@ export default function ContestSubmissionPage() {
         return <p className="flex justify-center items-center min-h-screen text-lg font-semibold">Redirecting to login...</p>;
     }
 
+    if (status === 'authenticated' && validationStatus === null){
+        return (
+        <>
+            <BackButton
+                    href='/'/>
+            <p className="flex justify-center items-center min-h-screen text-lg font-semibold text-white">You have not registered yet.&nbsp;
+                    <a href="/registration" className="inline-block font-semibold text-pink-400 hover:text-pink-300 underline underline-offset-4 transition-colors duration-300">Register here</a>.</p>;
+        </>
+        )
+    }
+
     if (status === 'authenticated' && !validationStatus){
         return (
         <>

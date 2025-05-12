@@ -40,7 +40,7 @@ export class ContestService {
 
         if (!contestRegistration) {
             this.logger.log(`No valid status found for user ID: ${userId}`);
-            return null;
+            return {validateStatus: null};
         }
 
         return { validateStatus: contestRegistration.valid }; 
