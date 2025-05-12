@@ -22,7 +22,10 @@ export default function RegistrationSelectionPage() {
       <div
         className="h-screen w-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 selection:bg-purple-500 selection:text-white overflow-hidden"
       >
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-white mb-12 sm:mb-16 md:mb-20 text-center [text-shadow:_0_0_6px_rgba(255,255,255,0.7)]">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-12 text-center mb-12 sm:mb-16 md:mb-20 text-center [text-shadow:_0_0_6px_rgba(255,255,255,0.7)]"
+            style={{
+              fontStyle: 'italic',
+            }}>
           Choose Your Registration
         </h1>
 
