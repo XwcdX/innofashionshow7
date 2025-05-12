@@ -19,7 +19,18 @@ async function main() {
     }
 
     const admins = [
-        { email: 'c14230074@john.petra.ac.id', name: 'Terry Clement', divisionSlug: 'it' }
+        { email: 'c14230074@john.petra.ac.id', name: 'Terry Clement', divisionSlug: 'it' },
+        { email: 'd12230126@john.petra.ac.id', name: 'Amanda Adelia Ivanka', divisionSlug: 'it' },
+        { email: 'h14230108@john.petra.ac.id', name: 'Jennifer Alicia Limbono', divisionSlug: 'it' },
+        { email: 'c14240033@john.petra.ac.id', name: 'Joselin Julian Koenadi', divisionSlug: 'it' },
+        { email: 'h13230036@john.petra.ac.id', name: 'Sonia Bernita Susetyo', divisionSlug: 'it' },
+        { email: 'e12220221@john.petra.ac.id', name: 'Loveina', divisionSlug: 'it' },
+        { email: 'c14240030@john.petra.ac.id', name: 'Clara Nadia Adigunawan', divisionSlug: 'it' },
+        { email: 'd11240306@john.petra.ac.id', name: 'Joses Alver Agape', divisionSlug: 'it' },
+        { email: 'h14230219@john.petra.ac.id', name: 'Jecelyn Gozal', divisionSlug: 'bph' },
+        { email: 'e12220094@john.petra.ac.id', name: 'Sthefanie Natajaya', divisionSlug: 'bph' },
+        { email: 'h14230144@john.petra.ac.id', name: 'Sharone Hendrata', divisionSlug: 'bph' },
+        { email: 'h14230029@john.petra.ac.id', name: 'Evelyn Joyrich Gunawan', divisionSlug: 'bph' },
     ];
 
     for (const admin of admins) {

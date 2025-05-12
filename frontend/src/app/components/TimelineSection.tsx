@@ -12,16 +12,16 @@ const TimelineSection = () => {
 
   const timelineData = {
     contest: [
-      { title: "OPEN REGISTRATION", date: "Tuesday | 18 MARCH 2025" },
-      { title: "CLOSE REGISTRATION", date: "Sunday | 18 APRIL 2025" },
-      { title: "TECHNICAL MEETING", date: "Friday | 03 MAY 2025" },
-      { title: "COMPETITION START", date: "Saturday | 04 MAY 2025" },
+      { title: "Open Registration", date: "Tuesday | 13 Mei 2025" },
+      { title: "Close Registration", date: "Saturday | 28 June 2025" },
+      { title: "Last Submission of Works", date: "Monday | 30 June 2025" },
+      { title: "Competition Judging", date: "Thursday | 03 July 2025" },
+      { title: "Announcement of Finalists", date: "Monday | 07 July 2025" },
+      { title: "Awarding Night", date: "Thursday | 17 July 2025" },
     ],
     talkshow: [
-      { title: "OPEN REGISTRATION", date: "Monday | 25 MARCH 2025" },
-      { title: "TALKSHOW SPEAKER REVEAL", date: "Wednesday | 10 APRIL 2025" },
-      { title: "EVENT DAY", date: "Sunday | 28 APRIL 2025" },
-      { title: "TALKSHOW START", date: "Saturday | 01 MAY 2025" },
+      { title: "Talkshow (Online)", date: "Monday | 14 June 2025" },
+      { title: "Talkshow (Onsite)", date: "Wednesday | 17 July 2025" },
     ],
     workshop: [
       { title: "OPEN REGISTRATION", date: "Tuesday | 02 APRIL 2025" },
@@ -107,8 +107,8 @@ const TimelineSection = () => {
           backgroundImage: "url('/assets/lines3.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
-          width: '700px', // Adjust size as needed
-          height: '500px', // Adjust size as needed
+          width: '700px',
+          height: '500px',
         }}
       ></div>
       {/* Decorative image 2 at the bottom right */}
@@ -118,12 +118,12 @@ const TimelineSection = () => {
           backgroundImage: "url('/assets/lines1.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
-          width: '700px', // Adjust size as needed
-          height: '700px', // Adjust size as needed
+          width: '700px',
+          height: '700px',
         }}
       ></div>
       <h2
-        className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-12"
+        className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-white mb-12"
         style={{
           textShadow: "0 0 15px rgba(77, 255, 255, 0.7)",
           fontStyle: "italic",

@@ -1366,11 +1366,25 @@ export default function SplashCursor({
     }
 
     function generateColor(): ColorRGB {
-      const c = HSVtoRGB(Math.random(), 1.0, 1.0);
-      c.r *= 0.15;
-      c.g *= 0.15;
-      c.b *= 0.15;
-      return c;
+      // const c = HSVtoRGB(Math.random(), 1.0, 1.0);
+      // c.r *= 0.15;
+      // c.g *= 0.15;
+      // c.b *= 0.15;
+      // return c
+      // const pink = HSVtoRGB(0.92, 1.0, 1.0);
+      // pink.r *= 0.15;
+      // pink.g *= 0.15;
+      // pink.b *= 0.15;
+      // return pink;
+
+      const hue = 0.83 + Math.random() * 0.14;
+      const sat = 0.6 + Math.random() * 0.4;
+      const val = 0.8 + Math.random() * 0.2;
+      const ranPink = HSVtoRGB(hue, sat, val)
+      ranPink.r *= 0.15;
+      ranPink.g *= 0.15;
+      ranPink.b *= 0.15;
+      return ranPink;
     }
 
     function HSVtoRGB(h: number, s: number, v: number): ColorRGB {

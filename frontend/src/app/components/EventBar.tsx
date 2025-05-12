@@ -98,7 +98,7 @@ export default function EventBar() {
       {/* Content wrapper with higher z-index */}
       <div className="mx-auto relative z-10 ">
         <h2
-          className="mt-10 text-5xl md:text-6xl font-bold uppercase tracking-tight text-[#4dffff] mb-10 text-center"
+          className="mt-10 text-5xl md:text-6xl font-bold uppercase tracking-tight text-white mb-10 text-center"
           style={{
             textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
             fontStyle: 'italic',
