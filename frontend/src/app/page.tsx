@@ -60,7 +60,7 @@ export default function Home() {
           <Countdown />
           <TimelineSection />
           <PrizePool />
-          <FAQ />
+          {/* <FAQ /> */}
           {/* <Sponsor /> */}
           <Footer />
         </ClickSpark>
