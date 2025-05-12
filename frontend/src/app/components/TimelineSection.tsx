@@ -65,7 +65,7 @@ const TimelineSection = () => {
           end: "80% center",
           scrub: true,
         },
-        height: "75%",
+        height: "85%",
       });
     });
 
@@ -175,7 +175,7 @@ const TimelineSection = () => {
     position: absolute;
     top: 60px;
     left: 29%;
-    transform: translateX(400%);
+    transform: translateX(400%) translateY(-5%);
     width: 3px;
     height: 1220px;
     background-color: white;
