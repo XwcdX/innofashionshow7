@@ -10,7 +10,7 @@ import LoadingAnimation from './components/Loader';
 import Countdown from './components/Countdown';
 import PrizePool from './components/Prize';
 import FAQ from './components/FAQ';
-import Sponsor from './components/Sponsor';
+// import Sponsor from './components/Sponsor';
 import Lenis from '@studio-freight/lenis';
 import TimelineSection from "@/app/components/TimelineSection";
 import ClickSpark from './components/ClickSpark';
@@ -68,7 +68,7 @@ export default function Home() {
             <TimelineSection />
             <PrizePool />
             <FAQ />
-            <Sponsor />
+            {/* <Sponsor /> */}
             <Footer />
           </ClickSpark>
         </div>

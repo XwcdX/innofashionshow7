@@ -429,7 +429,7 @@ const FAQ: React.FC = () => {
       <div className="container mx-auto px-0 flex-1 flex flex-col justify-center relative z-10">
         <div className="relative mb-6 md:mb-8 text-center">
           <h2
-            className={`text-4xl md:text-5xl font-bold uppercase tracking-tighter inline-block relative ${
+            className={`text-4xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
               glitchActive ? 'glitch-active' : ''
             }`}
             style={{ 
@@ -497,12 +497,13 @@ const FAQ: React.FC = () => {
                   >
                     {/* question */}
                     <div
-                      className={`absolute w-full h-full backface-hidden rounded-lg sm:p-2 md:p-4 flex items-center justify-center cursor-pointer shadow-md group-hover:shadow-lg transition-shadow duration-300 ${
-                        activeIndex === index ? 'bg-gradient-to-br from-purple-100 to-blue-100' : 'bg-gradient-to-b from-purple-50 to-white'
+                      className={`absolute w-full h-full backface-hidden rounded-lg sm:p-2 md:p-4 flex items-center justify-center cursor-pointer ${
+                        activeIndex === index ? 'glass-card-active' : 'glass-card'
                       }`}
                       style={{ 
-                        border: '1px solid rgba(143, 3, 209, 0.3)',
-                        borderRadius: '12px 12px 12px 12px'
+                        borderRadius: '12px',
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)'
                       }}
                       role="button" 
                       aria-expanded={activeIndex === index}
@@ -510,12 +511,11 @@ const FAQ: React.FC = () => {
                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleCardClick(index); } }}
                     >
                       <h3 
-                        className="text-xl md:text-xl font-bold text-center px-3"
+                        className="text-xl md:text-2xl font-bold text-center px-3"
                         style={{ 
-                          color: '#8f03d1',
-                          textShadow: '0 2px 4px rgba(143, 3, 209, 0.1)',
-                          lineHeight: '1.4',
-                          fontSize: isMobile ? '1.25rem' : '1.125rem'
+                          color: '#ffffff',
+                          textShadow: '0 2px 4px rgba(0, 0, 0, 0.2)',
+                          lineHeight: '1.4'
                         }}
                       >
                         {faq.question}
@@ -524,37 +524,34 @@ const FAQ: React.FC = () => {
 
                     {/* answer */}
                     <div
-                      className={`absolute w-full h-full backface-hidden rounded-lg p-4 md:p-4 flex flex-col shadow-md rotate-y-180 ${
-                        activeIndex === index ? 'bg-gradient-to-br from-blue-100 to-purple-100' : 'bg-gradient-to-b from-blue-50 to-white'
-                      }`}
+                      className={`absolute w-full h-full backface-hidden rounded-lg p-4 md:p-4 flex flex-col rotate-y-180 glass-card-active`}
                       style={{ 
-                        border: '1px solid rgba(143, 3, 209, 0.3)',
-                        borderRadius: '12px 12px 12px 12px'
+                        borderRadius: '12px',
+                        backdropFilter: 'blur(12px)',
+                        WebkitBackdropFilter: 'blur(12px)'
                       }}
                     >
                       <h3 
-                        className="font-semibold mb-2 line-clamp-2" 
+                        className="font-semibold mb-2 line-clamp-2 text-white" 
                         style={{ 
-                          color: '#8f03d1',
-                          fontSize: isMobile ? '1.1rem' : '1rem'
+                          fontSize: isMobile ? '1.1rem' : '1.25rem'
                         }}
                       >
                         {faq.question}
                       </h3>
                       <div className="flex-grow overflow-y-auto pr-1 custom-scrollbar">
                         <p 
-                          className="leading-relaxed"
+                          className="leading-relaxed text-white/90"
                           style={{ 
-                            color: '#0c1f6f',
-                            fontSize: isMobile ? '0.95rem' : '0.875rem'
+                            fontSize: isMobile ? '0.95rem' : '1rem'
                           }}
                         >
                           {faq.answer}
                         </p>
                       </div>
-                      <div className="flex justify-end items-center text-gray-500 text-xs mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
+                      <div className="flex justify-end items-center text-white/70 text-xs mt-1 opacity-80 group-hover:opacity-100 transition-opacity">
                         Back
-                        <span className="text-xl ml-1" style={{ color: '#c306aa' }} aria-hidden="true">
+                        <span className="text-xl ml-1" style={{ color: '#ffffff' }} aria-hidden="true">
                           ×
                         </span>
                       </div>
@@ -582,14 +579,29 @@ const FAQ: React.FC = () => {
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .custom-scrollbar::-webkit-scrollbar { width: 3px; height: 3px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(143, 3, 209, 0.3); border-radius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(143, 3, 209, 0.5); }
+        .custom-scrollbar::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
         .faq-card:focus { outline: none; }
         .faq-card:focus-visible > div {
             outline: 2px solid #4dffff;
             outline-offset: 1px;
             border-radius: 0.5rem;
+        }
+        .glass-card {
+          background: rgba(143, 3, 209, 0.15);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+          transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+          background: rgba(143, 3, 209, 0.25);
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.25);
+        }
+        .glass-card-active {
+          background: rgba(77, 255, 255, 0.15);
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
         }
         @media (max-width: 767px) {
           .faq-card {

@@ -1,5 +1,7 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface CountdownState {
   days: number;
@@ -23,7 +25,15 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
   const [glitchActive, setGlitchActive] = useState(false);
   const [hasMounted, setHasMounted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isMediumUp, setIsMediumUp] = useState(false);
   const maxDaysRef = useRef(0);
+  const countdownRef = useRef<HTMLDivElement>(null);
+  const circlesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const labelsRef = useRef<(HTMLSpanElement | null)[]>([]);
+
+  gsap.registerPlugin(ScrollTrigger);
 
   function calculateTimeRemaining(): CountdownState {
     const now = new Date();
@@ -42,9 +52,12 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
   }
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 768);
+      setIsMediumUp(window.innerWidth >= 768);
+    };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
     
     setHasMounted(true);
     
@@ -58,6 +71,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
       
       if (newCountdown.days <= 0 && newCountdown.hours <= 0 && 
           newCountdown.minutes <= 0 && newCountdown.seconds <= 0) {
+        clearInterval(interval);
         onComplete?.();
       }
     }, 1000);
@@ -70,39 +84,114 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
     return () => {
       clearInterval(interval);
       clearInterval(glitchTimer);
-      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('resize', checkScreenSize);
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [onComplete]);
+
+  useEffect(() => {
+    if (!hasMounted) return;
+
+    const ctx = gsap.context(() => {
+      // Smoother initial hidden state
+      gsap.set([titleRef.current, ...circlesRef.current, ...labelsRef.current], {
+        opacity: 0,
+        scale: 0.85, // Slightly larger initial scale for smoother pop
+        y: 20, // Less initial offset for smoother movement
+        transformOrigin: "center center" // Ensure scaling happens from center
+      });
+
+      // Smoother scroll trigger
+      ScrollTrigger.create({
+        trigger: countdownRef.current,
+        start: "top 80%", // Slightly higher trigger point
+        onEnter: () => animateElementsIn(),
+        onEnterBack: () => animateElementsIn(),
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, [hasMounted]);
+
+  const animateElementsIn = () => {
+    // Smoother title animation with bounce effect
+    gsap.to(titleRef.current, {
+      scale: 1,
+      opacity: 1,
+      y: 0,
+      duration: 1.2, // Longer duration
+      ease: "elastic.out(1.2, 0.5)", // More pronounced elastic effect
+      delay: 0.1
+    });
+
+    // Smoother circle animations with staggered pop
+    circlesRef.current.forEach((circle, index) => {
+      gsap.to(circle, {
+        scale: 1,
+        opacity: 1,
+        y: 0,
+        duration: 0.9, // Longer duration
+        delay: 0.15 + index * 0.15, // More staggered delay
+        ease: "back.out(2)", // Smoother back easing
+        transformOrigin: "center center" // Ensure scaling happens from center
+      });
+    });
+
+    // Smoother label animations
+    labelsRef.current.forEach((label, index) => {
+      gsap.to(label, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7, // Longer duration
+        delay: 0.3 + index * 0.15, // More staggered delay
+        ease: "sine.out" // Smoother easing
+      });
+    });
+  };
 
   const calculatePercentage = (current: number, max: number) => {
     return Math.min((current / max) * 100, 100);
   };
 
-  const radius = isMobile ? 25 : 45;
+  // Mobile-first sizing
+  const radius = isMobile ? 20 : 46;
   const circumference = 2 * Math.PI * radius;
-  const circleSize = isMobile ? 'w-20 h-20' : 'w-32 h-32 md:w-40 md:h-40';
-  const numberSize = isMobile ? 'text-sm' : 'text-4xl md:text-4xl';
-  const labelSize = isMobile ? 'text-xs' : 'text-xl md:text-xl';
-  const gapSize = isMobile ? 'gap-0' : 'gap-6 md:gap-8';
-  const strokeWidth = isMobile ? '6' : '8';
+  const circleSize = isMobile ? 'w-18 h-18' : 'w-40 h-40';
+  const numberSize = isMobile ? 'text-xs' : 'text-6xl';
+  const labelSize = isMobile ? 'text-sm' : 'text-3xl';
+  const gapSize = isMobile ? 'gap-1' : 'gap-8';
+  const strokeWidth = isMobile ? '4' : '8';
+  const titleSize = isMobile ? 'text-3xl' : 'text-6xl';
+  const sectionPadding = isMobile ? 'py-12' : 'py-24';
+  const flexDirection = isMobile ? 'flex-row' : 'flex-wrap';
+  const labelMargin = isMobile ? 'mt-3' : 'mt-4';
+
+  const setCircleRef = (index: number) => (el: HTMLDivElement | null) => {
+    circlesRef.current[index] = el;
+  };
+
+  const setLabelRef = (index: number) => (el: HTMLSpanElement | null) => {
+    labelsRef.current[index] = el;
+  };
 
   if (!hasMounted) {
     return (
       <section 
-        className="min-h-screen flex items-center justify-center py-16"
+        className={`min-h-screen flex items-center justify-center ${sectionPadding}`}
         style={{ 
           backgroundColor: '#202021',
           scrollSnapAlign: 'start'
         }}
         id="countdown"
+        ref={countdownRef}
       >
-        <div className="container mx-auto px-1">
-          <div className="relative mb-16 text-center" style={{ height: '56px' }}></div>
-          <div className={`flex flex-nowrap justify-center ${gapSize} overflow-x-auto py-4`}>
+        <div className="container mx-auto px-2">
+          <div className="relative mb-8 text-center" style={{ height: '40px' }}></div>
+          <div className={`flex ${flexDirection} justify-center ${gapSize} items-center py-2 overflow-x-auto`}>
             {[...Array(4)].map((_, i) => (
-              <div key={i} className="flex-shrink-0 flex flex-col items-center">
+              <div key={i} className="flex flex-col items-center mx-1">
                 <div className={`relative ${circleSize} bg-gray-800 rounded-full`}></div>
-                <div className="mt-4 w-16 h-4 bg-gray-800 rounded"></div>
+                <div className={`${labelMargin} w-10 h-2 bg-gray-800 rounded`}></div>
               </div>
             ))}
           </div>
@@ -113,18 +202,19 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
 
   return (
     <section 
-      className="min-h-screen flex items-center justify-center py-16 font-neue-montreal"
+      className={`min-h-screen flex items-center justify-center ${sectionPadding} font-neue-montreal overflow-hidden`}
       style={{ 
         background: 'transparent',
         scrollSnapAlign: 'start'
       }}
       id="countdown"
+      ref={countdownRef}
     >
-      <div className="container mx-auto px-1">
-        {/* title */}
-        <div className="relative mb-8 md:mb-16 text-center">
+      <div className="container mx-auto px-2" ref={containerRef}>
+        <div className="relative mb-6 md:mb-16 text-center">
           <h2 
-            className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${
+            ref={titleRef}
+            className={`${titleSize} font-bold uppercase tracking-tighter inline-block relative ${
               glitchActive ? 'glitch-active' : ''
             }`}
             style={{ 
@@ -161,10 +251,13 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
           </h2>
         </div>
         
-        <div className={`flex flex-nowrap justify-center ${gapSize} overflow-x-auto py-4`}>
-          {/* days */}
-          <div className="flex-shrink-0 flex flex-col items-center">
-            <div className={`relative ${circleSize}`}>
+        <div className={`flex ${flexDirection} justify-center ${gapSize} items-center py-4 overflow-x-auto`}>
+          {/* Days */}
+          <div className="flex flex-col items-center mx-1">
+            <div 
+              className={`relative ${circleSize}`}
+              ref={setCircleRef(0)}
+            >
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -198,16 +291,20 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </div>
             </div>
             <span 
-              className={`mt-2 md:mt-6 ${labelSize} uppercase tracking-widest`}
-              style={{ color: '#a6ff4d', letterSpacing: '0.2em' }}
+              ref={setLabelRef(0)}
+              className={`${labelSize} ${labelMargin} font-medium uppercase tracking-wider`}
+              style={{ color: '#a6ff4d', letterSpacing: '0.1em' }}
             >
               Days
             </span>
           </div>
 
-          {/* hours */}
-          <div className="flex-shrink-0 flex flex-col items-center">
-            <div className={`relative ${circleSize}`}>
+          {/* Hours */}
+          <div className="flex flex-col items-center mx-1">
+            <div 
+              className={`relative ${circleSize}`}
+              ref={setCircleRef(1)}
+            >
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -241,16 +338,20 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </div>
             </div>
             <span 
-              className={`mt-2 md:mt-6 ${labelSize} uppercase tracking-widest`}
-              style={{ color: '#4dffff', letterSpacing: '0.2em' }}
+              ref={setLabelRef(1)}
+              className={`${labelSize} ${labelMargin} font-medium uppercase tracking-wider`}
+              style={{ color: '#4dffff', letterSpacing: '0.1em' }}
             >
               Hours
             </span>
           </div>
 
-          {/* minutes */}
-          <div className="flex-shrink-0 flex flex-col items-center">
-            <div className={`relative ${circleSize}`}>
+          {/* Minutes */}
+          <div className="flex flex-col items-center mx-1">
+            <div 
+              className={`relative ${circleSize}`}
+              ref={setCircleRef(2)}
+            >
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -284,16 +385,20 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </div>
             </div>
             <span 
-              className={`mt-2 md:mt-6 ${labelSize} uppercase tracking-widest`}
-              style={{ color: '#c306aa', letterSpacing: '0.2em' }}
+              ref={setLabelRef(2)}
+              className={`${labelSize} ${labelMargin} font-medium uppercase tracking-wider`}
+              style={{ color: '#c306aa', letterSpacing: '0.1em' }}
             >
               Minutes
             </span>
           </div>
 
-          {/* seconds */}
-          <div className="flex-shrink-0 flex flex-col items-center">
-            <div className={`relative ${circleSize}`}>
+          {/* Seconds */}
+          <div className="flex flex-col items-center mx-1">
+            <div 
+              className={`relative ${circleSize}`}
+              ref={setCircleRef(3)}
+            >
               <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle
                   cx="50"
@@ -327,8 +432,9 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
               </div>
             </div>
             <span 
-              className={`mt-2 md:mt-6 ${labelSize} uppercase tracking-widest`}
-              style={{ color: '#8f03d1', letterSpacing: '0.2em' }}
+              ref={setLabelRef(3)}
+              className={`${labelSize} ${labelMargin} font-medium uppercase tracking-wider`}
+              style={{ color: '#8f03d1', letterSpacing: '0.1em' }}
             >
               Seconds
             </span>
