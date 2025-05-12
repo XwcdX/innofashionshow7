@@ -93,18 +93,16 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
     if (!hasMounted) return;
 
     const ctx = gsap.context(() => {
-      // Smoother initial hidden state
       gsap.set([titleRef.current, ...circlesRef.current, ...labelsRef.current], {
         opacity: 0,
-        scale: 0.85, // Slightly larger initial scale for smoother pop
-        y: 20, // Less initial offset for smoother movement
-        transformOrigin: "center center" // Ensure scaling happens from center
+        scale: 0.85,
+        y: 20,
+        transformOrigin: "center center"
       });
 
-      // Smoother scroll trigger
       ScrollTrigger.create({
         trigger: countdownRef.current,
-        start: "top 80%", // Slightly higher trigger point
+        start: "top 80%",
         onEnter: () => animateElementsIn(),
         onEnterBack: () => animateElementsIn(),
       });
@@ -114,37 +112,34 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
   }, [hasMounted]);
 
   const animateElementsIn = () => {
-    // Smoother title animation with bounce effect
     gsap.to(titleRef.current, {
       scale: 1,
       opacity: 1,
       y: 0,
-      duration: 1.2, // Longer duration
-      ease: "elastic.out(1.2, 0.5)", // More pronounced elastic effect
+      duration: 1.2,
+      ease: "elastic.out(1.2, 0.5)",
       delay: 0.1
     });
 
-    // Smoother circle animations with staggered pop
     circlesRef.current.forEach((circle, index) => {
       gsap.to(circle, {
         scale: 1,
         opacity: 1,
         y: 0,
-        duration: 0.9, // Longer duration
-        delay: 0.15 + index * 0.15, // More staggered delay
-        ease: "back.out(2)", // Smoother back easing
-        transformOrigin: "center center" // Ensure scaling happens from center
+        duration: 0.9,
+        delay: 0.15 + index * 0.15,
+        ease: "back.out(2)",
+        transformOrigin: "center center"
       });
     });
 
-    // Smoother label animations
     labelsRef.current.forEach((label, index) => {
       gsap.to(label, {
         opacity: 1,
         y: 0,
-        duration: 0.7, // Longer duration
-        delay: 0.3 + index * 0.15, // More staggered delay
-        ease: "sine.out" // Smoother easing
+        duration: 0.7,
+        delay: 0.3 + index * 0.15,
+        ease: "sine.out" 
       });
     });
   };
@@ -153,7 +148,6 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
     return Math.min((current / max) * 100, 100);
   };
 
-  // Mobile-first sizing
   const radius = isMobile ? 20 : 46;
   const circumference = 2 * Math.PI * radius;
   const circleSize = isMobile ? 'w-18 h-18' : 'w-40 h-40';
@@ -252,7 +246,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
         </div>
         
         <div className={`flex ${flexDirection} justify-center ${gapSize} items-center py-4 overflow-x-auto`}>
-          {/* Days */}
+          {/* days */}
           <div className="flex flex-col items-center mx-1">
             <div 
               className={`relative ${circleSize}`}
@@ -299,7 +293,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
 
-          {/* Hours */}
+          {/* hours */}
           <div className="flex flex-col items-center mx-1">
             <div 
               className={`relative ${circleSize}`}
@@ -346,7 +340,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
 
-          {/* Minutes */}
+          {/* minutes */}
           <div className="flex flex-col items-center mx-1">
             <div 
               className={`relative ${circleSize}`}
@@ -393,7 +387,7 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
             </span>
           </div>
 
-          {/* Seconds */}
+          {/* seconds */}
           <div className="flex flex-col items-center mx-1">
             <div 
               className={`relative ${circleSize}`}

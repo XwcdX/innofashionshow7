@@ -1,5 +1,7 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 const PrizePool: React.FC = () => {
   const [prizePool, setPrizePool] = useState<number>(0);
@@ -9,6 +11,13 @@ const PrizePool: React.FC = () => {
   const [hasStartedCounting, setHasStartedCounting] = useState(false);
   const targetPrize: number = 5000000;
   
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const prizeTextRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  gsap.registerPlugin(ScrollTrigger);
+
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
@@ -19,37 +28,66 @@ const PrizePool: React.FC = () => {
       setTimeout(() => setGlitchActive(false), 100);
     }, 3000);
 
-    // Scroll event listener to detect when the section is in view
-    const handleScroll = () => {
-      const prizeSection = document.getElementById('prize');
-      if (prizeSection) {
-        const rect = prizeSection.getBoundingClientRect();
-        // Check if the section is in the viewport
-        if (rect.top <= window.innerHeight && rect.bottom >= 0) {
-          if (!hasStartedCounting) {
-            startCountUp();
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    // Cleanup the event listener
     return () => {
       clearInterval(glitchTimer);
       window.removeEventListener('resize', checkMobile);
-      window.removeEventListener('scroll', handleScroll);
     };
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.set([titleRef.current, prizeTextRef.current], {
+        opacity: 0,
+        y: 30,
+        scale: 0.9
+      });
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: "top 75%",
+        onEnter: () => {
+          animateElementsIn();
+          if (!hasStartedCounting) {
+            startCountUp();
+            setHasStartedCounting(true);
+          }
+        },
+        onEnterBack: () => {
+          animateElementsIn();
+        }
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
   }, [hasStartedCounting]);
 
+  const animateElementsIn = () => {
+    gsap.to(titleRef.current, {
+      scale: 1,
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "elastic.out(1.2, 0.5)",
+      delay: 0.1
+    });
+
+    gsap.to(prizeTextRef.current, {
+      scale: 1,
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      delay: 0.3,
+      ease: "back.out(1.7)"
+    });
+  };
+
   const startCountUp = () => {
-    const duration: number = 1500; // Reduced duration to 1.5 seconds for faster count-up
-    const increment: number = targetPrize / (duration / 16); // Calculate how much to increment per frame
+    const duration: number = 1500;
+    const increment: number = targetPrize / (duration / 16);
     let prizeStart: number = 0;
     const prizeEnd: number = targetPrize;
-
-    setHasStartedCounting(true);
 
     const animate = () => {
       if (prizeStart < prizeEnd) {
@@ -67,6 +105,7 @@ const PrizePool: React.FC = () => {
 
   return (
     <section 
+      ref={sectionRef}
       className="min-h-screen flex items-center justify-center p-4 -mt-60"
       style={{ 
         background: 'transparent',
@@ -74,36 +113,34 @@ const PrizePool: React.FC = () => {
       }}
       id="prize"
     >
-      {/* Decorative image at the bottom right */}
       <div 
         className="absolute bottom-0 -right-40 z-0 mb-4 mr-4 opacity-35"
         style={{
           backgroundImage: "url('/assets/layer2.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
-          width: '700px', // Adjust size as needed
-          height: '400px', // Adjust size as needed
+          width: '700px',
+          height: '400px',
         }}
       ></div>
 
-      {/* Decorative image at the bottom left */}
       <div 
         className="absolute bottom-0 -left-40 z-0 mb-4 mr-4 opacity-35"
         style={{
           backgroundImage: "url('/assets/lines2.png')",
           backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
-          width: '700px', // Adjust size as needed
-          height: '700px', // Adjust size as needed
+          width: '700px',
+          height: '700px',
         }}
       ></div>
 
-      <div className="text-center w-full max-w-6xl px-4">
+      <div ref={containerRef} className="text-center w-full max-w-6xl px-4">
         <div className="relative">
-          {/* title */}
-          <div className="relative mb-8 md:mb-12 lg:mb-16 xl:mb-20 text-center">
+          <div className="relative mb-8 md:mb-16 lg:mb-20 text-center">
             <h2 
-              className={`text-5xl md:text-6xl font-bold uppercase tracking-tighter inline-block relative ${glitchActive ? 'glitch-active' : ''}`}
+              ref={titleRef}
+              className={`text-6xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter inline-block relative ${glitchActive ? 'glitch-active' : ''}`}
               style={{ 
                 color: '#4dffff',
                 textShadow: '0 0 15px rgba(77, 255, 255, 0.7)',
@@ -139,11 +176,11 @@ const PrizePool: React.FC = () => {
             </h2>
           </div>
           
-          <div className="relative">
+          <div ref={prizeTextRef} className="relative">
             {showShadow && (
               <div className="absolute inset-0 flex items-center justify-center">
                 <span 
-                  className="text-5xl md:text-6xl font-black tracking-tighter"
+                  className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter"
                   style={{ 
                     color: 'rgba(143, 3, 209, 0.3)',
                     fontStyle: 'italic',
@@ -157,7 +194,7 @@ const PrizePool: React.FC = () => {
             )}
 
             <div className="relative overflow-hidden">
-              <div className={`absolute inset-0 text-5xl md:text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent opacity-70 ${glitchActive ? 'translate-x-3' : 'translate-x-0'} transition-transform duration-75`}
+              <div className={`absolute inset-0 text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter bg-clip-text text-transparent opacity-70 ${glitchActive ? 'translate-x-3' : 'translate-x-0'} transition-transform duration-75`}
                 style={{ 
                   backgroundImage: 'linear-gradient(to right, #c306aa, #8f03d1)',
                   fontStyle: 'italic',
@@ -166,7 +203,7 @@ const PrizePool: React.FC = () => {
               >
                 Rp {prizePool.toLocaleString('id-ID')}
               </div>
-              <div className={`absolute inset-0 text-5xl md:text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent opacity-70 ${glitchActive ? '-translate-x-3' : 'translate-x-0'} transition-transform duration-75`}
+              <div className={`absolute inset-0 text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter bg-clip-text text-transparent opacity-70 ${glitchActive ? '-translate-x-3' : 'translate-x-0'} transition-transform duration-75`}
                 style={{ 
                   backgroundImage: 'linear-gradient(to right, #4dffff, #a6ff4d)',
                   fontStyle: 'italic',
@@ -176,7 +213,7 @@ const PrizePool: React.FC = () => {
                 Rp {prizePool.toLocaleString('id-ID')}
               </div>
               
-              <span className={`text-5xl md:text-6xl font-extrabold tracking-tighter bg-clip-text text-transparent ${glitchActive ? 'scale-110' : 'scale-100'} transition-all duration-200`}
+              <span className={`text-6xl md:text-8xl lg:text-9xl font-extrabold tracking-tighter bg-clip-text text-transparent ${glitchActive ? 'scale-110' : 'scale-100'} transition-all duration-200`}
                 style={{ 
                   backgroundImage: 'linear-gradient(to right, #a6ff4d, #4dffff, #8f03d1)',
                   fontStyle: 'italic',
