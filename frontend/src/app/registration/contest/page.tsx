@@ -302,7 +302,7 @@ export default function ContestRegistrationPage() {
                     <RegistrationForm
                         registrationType={registrationType}
                         formSchema={contestSchema}
-                        onSuccessRedirectPath="/"
+                        onSuccessRedirectPath="/registration/contest"
                         initialCategory={selectedCategory}
                     />
                 </>
