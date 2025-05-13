@@ -7,7 +7,7 @@ const CompetitionsSection: React.FC = () => {
     {
       title: 'Competition',
       description: 'Showcase your unique vision and design prowess on the runway with stunning fashion creations.',
-      link: '/registration/contest', // Add link specific to competition
+      link: '/registration/contest',
     },
     {
       title: 'Talkshow',
