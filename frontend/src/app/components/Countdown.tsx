@@ -148,12 +148,12 @@ const Countdown: React.FC<CountdownProps> = ({ onComplete }) => {
     return Math.min((current / max) * 100, 100);
   };
 
-  const radius = isMobile ? 20 : 46;
+  const radius = isMobile ? 33 : 46;
   const circumference = 2 * Math.PI * radius;
-  const circleSize = isMobile ? 'w-18 h-18' : 'w-40 h-40';
-  const numberSize = isMobile ? 'text-xs' : 'text-6xl';
+  const circleSize = isMobile ? 'w-18 h-22' : 'w-40 h-40';
+  const numberSize = isMobile ? 'text-md' : 'text-6xl';
   const labelSize = isMobile ? 'text-sm' : 'text-3xl';
-  const gapSize = isMobile ? 'gap-1' : 'gap-8';
+  const gapSize = isMobile ? 'gap-0' : 'gap-8';
   const strokeWidth = isMobile ? '4' : '8';
   const titleSize = isMobile ? 'text-3xl' : 'text-6xl';
   const sectionPadding = isMobile ? 'py-12' : 'py-24';
