@@ -78,7 +78,6 @@ export default function AboutSection() {
             className="text-lg leading-relaxed tracking-wide text-justify text-center"
             style={{ fontFamily: "Eirene Sans Bold, sans-serif" }}
           >
-            Innofashion Show
             Innofashion Show is an annual event by the Textile and Fashion Design program at Petra Christian University, serving as a platform for final-year students to showcase their best creations. More than just an academic appreciation event, it is a stage for young talents to innovate and contribute to the fashion industry.
           </p>
         </div>

@@ -112,7 +112,7 @@ function CategorySelector({ onSelectCategory }: CategorySelectorProps) {
 }
 
 const getPriceForCategory = (category: Category | null): string => {
-    if (category === 'INTERMEDIATE') return '40.000';
+    if (category === 'INTERMEDIATE') return '50.000';
     if (category === 'ADVANCED') return '50.000';
     return '[PRICE_NOT_SELECTED]';
 };
