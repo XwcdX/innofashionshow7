@@ -173,9 +173,9 @@ const TimelineSection = () => {
     
     .timeline-line {
     position: absolute;
-    top: 60px;
+    top: 45px;
     left: 29%;
-    transform: translateX(400%) translateY(-5%);
+    transform: translateX(400%) translateY(-2%);
     width: 3px;
     height: 1220px;
     background-color: white;
