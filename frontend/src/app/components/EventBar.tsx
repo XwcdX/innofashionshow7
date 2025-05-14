@@ -109,7 +109,7 @@ export default function EventBar() {
         
 
         <ScrollVelocity
-          texts={['Talkshow', 'Workshop', 'Contest', 'Fashion Show']}
+          texts={['Talkshow', 'Workshop', 'Competition', 'Fashion Show']}
           velocity={30}
           className="text-accent text-3xl md:text-4xl font-bold mx-1 "
           parallaxClassName="relative overflow-hidden py-2"
