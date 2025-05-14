@@ -82,13 +82,15 @@ export default function Navbar() {
     { href: "#about", label: "About Us" },
     { href: "#events", label: "Events" },
     { href: "#timeline", label: "Timeline" },
-    { href: "#faq", label: "FAQ" },
+    { href: "#faq", label: "FAQ" }, 
+    { href: "/registration", label: "Registration" }, 
+    { href: "/contest", label: "Submission" }
   ];
 
   // --- UPDATED LOGIC FOR NAV LINKS ---
-   const navLinks = (isLoggedIn && !isLoading)
-    ? [...baseNavLinks, { href: "/registration", label: "Registration" }, { href: "/contest", label: "Submission" }]
-    : baseNavLinks;
+  //  const navLinks = (isLoggedIn && !isLoading)
+  //   ? [...baseNavLinks,]
+  //   : baseNavLinks;
   // --- END UPDATED LOGIC ---
 
 
@@ -122,7 +124,7 @@ export default function Navbar() {
               style={{ fontFamily: "Moderniz, sans-serif" }}
             >
               {/* Only render nav links after session status is determined */}
-               {!isLoading && navLinks.map(({ href, label }) => {
+               {!isLoading && baseNavLinks.map(({ href, label }) => {
                  const isSmoothScroll = href.startsWith('#');
                  return isSmoothScroll ? (
                    <a
@@ -200,7 +202,7 @@ export default function Navbar() {
           <div className="h-full flex flex-col pt-20 px-6">
             <div className="flex-1 flex flex-col">
                {/* Only render nav links after session status is determined */}
-              {!isLoading && navLinks.map(({ href, label }) => {
+              {!isLoading && baseNavLinks.map(({ href, label }) => {
                 const isSmoothScroll = href.startsWith('#');
                 return isSmoothScroll ? (
                   <a
