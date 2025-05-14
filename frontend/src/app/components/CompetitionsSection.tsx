@@ -7,7 +7,7 @@ const CompetitionsSection: React.FC = () => {
     {
       title: 'Competition',
       description: 'Showcase your unique vision and design prowess on the runway with stunning fashion creations.',
-      link: '/registration/contest',
+      link: 'https://docs.google.com/document/d/1202URXv8-O9zBQIQfx4-Z72hkbw6rlU-qhGqkqvwnUw/edit?tab=t.0',
     },
     {
       title: 'Talkshow',
