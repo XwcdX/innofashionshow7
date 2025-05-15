@@ -64,16 +64,16 @@ export default function Footer() {
 
         {/* Social Media Icons */}
         <div className="flex gap-6 items-center">
-          <a href="#" aria-label="TikTok">
+          <a href="https://www.tiktok.com/@innofashionshow" aria-label="TikTok">
             <Image src="/assets/tiktoklogo.png" alt="TikTok" width={24} height={24} />
           </a>
-          <a href="#" aria-label="Instagram">
+          <a href="https://www.instagram.com/innofashion.pcu" aria-label="Instagram">
             <Image src="/assets/instalogo.png" alt="Instagram" width={24} height={24} />
           </a>
-          <a href="#" aria-label="Line">
+          <a href="https://line.me/R/ti/p/182dplyt" aria-label="Line">
             <Image src="/assets/linelogo.png" alt="Line" width={24} height={24} />
           </a>
-          <a href="#" aria-label="Email">
+          <a href="mailto:innofashionshow@gmail.com" aria-label="Email">
             <Image src="/assets/gmaillogo.png" alt="Email" width={28} height={20} />
           </a>
         </div>
