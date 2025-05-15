@@ -152,9 +152,10 @@ export class ContestController {
     @Post('validate/:id')
     @UseGuards(JwtAuthGuardAdmin)
     @HttpCode(HttpStatus.OK)
-    async validate(@Param('id') id: string, @Body() updateContestDto: Prisma.ContestUpdateInput) {
+    async validate(@Param('id') id: string, @Body() updateContestDto: Prisma.ContestUpdateInput, @Req() req: RequestWithUser) {
         this.logger.log(`Validating Contest Participant`);
         // await this.contestService.getAllExternal();
-        return this.contestService.validate(id, updateContestDto);
+        const adminId = req.user.id;
+        return this.contestService.validate(id, updateContestDto,adminId);
     }
 }

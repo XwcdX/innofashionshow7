@@ -380,12 +380,19 @@ export class ContestService {
         return allInternalContest;
     }
 
-    async validate(id: string, updateTalkshowDto: Prisma.ContestUpdateInput) {
+    async validate(id: string, updateTalkshowDto: Prisma.ContestUpdateInput, adminId: string) {
         return this.prisma.contest.update({
             where: {
                 id,
             },
-            data: updateTalkshowDto,
+            data: {
+                ...updateTalkshowDto,
+                admin: {              // Use the relation field name 'admin'
+                connect: {
+                    id: adminId   // Connect to the Admin record by its id
+                }
+            }
+            },
         });
     }
 }
