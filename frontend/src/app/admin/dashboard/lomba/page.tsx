@@ -36,7 +36,7 @@ const AdminHomePage = () => {
                 BuktiPembayaran:`<a href="${item.proofOfPayment}" target="_blank" class="text-blue-600 hover:underline">View</a>`,
                 Pembayaran: item.valid === false
                 ? `<button class="btn-pay !bg-blue-500 text-white px-4 py-2 rounded" data-href="lomba" data-id="${item.id}">Validasi</button>`
-                : '<span class="text-green-500">Validated</span>',
+                : `<span class="text-green-500">Validated by ${item.admin.name}</span>`,
             }));
 
             setDataPetra(modifiedDataPetra);
@@ -64,7 +64,7 @@ const AdminHomePage = () => {
                 BuktiPembayaran:`<a href="${item.proofOfPayment}" target="_blank" class="text-blue-600 hover:underline">View</a>`,
                 Pembayaran: item.valid === false
                 ? `<button class="btn-pay !bg-blue-500 text-white px-4 py-2 rounded" data-href="lomba" data-id="${item.id}">Validasi</button>`
-                : '<span class="text-green-500">Validated</span>',
+                : `<span class="text-green-500">Validated by ${item.admin.name}</span>`,
             }));
 
             setDataUmum(modifiedDataUmum);

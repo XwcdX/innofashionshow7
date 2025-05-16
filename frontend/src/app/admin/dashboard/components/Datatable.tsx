@@ -102,6 +102,7 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
                         const response = await fetch(`/api/${btnHref}/validate/${btnId}`, {
                             credentials: 'include'
                         });
+                        const updatedContest = await response.json();
 
                         if (response.ok) {
                             Swal.fire({
@@ -117,7 +118,7 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
                                 const row = tableRef.current.row(rowNode);
                                 const rowData = row.data();
                                 if(rowData) {
-                                     rowData['Pembayaran'] = '<span class="text-green-500">Validated</span>';
+                                     rowData['Pembayaran'] = `<span class="text-green-500">Validated by ${updatedContest.admin.name}</span>`;
                                      row.data(rowData).draw(false);
                                 } else {
                                     location.reload(); // Fallback
@@ -137,9 +138,9 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
                             // ==========================================================
                         }
                     } catch (error) {
-                         console.error('Error validating payment:', error);
+                        console.error('Error validating payment:', error);
                          // === Error Dialog Config (Catch block - network error etc.) ===
-                         Swal.fire({
+                        Swal.fire({
                             icon: 'error',
                             title: 'Gagal memvalidasi!',
                             text: 'Terjadi masalah dari server atau jaringan.',
@@ -159,9 +160,9 @@ const DataTable = ({ id, data, renderColumns = [], hideColumns = [], loading = f
         // --- Cleanup Function ---
         return () => {
             if (tableRef.current && typeof $ !== 'undefined' && $.fn.DataTable.isDataTable($(`#${id}`))) {
-                 $(`#${id}`).off('click', '.btn-pay'); // Remove listener first
-                 tableRef.current.clear().destroy();
-                 tableRef.current = null;
+                $(`#${id}`).off('click', '.btn-pay'); // Remove listener first
+                tableRef.current.clear().destroy();
+                tableRef.current = null;
             }
         };
     }, [isClient, data, id, renderColumns, hideColumns, loading]); // Dependencies
