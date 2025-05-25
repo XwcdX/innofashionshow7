@@ -20,6 +20,7 @@ interface SubmissionProps {
     formSchema: FormSchema;
     onSuccessRedirectPath?: string;
     initialCategory?: Category | null;
+    onRegistrationReset?: ()=> void;
 }
 
 // --- Helper Functions ---
@@ -41,6 +42,7 @@ export function SubmissionForm({
     formSchema,
     onSuccessRedirectPath = '/contest',
     initialCategory,
+    onRegistrationReset,
 }: SubmissionProps) {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -625,7 +627,8 @@ export function SubmissionForm({
                     icon: 'success',
                     confirmButtonColor: '#4f46e5'
                 });
-                router.push(onSuccessRedirectPath);
+                onRegistrationReset?.();
+                router.replace(onSuccessRedirectPath);
             } else {
                 let errorText = 'Submission failed due to a server error.';
                 let errorDetails: Record<string, string> | null = null;

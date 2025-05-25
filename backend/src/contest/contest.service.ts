@@ -357,6 +357,7 @@ export class ContestService {
             },
             include:{
                 user: true,
+                admin: true,
             }
         });
 
@@ -374,6 +375,7 @@ export class ContestService {
             },
             include:{
                 user: true,
+                admin: true,
             }
         });
 
@@ -388,11 +390,14 @@ export class ContestService {
             data: {
                 ...updateTalkshowDto,
                 admin: {              // Use the relation field name 'admin'
-                connect: {
-                    id: adminId   // Connect to the Admin record by its id
+                    connect: {
+                        id: adminId   // Connect to the Admin record by its id
+                    }
                 }
-            }
             },
+            include: {
+                admin: true,
+            }
         });
     }
 }

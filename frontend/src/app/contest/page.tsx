@@ -76,6 +76,7 @@ const getSubmissionStatus = async () => {
     }
 };
 
+
 // --- Main Page Component ---
 export default function ContestSubmissionPage() {
     const [validationStatus, setValidationStatus] = useState<boolean | null>(null);
@@ -93,6 +94,11 @@ export default function ContestSubmissionPage() {
     const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
     const [creationStatus, setCreationStatus] = useState<Boolean | null>(null);
     const [isLoadingAll, setIsLoadingAll] = useState(true); // New flag
+
+    const resetSubmissionState = useCallback(() => {
+        setValidationStatus(null);
+        setCreationStatus(null);
+    }, []);
 
     useEffect(() => {
         const fetchAllData = async () => {
@@ -166,7 +172,7 @@ export default function ContestSubmissionPage() {
         };
         fetchAllData();
 
-    }, [status, userEmail, registrationType, router]);
+    }, [status, userEmail, registrationType, router, creationStatus, validationStatus]);
 
     // --- Render Logic ---
 
@@ -220,6 +226,7 @@ export default function ContestSubmissionPage() {
                         formSchema={contestSubmitSchema}
                         onSuccessRedirectPath="/contest"
                         initialCategory={selectedCategory}
+                        onRegistrationReset={resetSubmissionState}
                     />
                 </>
         </div>

@@ -20,6 +20,7 @@ interface RegistrationFormProps {
     registrationType: RegistrationType;
     formSchema: FormSchema;
     onSuccessRedirectPath?: string;
+    onRegistrationReset?: ()=> void;
     initialCategory?: Category | null;
 }
 
@@ -43,6 +44,7 @@ export function RegistrationForm({
     formSchema,
     onSuccessRedirectPath = '/',
     initialCategory,
+    onRegistrationReset,
 }: RegistrationFormProps) {
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -626,7 +628,8 @@ export function RegistrationForm({
                     icon: 'success',
                     confirmButtonColor: '#4f46e5'
                 });
-                router.push(onSuccessRedirectPath);
+                onRegistrationReset?.();
+                router.replace(onSuccessRedirectPath);
             } else {
                 let errorText = 'Submission failed due to a server error.';
                 let errorDetails: Record<string, string> | null = null;
