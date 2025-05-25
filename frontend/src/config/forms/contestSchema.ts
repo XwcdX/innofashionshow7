@@ -5,7 +5,7 @@ export const contestSchema: FormSchema = [
         id: 'userInfo',
         title: 'Your Information',
         fields: [
-            { id: 'name', label: 'Name', type: 'readonly', defaultValue: '' },
+            { id: 'name', label: 'Name', type: 'text', defaultValue: '' },
             { id: 'email', label: 'Email', type: 'readonly', defaultValue: '' },
             { id: 'age', label: 'Age', type: 'number', required: true, min: 1, placeholder: "Your age" },
             { id: 'whatsapp', label: 'WhatsApp', type: 'tel', required: true, placeholder: '08XXXXXXXXXX', pattern: '^\\+?[0-9\\s\\-()]*$', title: "Enter a valid phone number" },
