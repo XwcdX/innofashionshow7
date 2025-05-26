@@ -325,8 +325,8 @@ export function RegistrationForm({
                 }
 
                 const allowedDraftKeys = [
-                    'category', 'age', 'whatsapp', 'proofOfPayment', 'ktmPath',
-                    'idCardPath', 'nrp', 'batch', 'major', 'instance'
+                    'name', 'category', 'age', 'whatsapp', 'proofOfPayment', 'ktmPath',
+                    'idCardPath', 'nrp', 'batch', 'major', 'instance', 'idline', 'wa', 'jurusan',
                 ];
                 const draftToSend: Partial<FormData> = {};
                 for (const key of allowedDraftKeys) {
@@ -538,14 +538,22 @@ export function RegistrationForm({
         // FIX: Compare userType variable against string literals 'INTERNAL' or 'EXTERNAL'
         if (userType === 'INTERNAL') {
             console.log("Checking INTERNAL specific fields...");
-            if (!formData.nrp || String(formData.nrp).trim() === '') { errors.nrp = 'NRP is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL nrp)"); }
-            if (formData.batch === null || formData.batch === undefined || String(formData.batch).trim() === '') { errors.batch = 'Batch is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL batch)"); } // More robust check for number/empty
-            if (!formData.major || String(formData.major).trim() === '') { errors.major = 'Major is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL major)"); }
-            if (!uploadedFilePaths.ktmPath) { errors.ktmPath = 'KTM is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL ktmPath)"); }
+            if (registrationType === 'contest'){
+                if (!formData.nrp || String(formData.nrp).trim() === '') { errors.nrp = 'NRP is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL nrp)"); }
+                if (formData.batch === null || formData.batch === undefined || String(formData.batch).trim() === '') { errors.batch = 'Batch is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL batch)"); } // More robust check for number/empty
+                if (!formData.major || String(formData.major).trim() === '') { errors.major = 'Major is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL major)"); }
+                if (!uploadedFilePaths.ktmPath) { errors.ktmPath = 'KTM is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL ktmPath)"); }
+            }else if (registrationType === 'workshop'){
+                if (!formData.nrp || String(formData.nrp).trim() === '') { errors.nrp = 'NRP is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL nrp)"); }
+                if (!formData.jurusan || String(formData.jurusan).trim() === '') { errors.jurusan = 'Major is required for Internal users.'; isValid = false; console.log("Validation fail (Missing INTERNAL major)"); }
+            }
+            
         } else if (userType === 'EXTERNAL') {
             console.log("Checking EXTERNAL specific fields...");
-            if (!formData.instance || String(formData.instance).trim() === '') { errors.instance = 'Institution/School is required for External users.'; isValid = false; console.log("Validation fail (Missing EXTERNAL instance)"); }
-            if (!uploadedFilePaths.idCardPath) { errors.idCardPath = 'ID Card (KTP/Student Card) is required for External users.'; isValid = false; console.log("Validation fail (Missing EXTERNAL idCardPath)"); }
+            if (registrationType === 'contest'){
+                if (!formData.instance || String(formData.instance).trim() === '') { errors.instance = 'Institution/School is required for External users.'; isValid = false; console.log("Validation fail (Missing EXTERNAL instance)"); }
+                if (!uploadedFilePaths.idCardPath) { errors.idCardPath = 'ID Card (KTP/Student Card) is required for External users.'; isValid = false; console.log("Validation fail (Missing EXTERNAL idCardPath)"); }
+            }
         }
 
         console.log("Validation finished. isValid:", isValid, "Errors:", errors);

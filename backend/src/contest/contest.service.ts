@@ -72,6 +72,10 @@ export class ContestService {
             this.logger.warn(`User not found for ID: ${userId} while saving draft.`);
             throw new NotFoundException(`User with ID ${userId} not found.`);
         }
+        const updateUserData: Prisma.UserUpdateInput = {
+            ...(dto.name !== undefined && { name: dto.name }),
+            updatedAt: new Date(),
+        };
 
         const updateData: Prisma.ContestUpdateInput = {
             ...(dto.category !== undefined && { category: dto.category }),
@@ -110,6 +114,12 @@ export class ContestService {
 
         try {
             this.logger.log(`Upserting contest draft for user ${userId}`);
+            if (dto.name !== undefined) {
+                await this.prisma.user.update({
+                    where: { id: userId },
+                    data: updateUserData,
+                });
+            }
             const savedContest = await this.prisma.contest.upsert({
                 where: { userId: userId },
                 create: createData,
@@ -131,6 +141,7 @@ export class ContestService {
             this.logger.warn(`User not found for ID: ${userId} while saving draft.`);
             throw new NotFoundException(`User with ID ${userId} not found.`);
         }
+        
         const contest = await this.prisma.contest.findUnique({ where: { userId: userId } });
 
         const updateData: Prisma.CreationUpdateInput = {
@@ -174,6 +185,10 @@ export class ContestService {
             throw new NotFoundException(`User with ID ${userId} not found.`);
         }
         this.logger.log(`User type fetched in service for validation: ${user.type}`);
+        const updateUserData: Prisma.UserUpdateInput = {
+            ...(dto.name !== undefined && { name: dto.name }),
+            updatedAt: new Date(),
+        };
 
         const missingFields: string[] = [];
         if (user.type === UserType.INTERNAL) {
@@ -186,6 +201,7 @@ export class ContestService {
             if (!dto.idCardPath) missingFields.push('ID Card Path');
         }
         if (!dto.category) missingFields.push('Category');
+        if (!dto.name) missingFields.push('Name');
         if (!dto.age) missingFields.push('Age');
         if (!dto.whatsapp) missingFields.push('Whatsapp');
         if (!dto.proofOfPayment) missingFields.push('Proof of Payment');
@@ -231,6 +247,12 @@ export class ContestService {
 
         try {
             this.logger.log(`Upserting final contest submission for user ${userId}`);
+            if (dto.name !== undefined) {
+                await this.prisma.user.update({
+                    where: { id: userId },
+                    data: updateUserData,
+                });
+            }
             const submittedContest = await this.prisma.contest.upsert({
                 where: { userId: userId },
                 create: createData,

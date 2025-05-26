@@ -53,7 +53,7 @@ export default function RegistrationSelectionPage() {
           {/* Workshop Card */}
           <PixelCard
             variant="purple"
-            onClick={() => handleNavigation(null)}
+            onClick={() => handleNavigation('/registration/workshop')}
             imageUrl="/assets/workshop-card-bg.webp"
             className={`${cardBaseClasses} md:col-start-2 md:col-span-2 md:h-52 lg:h-60 focus-visible:ring-4 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900`}
           >

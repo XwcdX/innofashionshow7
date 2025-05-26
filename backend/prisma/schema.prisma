@@ -23,6 +23,7 @@ model Admin {
   division   Division @relation(fields: [divisionId], references: [id])
   divisionId String
   Contest    Contest[]
+  Workshop    Workshop[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -130,7 +131,10 @@ model Workshop {
   jurusan           String?   // Nullable
   proofOfPayment    String?
   valid             Boolean?   @default(false) // 0 = belum bayar
-  submitted      Boolean   @default(false)
+  submitted         Boolean   @default(false)
+
+  adminId           String?
+  admin             Admin?    @relation(fields: [adminId], references: [id])
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
 }

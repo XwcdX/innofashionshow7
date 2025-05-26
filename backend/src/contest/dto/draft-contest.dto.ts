@@ -57,4 +57,8 @@ export class DraftContestDto {
     @IsOptional()
     @IsString({ always: true })
     instance?: string;
+
+    @IsOptional()
+    @IsString()
+    name?: string;
 }

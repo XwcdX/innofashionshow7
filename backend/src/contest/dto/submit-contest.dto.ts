@@ -67,4 +67,8 @@ export class SubmitContestDto {
     @IsOptional()
     @IsString()
     idCardPath?: string;
+
+    @IsOptional()
+    @IsString()
+    name?: string;
 }

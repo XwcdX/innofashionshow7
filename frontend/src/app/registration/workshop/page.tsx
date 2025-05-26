@@ -8,7 +8,6 @@ export default function WorkshopRegistrationPage() {
         <RegistrationForm
             registrationType="workshop"
             formSchema={workshopSchema}
-            onSuccessRedirectPath="/my-workshops"
         />
     );
 }
