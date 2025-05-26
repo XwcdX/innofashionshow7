@@ -48,6 +48,7 @@ model User {
   updatedAt DateTime @updatedAt
 
   contest   Contest? @relation("UserContest")
+  workshop  Workshop? @relation("UserWorkshop")
 }
 
 model Contest {
@@ -121,16 +122,15 @@ model Talkshow {
 
 model Workshop {
   id                String    @id @default(uuid())
-  asal              AsalType
-  nama              String
-  email             String    
-  wa                String
-  idline            String
-  domisili          String?   // Nullable
+  userId            String    @unique
+  user              User      @relation("UserWorkshop", fields: [userId], references: [id])    
+  wa                String?
+  idline            String?
   nrp               String?   // Nullable
   jurusan           String?   // Nullable
-  proofOfPayment    String
-  valid             Boolean   @default(false) // 0 = belum bayar
+  proofOfPayment    String?
+  valid             Boolean?   @default(false) // 0 = belum bayar
+  submitted      Boolean   @default(false)
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
 }
