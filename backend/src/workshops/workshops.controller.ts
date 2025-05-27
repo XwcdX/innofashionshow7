@@ -51,11 +51,15 @@ export class WorkshopsController {
   }
 
   @Get('petra')
+  @UseGuards(JwtAuthGuardAdmin)
+  @HttpCode(HttpStatus.OK)
   findAllPetra() {
     return this.workshopsService.findAllPetra();
   }
 
   @Get('umum')
+  @UseGuards(JwtAuthGuardAdmin)
+  @HttpCode(HttpStatus.OK)
   findAllUmum() {
     return this.workshopsService.findAllUmum();
   }
@@ -124,9 +128,12 @@ export class WorkshopsController {
   }
 
   @Post('validate/:id') // This defines the route to handle '/talkshows/validate/{id}'
-  validatePembayaran(@Param('id') id: string, @Body() updateWorkshopDto: Prisma.WorkshopUpdateInput) {
+  @UseGuards(JwtAuthGuardAdmin)
+  @HttpCode(HttpStatus.OK)
+  validatePembayaran(@Param('id') id: string, @Body() updateWorkshopDto: Prisma.ContestUpdateInput, @Req() req: RequestWithUser) {
+    const adminId = req.user.id;
     // Pass the ID and the update data to the service
-    return this.workshopsService.validatePembayaran(id, updateWorkshopDto);
+    return this.workshopsService.validatePembayaran(id, updateWorkshopDto, adminId);
   }
 
   @Get(':id')

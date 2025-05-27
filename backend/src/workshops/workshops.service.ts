@@ -20,19 +20,39 @@ export class WorkshopsService {
   }
 
   async findAllPetra() {
-    return this.prisma.workshop.findMany({
-      where: {
-        // asal: 'Petra'
-      }
+    this.logger.log(`Fetching all Internal Workshop Participant`);
+    const allInternalWorkshop = await this.prisma.workshop.findMany({
+        where: { 
+            submitted: true,
+            user: {
+                type: 'INTERNAL',
+            },
+        },
+        include:{
+            user: true,
+            admin: true,
+        }
     });
+
+    return allInternalWorkshop;
   }
 
   async findAllUmum() {
-    return this.prisma.workshop.findMany({
-      where: {
-        // asal: 'Umum'
-      }
+    this.logger.log(`Fetching all External Contest Participant`);
+    const allExternalWorkshop = await this.prisma.workshop.findMany({
+        where: { 
+            submitted: true,
+            user: {
+                type: 'EXTERNAL',
+            },
+        },
+        include:{
+            user: true,
+            admin: true,
+        }
     });
+
+    return allExternalWorkshop;
   }
 
   async getWorkshopProfile(userId: string): Promise<Workshop | null> {
@@ -223,13 +243,23 @@ export class WorkshopsService {
       return { submittedStatus: workshopRegistration.submitted }; 
   }
 
-  async validatePembayaran(id: string, updateWorkshopDto: Prisma.WorkshopUpdateInput) {
+  async validatePembayaran(id: string, updateWorkshopDto: Prisma.WorkshopUpdateInput, adminId: string) {
     return this.prisma.workshop.update({
       where: {
-        id,
+          id,
       },
-      data: updateWorkshopDto,
-    });
+      data: {
+          ...updateWorkshopDto,
+          admin: {              // Use the relation field name 'admin'
+              connect: {
+                  id: adminId   // Connect to the Admin record by its id
+              }
+          }
+      },
+      include: {
+          admin: true,
+      }
+  });
   }
 
   async findOne(id: string) {

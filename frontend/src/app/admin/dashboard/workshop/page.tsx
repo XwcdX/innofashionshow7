@@ -16,20 +16,22 @@ const WorkshopPage = () => {
             if (dataPetra.length === 0) {
                 setLoadingPetra(true);
                 try {
-                    const resPetra = await fetch('/api/workshop/petra', {
+                    const resPetra = await fetch('/api/workshop_admin/petra', {
                         credentials: 'include'
                     })
                     const rawDataPetra = await resPetra.json();
 
                     const modifiedDataPetra = rawDataPetra.map((item: any) => ({
-                        Nama: item.nama,
-                        NRP: item.nrp,
+                        Nama: item.user.name,
+                        Email: item.user.email,
+                        NRP: item.user.nrp,
                         Jurusan: item.jurusan,
                         Whatsapp: item.wa,
                         IDLine: item.idline,
-                        Pembayaran: item.status_pembayaran === false
-                            ? `<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded" data-href="workshops" data-id="${item.id}">Validasi</button>`
-                            : '<span class="text-green-500">Validated</span>',
+                        BuktiPembayaran:`<a href="${item.proofOfPayment}" target="_blank" class="text-blue-600 hover:underline">View</a>`,
+                        Pembayaran: item.valid === false
+                        ? `<button class="btn-pay !bg-blue-500 text-white px-4 py-2 rounded" data-href="workshop_admin" data-id="${item.id}">Validasi</button>`
+                        : `<span class="text-green-500">Validated by ${item.admin.name}</span>`,
                     }));
 
                     setDataPetra(modifiedDataPetra);
@@ -42,19 +44,20 @@ const WorkshopPage = () => {
             if (dataUmum.length === 0) {
                 setLoadingUmum(true);
                 try {
-                    const resUmum = await fetch('/api/workshop/umum', {
+                    const resUmum = await fetch('/api/workshop_admin/umum', {
                         credentials: 'include'
                     })
                     const rawDataUmum = await resUmum.json();
 
                     const modifiedDataUmum = rawDataUmum.map((item: any) => ({
-                        Nama: item.nama,
-                        Domisili: item.domisili,
+                        Nama: item.user.name,
+                        Email: item.user.email,
                         Whatsapp: item.wa,
                         IDLine: item.idline,
-                        Pembayaran: item.status_pembayaran === false
-                            ? `<button class="btn-pay bg-blue-500 text-white px-4 py-2 rounded" data-href="workshops" data-id="${item.id}">Validasi</button>`
-                            : '<span class="text-green-500">Validated</span>',
+                        BuktiPembayaran:`<a href="${item.proofOfPayment}" target="_blank" class="text-blue-600 hover:underline">View</a>`,
+                        Pembayaran: item.valid === false
+                            ? `<button class="btn-pay !bg-blue-500 text-white px-4 py-2 rounded" data-href="workshop_admin" data-id="${item.id}">Validasi</button>`
+                            : `<span class="text-green-500">Validated by ${item.admin.name}</span>`,
                     }));
 
                     setDataUmum(modifiedDataUmum);
