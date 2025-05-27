@@ -60,6 +60,30 @@ export class WorkshopsController {
     return this.workshopsService.findAllUmum();
   }
 
+  @Get('getValidate')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async getValidate(@Req() req: RequestWithUser) {
+      const userId = req.user.id;
+      const validate = await this.workshopsService.getValidate(userId);
+      if (!validate) {
+          return {};
+      }
+      return validate;
+  }
+
+  @Get('getSubmitted')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async getSubmitted(@Req() req: RequestWithUser) {
+      const userId = req.user.id;
+      const submitted = await this.workshopsService.getSubmitted(userId);
+      if (!submitted) {
+          return {};
+      }
+      return submitted;
+  }
+
   @Get('profile')
   @UseGuards(JwtAuthGuard)
   @HttpCode(HttpStatus.OK)

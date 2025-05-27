@@ -185,7 +185,43 @@ export class WorkshopsService {
         this.logger.error(`Failed to submit contest registration for user ${userId}: ${error.message}`, error.stack);
         throw new InternalServerErrorException('Failed to submit contest registration.');
     }
-}
+  }
+
+  async getValidate(userId: string): Promise<{ validateStatus: boolean | null } | null> {
+    this.logger.log(`Fetching valid status for user ID: ${userId}`);
+    // Fetch only the 'category' field from the contest record
+    const workshopRegistration = await this.prisma.workshop.findUnique({
+        where: { userId: userId },
+        select: {
+            valid: true,  // Only select the 'category' field
+        },
+    });
+
+    if (!workshopRegistration) {
+        this.logger.log(`No valid status found for user ID: ${userId}`);
+        return {validateStatus: null};
+    }
+
+    return { validateStatus: workshopRegistration.valid }; 
+  }
+
+  async getSubmitted(userId: string): Promise<{ submittedStatus: boolean | null } | null> {
+      this.logger.log(`Fetching submitted status for user ID: ${userId}`);
+      // Fetch only the 'category' field from the contest record
+      const workshopRegistration = await this.prisma.workshop.findUnique({
+          where: { userId: userId },
+          select: {
+              submitted: true,  // Only select the 'category' field
+          },
+      });
+
+      if (!workshopRegistration) {
+          this.logger.log(`No submitted status found for user ID: ${userId}`);
+          return null;
+      }
+
+      return { submittedStatus: workshopRegistration.submitted }; 
+  }
 
   async validatePembayaran(id: string, updateWorkshopDto: Prisma.WorkshopUpdateInput) {
     return this.prisma.workshop.update({
