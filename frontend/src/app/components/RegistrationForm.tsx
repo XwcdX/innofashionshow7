@@ -80,9 +80,11 @@ export function RegistrationForm({
                 if (shouldRenderField) {
                     defaults[field.id] = field.defaultValue ?? (field.type === 'checkbox' ? false : '');
                     if (field.id === 'email' && field.type === 'readonly') {
+                        // console.log(userEmail);
                         defaults[field.id] = userEmail || '';
                     }
                     if (field.id === 'name' && field.type === 'text') {
+                        // console.log(userName);
                         defaults[field.id] = userName || '';
                     }
                 }
@@ -134,6 +136,7 @@ export function RegistrationForm({
 
         if (status === 'authenticated' && userEmail && !hasInitialized.current) {
             console.log(`[${registrationType}] INIT: User ${userEmail} authenticated. Starting initialization.`);
+            // console.log(`[${registrationType}] INIT: User ${userName} authenticated. Starting initialization.`);
             setIsInitializing(true);
             hasInitialized.current = true;
             initialLoadComplete.current = false;

@@ -5,7 +5,7 @@ export const talkshowSchema: FormSchema = [
         id: 'userInfo',
         title: 'Your Information',
         fields: [
-            { id: 'name', label: 'Name', type: 'readonly', defaultValue: '' },
+            { id: 'name', label: 'Name', type: 'text', defaultValue: '' },
             { id: 'email', label: 'Email', type: 'readonly', defaultValue: '' },
             { id: 'asal', label: 'Asal', type: 'text', defaultValue: '' },
             { id: 'idLine', label: 'ID Line', type: 'text', defaultValue: '' },
