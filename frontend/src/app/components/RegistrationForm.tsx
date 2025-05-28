@@ -82,7 +82,7 @@ export function RegistrationForm({
                     if (field.id === 'email' && field.type === 'readonly') {
                         defaults[field.id] = userEmail || '';
                     }
-                    if (field.id === 'name' && field.type === 'readonly') {
+                    if (field.id === 'name' && field.type === 'text') {
                         defaults[field.id] = userName || '';
                     }
                 }
