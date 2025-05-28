@@ -33,7 +33,7 @@ export const workshopSchema: FormSchema = [
         fields: [
             {
                 id: 'proofOfPayment', 
-                label: 'BCA: 0882829187 (A/N Sharone Hendrata) sebesar Rp 150.000,00 Berita : Nama_WorkshopInno7', 
+                label: 'BCA: 0882829187 (A/N Sharone Hendrata) sebesar Rp 150.000,00\n\nBerita : Nama_WorkshopInno7', 
                 type: 'file', required: true,     
                 accept: 'image/jpeg,image/png,application/pdf',
                 maxFileSizeMB: 2,
