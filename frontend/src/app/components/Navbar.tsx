@@ -103,7 +103,7 @@ export default function Navbar() {
         className="fixed top-0 left-0 w-full z-50"
       >
         <header
-          className={`w-full bg-[#1A1A1A]/90 backdrop-blur-sm shadow-md border-b border-white/10 text-white px-4 md:px-8 py-3 md:py-5`}
+          className={`w-full bg-[#1A1A1A]/90 backdrop-blur-sm shadow-md text-white px-4 md:px-8 py-3 md:py-5`} 
         >
           <div className="max-w-screen-xl mx-auto flex items-center justify-between">
             {/* Logo */}
