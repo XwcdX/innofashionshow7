@@ -58,15 +58,6 @@ export default function RegistrationSelectionPage() {
             onClick={() => handleNavigation(null)}
             className={`${cardBaseClasses} lg:h-52 lg:h-60 focus-visible:ring-4 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 bg-[linear-gradient(to_bottom,#949087_0%,transparent_40%,transparent_60%,#949087_100%)]`}
           >
-            Webinar
-          </PixelCard>
-
-          {/* Talkshow Card */}
-          <PixelCard
-            variant="teal"
-            onClick={() => handleNavigation(null)}
-            className={`${cardBaseClasses} lg:h-52 lg:h-60 focus-visible:ring-4 focus-visible:ring-teal-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900`}
-          >
             Talkshow
           </PixelCard>
         </div>
