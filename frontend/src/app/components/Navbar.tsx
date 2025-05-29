@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import GlitchText from "./GlitchText"
 import { motion } from "framer-motion"
-import { useEffect, useState, ReactNode } from "react"
+import { useEffect, useState} from "react"
 import { useSession, signOut } from 'next-auth/react';
 
 export default function Navbar() {
@@ -82,7 +82,6 @@ export default function Navbar() {
     { href: "#about", label: "About Us" },
     { href: "#events", label: "Events" },
     { href: "#timeline", label: "Timeline" },
-    { href: "#faq", label: "FAQ" }, 
     { href: "/registration", label: "Registration" }, 
     { href: "/contest", label: "Submission" }
   ];
