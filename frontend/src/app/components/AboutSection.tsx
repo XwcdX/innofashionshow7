@@ -84,18 +84,18 @@ export default function AboutSection() {
       </ScrollReveal>
 
       {/* Right Section Image with custom GSAP fade + slide */}
-      <div
-        ref={rightImageRef}
-        className="w-full md:w-1/2 relative aspect-[4/3] mt-20 mb-10 md:aspect-auto mr-0 lg:mr-16"
-      >
-        <Image
-          src="/assets/runway.jpg"
-          alt="Runway Fashion Show"
-          fill
-          className="object-cover"
-          priority
-        />
-      </div>
+<div
+  ref={rightImageRef}
+  className="w-full md:w-1/2 relative aspect-[4/3] mt-20 mb-10 md:aspect-auto mr-0 lg:mr-16 rounded-lg overflow-hidden" // Tambahkan rounded-lg dan overflow-hidden
+>
+  <Image
+    src="/assets/runway.jpg"
+    alt="Runway Fashion Show"
+    fill
+    className="object-cover"
+    priority
+  />
+</div>
 
       <style jsx>{`
         .glitch-active {
