@@ -15,10 +15,12 @@ const CompetitionsSection: React.FC = () => {
     {
       title: 'Talkshow',
       description: 'Engage in insightful discussions about fashion trends, design inspiration, and the future of style.',
+
     },
     {
       title: 'Workshop',
       description: 'Hone your design skills and master new techniques with hands-on guidance from fashion experts.',
+      link: 'https://innofashionshow.petra.ac.id/registration/workshop',
     },
   ]
 

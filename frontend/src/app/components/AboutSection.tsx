@@ -86,7 +86,7 @@ export default function AboutSection() {
       {/* Right Section Image with custom GSAP fade + slide */}
       <div
         ref={rightImageRef}
-        className="w-full md:w-1/2 relative aspect-[4/3] mt-20 mb-10 md:aspect-auto mr-0 lg:mr-16"
+        className="w-full md:w-1/2 relative aspect-[4/3] mt-20 mb-10 md:aspect-auto mr-0 lg:mr-16 rounded-full overflow-hidden"
       >
         <Image
           src="/assets/runway.jpg"

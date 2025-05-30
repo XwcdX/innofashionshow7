@@ -4,7 +4,7 @@ import Link from "next/link"
 import Image from "next/image"
 import GlitchText from "./GlitchText"
 import { motion } from "framer-motion"
-import { useEffect, useState, ReactNode } from "react"
+import { useEffect, useState} from "react"
 import { useSession, signOut } from 'next-auth/react';
 
 export default function Navbar() {
@@ -82,7 +82,6 @@ export default function Navbar() {
     { href: "#about", label: "About Us" },
     { href: "#events", label: "Events" },
     { href: "#timeline", label: "Timeline" },
-    { href: "#faq", label: "FAQ" }, 
     { href: "/registration", label: "Registration" }, 
     { href: "/contest", label: "Submission" }
   ];
@@ -104,9 +103,9 @@ export default function Navbar() {
         className="fixed top-0 left-0 w-full z-50"
       >
         <header
-          className={`w-full bg-[#1A1A1A]/90 backdrop-blur-sm shadow-md border-b border-white/10 text-white px-4 md:px-8 py-3 md:py-5`}
+          className={`w-full bg-[#1A1A1A]/90 backdrop-blur-lg shadow-md text-white px-4 md:px-8 py-3 md:py-5`} 
         >
-          <div className="max-w-screen-xl mx-auto flex items-center justify-between">
+          <div className="max-w-screen-xl mx-auto  flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="z-50">
               <Image

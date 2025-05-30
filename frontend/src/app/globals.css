@@ -87,6 +87,13 @@ html {
     font-style: normal;
   }
 
+  @font-face {
+    font-family: "Nephilm";
+    src: url("/fonts/Nephilm.otf") format("opentype");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
 }
 
 @media (max-width: 640px) {
