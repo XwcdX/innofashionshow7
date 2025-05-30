@@ -33,7 +33,7 @@ export default function RegistrationSelectionPage() {
           Choose Your Registration
         </h1>
 
-        <div className="w-full max-w-5xl xl:max-w-7xl space-y-8 lg:space-y-0 lg:grid h-auto lg:!h-[50vh] lg:grid-cols-3 lg:gap-8 xl:gap-10">
+        <div className="w-full max-w-5xl xl:max-w-5xl space-y-8 lg:space-y-0 lg:grid h-auto lg:!h-[50vh] lg:grid-cols-3 lg:gap-8 xl:gap-10">
           {/* Contest Card */}
           <PixelCard
             variant="blue"
