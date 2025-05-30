@@ -85,7 +85,7 @@ export default function EventBar() {
       }}
     >
       {/* Decorative Image (bottom-right corner, behind text) */}
-      <div className="absolute bottom-10 scale-300 -right-50 w-200 h-200 z-0 opacity-35">
+      <div className="absolute bottom-[-200] scale-450 -right-30 w-400 h-400 z-0 opacity-15">
         <Image
           src="/assets/lines2.png"
           alt="Decoration"

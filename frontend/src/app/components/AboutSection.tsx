@@ -63,6 +63,16 @@ export default function AboutSection() {
             priority
           />
         </div>
+                {/* Circle Asset (bottom-left corner) */}
+        <div className="transform scale-210 absolute bottom-4 z-[-10] left-310 w-100 h-100 opacity-95">
+          <Image
+            src="/assets/asetlingkaran1.png"
+            alt=""
+            fill
+            className="object-contain"
+            priority
+          />
+        </div>
         <div className="w-full h-full flex flex-col items-center justify-center">
           <h2
             className="text-5xl md:text-6xl font-bold uppercase tracking-tight text-white mb-12 text-center"
