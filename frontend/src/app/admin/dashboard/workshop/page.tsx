@@ -24,7 +24,7 @@ const WorkshopPage = () => {
                     const modifiedDataPetra = rawDataPetra.map((item: any) => ({
                         Nama: item.user.name,
                         Email: item.user.email,
-                        NRP: item.user.nrp,
+                        NRP: item.nrp,
                         Jurusan: item.jurusan,
                         Whatsapp: item.wa,
                         IDLine: item.idline,
