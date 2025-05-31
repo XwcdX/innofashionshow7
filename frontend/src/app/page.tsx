@@ -15,7 +15,7 @@ import PrizePool from './components/Prize';
 import Lenis from '@studio-freight/lenis';
 import TimelineSection from "@/app/components/TimelineSection";
 import ClickSpark from './components/ClickSpark';
-import AnimatedSvgBackground from './components/AnimatedSvgBackground'; // 1. Impor komponen background baru
+import AnimatedSvgBackground from './components/AnimatedSvgBackground';
 
 export default function Home() {
   // State isLoading dan logika Lenis Anda tetap sama persis seperti kode awal Anda.
@@ -51,9 +51,9 @@ export default function Home() {
     // Struktur JSX utama tidak diubah, hanya penambahan AnimatedSvgBackground
     // dan penyesuaian CSS untuk body.
     <div className="relative w-full h-full overflow-hidden">
-      <AnimatedSvgBackground /> {/* 2. Render komponen background SVG di sini, akan diposisikan fixed oleh CSS-nya sendiri */}
+      <AnimatedSvgBackground />
       
-      <div ref={mainRef} className="relative"> {/* Konten utama Anda */}
+      <div ref={mainRef} className="relative">
         <ClickSpark
           sparkColor='rgba(77, 255, 255, 0.7)'
           sparkSize={10}

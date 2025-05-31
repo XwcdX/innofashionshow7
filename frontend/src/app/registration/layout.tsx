@@ -1,5 +1,6 @@
 'use client';
 import SessionGuard from '@/app/components/SessionGuard';
+import AnimatedSvgBackground from '../components/AnimatedSvgBackground';
 
 export default function RegistrationLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -15,7 +16,8 @@ export default function RegistrationLayout({ children }: { children: React.React
         src="/assets/Frame 7.png"
         className="fixed -bottom-35 -left-25 sm:-bottom-50 sm:-left-25 sm:w-[600px] sm:h-[450px] m-4 md:w-[750px] md:h-[550px] md:-bottom-55 md:-left-35 lg:-bottom-65 lg:-left-50 lg:w-[917px] lg:h-[666px] object-cover z-[10]" // <-- z-index 10
       />
-      <main className="main-layout-background px-4 overflow-hidden min-h-screen relative">
+      <main className="px-4 overflow-hidden min-h-screen relative">
+        <AnimatedSvgBackground/>
         <div className="relative z-[20]">
           {children}
         </div>

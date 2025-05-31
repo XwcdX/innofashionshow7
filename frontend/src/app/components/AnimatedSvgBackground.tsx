@@ -30,8 +30,8 @@ const AnimatedSvgBackground = () => {
             {/* Gradient 3 uses Cyan from palette: #4dffff */}
             <radialGradient id="Gradient3" cx="50%" cy="50%" fx="0.836536%" fy="50%" r=".5">
               <animate attributeName="fx" dur="30s" values="0%;3%;0%" repeatCount="indefinite" /> {/* Duration Increased */}
-              <stop offset="0%" stopColor="rgba(77, 255, 255, 1)" />
-              <stop offset="100%" stopColor="rgba(77, 255, 255, 0)" />
+              <stop offset="0%" stopColor="rgb(44, 49, 140, 1)" />
+              <stop offset="100%" stopColor="rgba(77, 136, 255, 0)" />
             </radialGradient>
           </defs>
 

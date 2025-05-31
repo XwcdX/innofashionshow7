@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import AnimatedSvgBackground from '../components/AnimatedSvgBackground';
 
 const GoogleIcon = (props: React.SVGProps<SVGSVGElement> & { className?: string }) => ( // Added className to props
     <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" {...props}>
@@ -34,7 +35,8 @@ export default function LoginPage() {
 
     return (
         <>
-            <div className="main-layout-background flex items-center justify-center w-screen h-screen overflow-hidden font-neue-montreal">
+            <div className="flex items-center justify-center w-screen h-screen overflow-hidden font-neue-montreal">
+                <AnimatedSvgBackground />
                 <div className="flex items-center justify-center w-full h-full p-4">
                     <div className="w-full max-w-sm sm:max-w-md md:max-w-lg p-8 md:p-10 rounded-2xl md:rounded-3xl bg-black/20 backdrop-blur-xl shadow-2xl shadow-purple-900/30 border border-white/20 flex flex-col justify-center items-center text-center space-y-8 md:space-y-10">
                         <div className="image-innofashionshow">
