@@ -150,7 +150,12 @@ const TimelineSection = () => {
         <div className="timeline-content">
           {timelineData[active].map((item, idx) => (
             <div className="timeline-point" key={idx}>
-              <div className="circle border-4 border-white bg-purple-600 "></div>
+              <img
+                  src="/assets/asetbintang1.png" // Path relative to the public folder
+                  alt={item.title + " icon"}    // Descriptive alt text
+                  className="circle bg-transparent"      // New class for specific image styling if needed
+                                                // Original .circle class might still apply some base styles
+                />
               <div className="timeline-text">
                 <h1>{item.title}</h1>
                 <p>{item.date}</p>
@@ -304,8 +309,8 @@ const TimelineSection = () => {
   }
 
   .circle {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     margin-top: 10px;
   }
@@ -323,8 +328,6 @@ const TimelineSection = () => {
   .timeline-text > p {
     font-size: 18px;
   }
-
-        
 
         .timeline-point,
         .timeline-line,
@@ -364,10 +367,20 @@ const TimelineSection = () => {
         }
 
         .circle {
-          width: 40px;
-          height: 40px;
+          width: 100px;
+          height: 100px;
           border-radius: 50%;
-          margin-top: 10px;
+          margin-top: -20px;
+          transform: translateX(-28%);
+        }
+
+        @media (max-width: 600px) {
+         .circle {
+          width: 100px;                     
+          height: 100px;                    
+          margin-top: -10px;               
+          transform: translateX(1.5%) translateY(-40%);    
+           }
         }
 
         .timeline-text {
