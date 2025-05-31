@@ -266,6 +266,7 @@ const TimelineSection = () => {
     font-size: 60px;
     width: 80%;
     margin-bottom: 30px;
+    
   }
 
   .menu-buttons {
@@ -323,6 +324,7 @@ const TimelineSection = () => {
   .timeline-text > h1 {
     font-size: 32px;
     letter-spacing: 1px;
+    font-family: "Moderniz", Arial, sans-serif;
   }
 
   .timeline-text > p {
@@ -389,7 +391,7 @@ const TimelineSection = () => {
         }
 
         .timeline-text > h1 {
-          font-size: 32px;
+          font-size: 20px;
           letter-spacing: 1px;
         }
 
