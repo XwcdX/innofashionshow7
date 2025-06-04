@@ -50,6 +50,7 @@ model User {
 
   contest   Contest? @relation("UserContest")
   workshop  Workshop? @relation("UserWorkshop")
+  talkshow  Talkshow? @relation("UserTalkshow")
 }
 
 model Contest {
@@ -104,21 +105,27 @@ enum AsalType {
   Petra
   Umum
 }
+enum TalkshowType {
+  TALKSHOW_1
+  TALKSHOW_2
+  WEBINAR
+}
 
 model Talkshow {
   id                String    @id @default(uuid())
-  asal              AsalType
-  nama              String
-  email             String    
-  wa                String
-  idline            String
-  domisili          String?   // Nullable
+  userId            String    @unique
+  user              User      @relation("UserTalkshow", fields: [userId], references: [id])    
+  wa                String?
+  idline            String?
   nrp               String?   // Nullable
   jurusan           String?   // Nullable
-  proofOfPayment    String
-  valid             Boolean   @default(false) // 0 = belum bayar
+  type              TalkshowType
+  submitted         Boolean   @default(false)
+
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
+
+  @@unique([userId, type])
 }
 
 model Workshop {
