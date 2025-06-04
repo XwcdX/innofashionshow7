@@ -81,7 +81,7 @@ export class TalkshowsService {
         ...(dto.name !== undefined && { name: dto.name }),
         updatedAt: new Date(),
     };
-    const updateData: Prisma.TalkshowUpdateInput = {,
+    const updateData: Prisma.TalkshowUpdateInput = {
         ...(dto.idline !== undefined && { idline: dto.idline }),
         ...(dto.wa !== undefined && { wa: dto.wa }),
         ...(user.type === UserType.INTERNAL && dto.nrp !== undefined && { nrp: dto.nrp }),
