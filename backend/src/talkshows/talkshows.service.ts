@@ -1,16 +1,16 @@
-import {  Injectable, NotFoundException, InternalServerErrorException, Logger, BadRequestException  } from '@nestjs/common';
-import { Prisma, Talkshow, UserType, Category, Creation } from '@prisma/client'
+import { Injectable, NotFoundException, InternalServerErrorException, Logger, BadRequestException } from '@nestjs/common';
+import { Prisma, Talkshow, UserType, TalkshowType, Creation } from '@prisma/client'
 import { DatabaseService } from 'src/database/database.service';
 import { TalkshowDraftDto } from './talkshows.controller';
 
-type TalkshowProfile= Talkshow & {
+type TalkshowProfile = Talkshow & {
   talk1Submit: boolean;
   talk2Submit: boolean;
   webinarSubmit: boolean;
 };
 @Injectable()
 export class TalkshowsService {
-  constructor(private readonly prisma: DatabaseService){}
+  constructor(private readonly prisma: DatabaseService) { }
   private readonly logger = new Logger(TalkshowsService.name);
 
   async create(createTalkshowDto: Prisma.TalkshowCreateInput) {
@@ -73,24 +73,24 @@ export class TalkshowsService {
 
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-        this.logger.warn(`User not found for ID: ${userId} while saving draft.`);
-        throw new NotFoundException(`User with ID ${userId} not found.`);
+      this.logger.warn(`User not found for ID: ${userId} while saving draft.`);
+      throw new NotFoundException(`User with ID ${userId} not found.`);
     }
 
     const updateUserData: Prisma.UserUpdateInput = {
-        ...(dto.name !== undefined && { name: dto.name }),
-        updatedAt: new Date(),
+      ...(dto.name !== undefined && { name: dto.name }),
+      updatedAt: new Date(),
     };
     const updateData: Prisma.TalkshowUpdateInput = {
-        ...(dto.idline !== undefined && { idline: dto.idline }),
-        ...(dto.wa !== undefined && { wa: dto.wa }),
-        ...(user.type === UserType.INTERNAL && dto.nrp !== undefined && { nrp: dto.nrp }),
-        ...(user.type === UserType.INTERNAL && dto.jurusan !== undefined && { jurusan: dto.jurusan }),
-        updated_at: new Date(),
+      ...(dto.idline !== undefined && { idline: dto.idline }),
+      ...(dto.wa !== undefined && { wa: dto.wa }),
+      ...(user.type === UserType.INTERNAL && dto.nrp !== undefined && { nrp: dto.nrp }),
+      ...(user.type === UserType.INTERNAL && dto.jurusan !== undefined && { jurusan: dto.jurusan }),
+      updated_at: new Date(),
     };
     if (Object.keys(updateData).length <= 1) {
-        this.logger.log(`No actual draft data provided to update for user ${userId}. Skipping workshop update.`);
-        return null;
+      this.logger.log(`No actual draft data provided to update for user ${userId}. Skipping workshop update.`);
+      return null;
     }
 
     if (!dto.category) {
@@ -99,117 +99,130 @@ export class TalkshowsService {
     }
 
     const createData: Prisma.TalkshowCreateInput = {
-        user: { connect: { id: userId } },
-        wa: dto.wa ?? null,
-        idline: dto.idline ?? null,
-        nrp: (user.type === UserType.INTERNAL && dto.nrp !== undefined) ? dto.nrp : null,
-        jurusan: (user.type === UserType.INTERNAL && dto.jurusan !== undefined) ? dto.jurusan : null,
-        type: dto.category
+      user: { connect: { id: userId } },
+      wa: dto.wa ?? null,
+      idline: dto.idline ?? null,
+      nrp: (user.type === UserType.INTERNAL && dto.nrp !== undefined) ? dto.nrp : null,
+      jurusan: (user.type === UserType.INTERNAL && dto.jurusan !== undefined) ? dto.jurusan : null,
+      type: dto.category
     };
 
     try {
-        this.logger.log(`Upserting workshop draft for user ${userId}`);
-        if (dto.name !== undefined) {
-          await this.prisma.user.update({
-            where: { id: userId },
-            data: updateUserData,
-          });
-        }
-        const savedTalkshow = await this.prisma.talkshow.upsert({
-            where: { userId: userId },
-            create: createData,
-            update: updateData,
+      this.logger.log(`Upserting workshop draft for user ${userId}`);
+      if (dto.name !== undefined) {
+        await this.prisma.user.update({
+          where: { id: userId },
+          data: updateUserData,
         });
-        this.logger.log(`Successfully saved contest draft for user ID: ${userId}`);
-        return savedTalkshow;
+      }
+      const savedTalkshow = await this.prisma.talkshow.upsert({
+        where: {
+          userTalkshowCategory: {
+            userId: userId,
+            type: dto.category!,
+          }
+        },
+        create: createData,
+        update: updateData,
+      });
+      this.logger.log(`Successfully saved contest draft for user ID: ${userId}`);
+      return savedTalkshow;
     } catch (error) {
-        this.logger.error(`Failed to save workshops draft for user ${userId}: ${error.message}`, error.stack);
-        throw new InternalServerErrorException('Failed to save workshop draft data.');
+      this.logger.error(`Failed to save workshops draft for user ${userId}: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Failed to save workshop draft data.');
     }
   }
 
   async submit(userId: string, dto: TalkshowDraftDto): Promise<Talkshow> {
-    this.logger.log(`Attempting final workshop submission for user ID: ${userId}`);
+    this.logger.log(`Attempting final talkshow submission for user ID: ${userId} and category: ${dto.category}`);
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-        this.logger.warn(`User not found for ID: ${userId} during submission attempt.`);
-        throw new NotFoundException(`User with ID ${userId} not found.`);
+      this.logger.warn(`User not found for ID: ${userId} during submission attempt.`);
+      throw new NotFoundException(`User with ID ${userId} not found.`);
     }
-    this.logger.log(`User type fetched in service for validation: ${user.type}`);
-    
-    const updateUserData: Prisma.UserUpdateInput = {
-        ...(dto.name !== undefined && { name: dto.name }),
-        updatedAt: new Date(),
-    };
+    this.logger.log(`User type fetched: ${user.type}`);
+
+    // --- Validation ---
     const missingFields: string[] = [];
-    if (user.type === UserType.INTERNAL) {
-        if (!dto.nrp) missingFields.push('NRP');
-        if (!dto.jurusan) missingFields.push('Major');
+    if (!dto.category) {
+      missingFields.push('Category');
     }
-    if (!dto.wa) missingFields.push('Whatsapp');
-    if (!dto.idline) missingFields.push('ID Line');
-    if (!dto.category) missingFields.push('Category');
+    if (!dto.wa) {
+      missingFields.push('WhatsApp Number');
+    }
+    // ID Line might be optional, adjust as needed. If required:
+    // if (!dto.idline) missingFields.push('ID Line');
+
+    if (user.type === UserType.INTERNAL) {
+      if (!dto.nrp) missingFields.push('NRP');
+      if (!dto.jurusan) missingFields.push('Major');
+    }
 
     if (missingFields.length > 0) {
-        const errorMessage = `Missing required fields for ${user.type} user contest submission: ${missingFields.join(', ')}.`;
-        this.logger.warn(`Submission validation failed for user ${userId}: ${errorMessage}`);
-        throw new BadRequestException(errorMessage);
+      const errorMessage = `Missing required fields for ${user.type} user talkshow submission (${dto.category}): ${missingFields.join(', ')}.`;
+      this.logger.warn(`Submission validation failed for user ${userId}: ${errorMessage}`);
+      throw new BadRequestException(errorMessage);
     }
     // --- End Validation ---
 
-    const updateData: Prisma.TalkshowUpdateInput = {
-        idline: dto.idline,
-        wa: dto.wa,
-        nrp: user.type === UserType.INTERNAL ? dto.nrp : null,
-        jurusan: user.type === UserType.INTERNAL ? dto.jurusan : null,
-        updated_at: new Date(),
-        submitted: true,
-        type: dto.category
-    };
+    // Update user's name if provided in DTO
+    if (dto.name !== undefined && dto.name !== user.name) {
+      await this.prisma.user.update({
+        where: { id: userId },
+        data: { name: dto.name, updatedAt: new Date() },
+      });
+      this.logger.log(`User name updated for ${userId}`);
+    }
 
-    if (!dto.category) throw new BadRequestException('Category not found');;
-
-    const createData: Prisma.TalkshowCreateInput = {
-        user: { connect: { id: userId } },
-        idline: dto.idline,
-        wa: dto.wa,
-        nrp: user.type === UserType.INTERNAL ? dto.nrp : null,
-        jurusan: user.type === UserType.INTERNAL ? dto.jurusan : null,
-        submitted: true,
-        type: dto.category
+    // Data for creating or updating the Talkshow record
+    const talkshowRecordData = {
+      idline: dto.idline, // Prisma handles undefined as "do not set/change" on update
+      wa: dto.wa,
+      nrp: user.type === UserType.INTERNAL ? dto.nrp : null,
+      jurusan: user.type === UserType.INTERNAL ? dto.jurusan : null,
+      submitted: true,
     };
 
     try {
-        this.logger.log(`Upserting final workshop submission for user ${userId}`);
-        if (dto.name !== undefined) {
-          await this.prisma.user.update({
-            where: { id: userId },
-            data: updateUserData,
-          });
-        }
-        const submittedTalkshow = await this.prisma.talkshow.upsert({
-            where: { userId: userId },
-            create: createData,
-            update: updateData,
-        });
-        this.logger.log(`Successfully submitted contest registration for user ID: ${userId}`);
-        return submittedTalkshow;
+      this.logger.log(`Upserting talkshow submission for user ${userId}, category ${dto.category}`);
+
+      const submittedTalkshow = await this.prisma.talkshow.upsert({
+        where: {
+          userTalkshowCategory: {
+            userId: userId,
+            type: dto.category!,
+          }
+        },
+        create: {
+          user: { connect: { id: userId } },
+          type: dto.category!,
+          ...talkshowRecordData,
+        },
+        update: {
+          ...talkshowRecordData,
+          updated_at: new Date(),
+        },
+      });
+
+      this.logger.log(`Successfully submitted/updated talkshow registration for user ID: ${userId}, category: ${dto.category}`);
+      return submittedTalkshow;
+
     } catch (error) {
-        if (error instanceof Prisma.PrismaClientKnownRequestError) {
-            this.logger.error(`Prisma error during workshop submission for user ${userId}: ${error.message}`, error.stack);
-            throw new InternalServerErrorException('Database error during workshop submission.');
-        }
-         if (error instanceof BadRequestException || error instanceof NotFoundException) {
-             throw error;
-         }
-        this.logger.error(`Failed to submit contest registration for user ${userId}: ${error.message}`, error.stack);
-        throw new InternalServerErrorException('Failed to submit contest registration.');
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        this.logger.error(`Prisma error during talkshow submission for user ${userId}, category ${dto.category}: ${error.code} - ${error.message}`, error.stack);
+        throw new InternalServerErrorException('Database error during talkshow submission.');
+      }
+      if (error instanceof BadRequestException || error instanceof NotFoundException) {
+        throw error;
+      }
+      this.logger.error(`Unexpected error during talkshow submission for user ${userId}, category ${dto.category}: ${error.message}`, error.stack);
+      throw new InternalServerErrorException('Failed to submit talkshow registration due to an unexpected error.');
     }
   }
 
   async findOne(id: string) {
     return this.prisma.talkshow.findUnique({
-      where:{
+      where: {
         id,
       }
     });

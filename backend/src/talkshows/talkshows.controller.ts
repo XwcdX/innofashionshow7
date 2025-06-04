@@ -38,7 +38,7 @@ export class TalkshowDraftDto {
 interface RequestWithUser extends Request {
   user: Pick<User, 'id' | 'email' | 'name' | 'type'>;
 }
-@Controller('talkshows')
+@Controller('talkshow')
 export class TalkshowsController {
   constructor(private readonly talkshowsService: TalkshowsService) {}
   private readonly logger = new Logger(TalkshowsController.name);

@@ -50,7 +50,7 @@ model User {
 
   contest   Contest? @relation("UserContest")
   workshop  Workshop? @relation("UserWorkshop")
-  talkshow  Talkshow? @relation("UserTalkshow")
+  talkshow  Talkshow[] @relation("UserTalkshow")
 }
 
 model Contest {
@@ -113,7 +113,7 @@ enum TalkshowType {
 
 model Talkshow {
   id                String    @id @default(uuid())
-  userId            String    @unique
+  userId            String
   user              User      @relation("UserTalkshow", fields: [userId], references: [id])    
   wa                String?
   idline            String?
@@ -125,7 +125,7 @@ model Talkshow {
   created_at        DateTime  @default(now())
   updated_at        DateTime  @updatedAt
 
-  @@unique([userId, type])
+  @@unique([userId, type], name: "userTalkshowCategory")
 }
 
 model Workshop {
