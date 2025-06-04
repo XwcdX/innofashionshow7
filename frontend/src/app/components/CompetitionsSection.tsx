@@ -15,7 +15,7 @@ const CompetitionsSection: React.FC = () => {
     {
       title: 'Talkshow',
       description: 'Engage in insightful discussions about fashion trends, design inspiration, and the future of style.',
-
+      link: 'https://innofashionshow.petra.ac.id/registration/talkshow',
     },
     {
       title: 'Workshop',

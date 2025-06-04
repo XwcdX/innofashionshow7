@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { type } = req.query as { type: 'petra' | 'umum' }
   try {
-    const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/talkshows/${type}`, {
+    const apiRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/talkshow/${type}`, {
       headers: {
         cookie: req.headers.cookie || ''
       }
