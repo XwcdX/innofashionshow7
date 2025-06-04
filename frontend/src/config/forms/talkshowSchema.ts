@@ -7,34 +7,17 @@ export const talkshowSchema: FormSchema = [
         fields: [
             { id: 'name', label: 'Name', type: 'text', defaultValue: '' },
             { id: 'email', label: 'Email', type: 'readonly', defaultValue: '' },
-            { id: 'asal', label: 'Asal', type: 'text', defaultValue: '' },
-            { id: 'idLine', label: 'ID Line', type: 'text', defaultValue: '' },
+            { id: 'idline', label: 'ID Line', type: 'text', defaultValue: '' },     
+            { id: 'wa', label: 'WhatsApp', type: 'tel', required: true, placeholder: '08...........' },
         ],
     },
     {
-        id: 'payment',
-        title: 'Payment',
+        id: 'internalDetails',
+        title: 'Petra Student Details',
+        condition: (formData, userType) => userType === 'INTERNAL',
         fields: [
-            { id: 'whatsapp_ws', label: 'WhatsApp (for payment confirmation)', type: 'tel', required: true, placeholder: '+62...' }, // Use different ID if needed
-            {
-                id: 'proofPath_ws', label: 'Proof of Payment', type: 'file', required: true,
-                accept: 'image/jpeg,image/png,application/pdf',
-                maxFileSizeMB: 2,
-                filePurpose: 'payment',
-            },
-        ]
-    },
-    {
-        id: 'payment',
-        title: 'Payment',
-        fields: [
-            { id: 'whatsapp_ws', label: 'WhatsApp (for payment confirmation)', type: 'tel', required: true, placeholder: '+62...' }, // Use different ID if needed
-            {
-                id: 'proofPath_ws', label: 'Proof of Payment', type: 'file', required: true,
-                accept: 'image/jpeg,image/png,application/pdf',
-                maxFileSizeMB: 2,
-                filePurpose: 'payment',
-            },
-        ]
+            { id: 'nrp', label: 'NRP', type: 'text', required: true, pattern: '^[A-Za-z]\\d{8}$', title: "Enter NRP (e.g., c14200001)" },
+            { id: 'jurusan', label: 'Major', type: 'text', required: true, placeholder: "Your major" },
+        ],
     },
 ];

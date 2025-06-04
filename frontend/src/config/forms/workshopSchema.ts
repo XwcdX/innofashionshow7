@@ -8,7 +8,7 @@ export const workshopSchema: FormSchema = [
             { id: 'name', label: 'Name', type: 'text', defaultValue: '' },
             { id: 'email', label: 'Email', type: 'readonly', defaultValue: '' },
             { id: 'idline', label: 'ID Line', type: 'text', defaultValue: '' },     
-            { id: 'wa', label: 'WhatsApp', type: 'tel', required: true, placeholder: '+62...' }, // Use different ID if needed
+            { id: 'wa', label: 'WhatsApp', type: 'tel', required: true, placeholder: '08..........' }, // Use different ID if needed
         ],
     },
     {

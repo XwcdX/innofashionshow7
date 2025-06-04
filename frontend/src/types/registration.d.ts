@@ -6,6 +6,8 @@ export type UserType = 'INTERNAL' | 'EXTERNAL';
 
 export type Category = 'ADVANCED' | 'INTERMEDIATE';
 
+export type TalkshowCategory = 'WEBINAR' | 'TALKSHOW_1' | 'TALKSHOW_2';
+
 export type FieldType =
     | 'text'
     | 'number'

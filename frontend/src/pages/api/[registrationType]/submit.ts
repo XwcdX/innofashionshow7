@@ -31,7 +31,7 @@ export default async function handler(
 
     const backendUrl = getBackendUrl(`/${registrationType}/submit`);
     console.log(`Forwarding POST submission to backend: ${backendUrl}`);
-
+    
     try {
         const apiRes = await fetch(backendUrl, {
             method: 'POST',

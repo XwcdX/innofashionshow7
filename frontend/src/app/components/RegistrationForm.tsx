@@ -11,6 +11,7 @@ import {
     type FormData,
     UploadedFilePaths,
     Category,
+    TalkshowCategory,
 } from '@/types/registration';
 import { InputField } from './InputField';
 import BrandedLoader from '@/app/components/BrandedLoader';
@@ -21,7 +22,7 @@ interface RegistrationFormProps {
     formSchema: FormSchema;
     onSuccessRedirectPath?: string;
     onRegistrationReset?: ()=> void;
-    initialCategory?: Category | null;
+    initialCategory?: Category | TalkshowCategory | null;
 }
 
 // --- Helper Functions ---
@@ -214,7 +215,7 @@ export function RegistrationForm({
                     console.log(`[${registrationType}] INIT: Applying category from prop: ${initialCategory}`);
                     finalCategory = initialCategory;
                 }
-                if (finalCategory && !(finalCategory === 'INTERMEDIATE' || finalCategory === 'ADVANCED')) {
+                if (finalCategory && !(finalCategory === 'INTERMEDIATE' || finalCategory === 'ADVANCED' || finalCategory === 'WEBINAR' || finalCategory === 'TALKSHOW_1' || finalCategory === 'TALKSHOW_2')) {
                     console.warn(`[${registrationType}] INIT: Final category '${finalCategory}' is invalid. Removing.`);
                     finalCategory = null;
                 }
