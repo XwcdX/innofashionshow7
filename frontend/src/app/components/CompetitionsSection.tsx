@@ -20,7 +20,7 @@ const CompetitionsSection: React.FC = () => {
     {
       title: 'Workshop',
       description: 'Hone your design skills and master new techniques with hands-on guidance from fashion experts.',
-      link: 'https://innofashionshow.petra.ac.id/registration/workshop',
+      // link: 'https://innofashionshow.petra.ac.id/registration/workshop',
     },
   ]
 
