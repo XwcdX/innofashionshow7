@@ -145,10 +145,6 @@ function CategorySelector({ onSelectCategory, submissionStatus }: CategorySelect
     );
 }
 
-const getCurrentTalkshowSchema = (): FormSchema => {
-    return JSON.parse(JSON.stringify(baseTalkshowSchema));
-};
-
 const WHATSAPP_LINKS: Record<TalkshowCategory, string> = {
     WEBINAR: "https://chat.whatsapp.com/YOUR_WEBINAR_LINK_HERE",
     TALKSHOW_1: "https://chat.whatsapp.com/YOUR_TALKSHOW1_LINK_HERE",
@@ -241,8 +237,8 @@ export default function TalkshowRegistrationPage() {
         );
     }
 
-    const currentSchemaForForm = getCurrentTalkshowSchema();
-
+    const schemaForTalkshowForm = baseTalkshowSchema;
+    
     return (
         <div className="min-h-screen py-8 relative z-10">
             {selectedTalkshowCategory && !isAlreadySubmittedForSelectedCategory ? (
@@ -265,7 +261,7 @@ export default function TalkshowRegistrationPage() {
             ) : (
                 <RegistrationForm
                     registrationType={registrationType}
-                    formSchema={currentSchemaForForm}
+                    formSchema={schemaForTalkshowForm }
                     onSuccessRedirectPath={`/registration/${registrationType}`}
                     initialCategory={selectedTalkshowCategory}
                     onRegistrationReset={handleRegistrationSuccess}
