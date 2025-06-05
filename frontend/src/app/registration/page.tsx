@@ -7,9 +7,13 @@ export default function RegistrationSelectionPage() {
   const router = useRouter();
 
   const handleNavigation = (path: string | null) => {
-    if (path) {
+    if (path == 'close'){
+      alert("This registration option is close!");
+    }
+    else if (path) {
       router.push(path);
-    } else {
+    }
+    else {
       alert("This registration option is coming soon!");
       console.log("Navigation for this option is not yet implemented.");
     }
@@ -46,7 +50,7 @@ export default function RegistrationSelectionPage() {
           {/* Workshop Card */}
           <PixelCard
             variant="purple"
-            onClick={() => handleNavigation(null)}
+            onClick={() => handleNavigation('close')}
             className={`${cardBaseClasses} lg:h-52 lg:h-60 focus-visible:ring-4 focus-visible:ring-purple-400 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-900 bg-[linear-gradient(to_bottom,#9009A3_0%,transparent_40%,transparent_60%,#9009A3_100%)]`}
           >
             Workshop
