@@ -23,6 +23,40 @@ export class TalkshowsService {
     return this.prisma.talkshow.findMany();
   }
 
+  async findAllPetra() {
+    this.logger.log(`Fetching all Internal Talkshow Participant`);
+    const allInternalTalkshow = await this.prisma.talkshow.findMany({
+        where: { 
+            submitted: true,
+            user: {
+                type: 'INTERNAL',
+            },
+        },
+        include:{
+            user: true,
+        }
+    });
+
+    return allInternalTalkshow;
+  }
+
+  async findAllUmum() {
+    this.logger.log(`Fetching all External Talkshow Participant`);
+    const allExternalTalkshow = await this.prisma.talkshow.findMany({
+        where: { 
+            submitted: true,
+            user: {
+                type: 'EXTERNAL',
+            },
+        },
+        include:{
+            user: true,
+        }
+    });
+
+    return allExternalTalkshow;
+  }
+
   async getTalkshowProfile(userId: string): Promise<TalkshowProfile | null> {
     this.logger.log(`Fetching talkshow profile for user ID: ${userId}`);
 

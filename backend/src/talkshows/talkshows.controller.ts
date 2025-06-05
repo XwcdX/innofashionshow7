@@ -52,6 +52,20 @@ export class TalkshowsController {
   findAll() {
     return this.talkshowsService.findAll();
   }
+  
+  @Get('petra')
+  @UseGuards(JwtAuthGuardAdmin)
+  @HttpCode(HttpStatus.OK)
+  findAllPetra() {
+    return this.talkshowsService.findAllPetra();
+  }
+
+  @Get('umum')
+  @UseGuards(JwtAuthGuardAdmin)
+  @HttpCode(HttpStatus.OK)
+  findAllUmum() {
+    return this.talkshowsService.findAllUmum();
+  }
 
   @Get('profile')
   @UseGuards(JwtAuthGuard)
