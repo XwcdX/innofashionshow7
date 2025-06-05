@@ -34,6 +34,15 @@ export async function middleware(req: NextRequest) {
     return NextResponse.next()
   }
 
+  // Block access to workshop registration
+  if (pathname === '/registration/workshop') {
+    // Option 1: redirect
+    // return NextResponse.redirect(new URL('/registration', request.url));
+
+    // Option 2: return 403 page (optional)
+    return new NextResponse('Workshop registration is closed', { status: 403 });
+  }
+
   const session = await getToken({ req, secret: NEXTAUTH_SECRET })
   const userCookie = req.cookies.get('ACCESS_TOKEN')?.value
   if (!session || !userCookie) {
