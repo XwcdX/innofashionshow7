@@ -15,12 +15,12 @@ const CompetitionsSection: React.FC = () => {
     {
       title: 'Talkshow',
       description: 'Engage in insightful discussions about fashion trends, design inspiration, and the future of style.',
-      link: 'https://innofashionshow.petra.ac.id/registration/talkshow',
+
     },
     {
       title: 'Workshop',
       description: 'Hone your design skills and master new techniques with hands-on guidance from fashion experts.',
-      // link: 'https://innofashionshow.petra.ac.id/registration/workshop',
+      link: 'https://innofashionshow.petra.ac.id/registration/workshop',
     },
   ]
 
@@ -168,15 +168,17 @@ const CompetitionsSection: React.FC = () => {
   return (
     <>
       <section
-        id="competitions"
-        className="min-h-screen flex items-center justify-center py-16 font-neue-montreal -mt-65 mb-20 md:-mt-140 md:mb-0"
-        style={{
-          background: 'transparent',
-          scrollSnapAlign: 'start',
-        }}
-      >
+  id="competitions"
+  // TAMBAHKAN z-10 di sini
+  // Hapus min-h-dvh dan items-center
+className="min-h-dvh flex justify-center py-16 font-neue-montreal transform -translate-y-64 z-30 pt-0 -mt-60 sm:-mt-20 -mb-50 sm:-mb-65"
+  style={{
+    background: 'transparent',
+    scrollSnapAlign: 'start',
+  }}
+>
         <div className="container mx-auto px-4 text-center">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 pt-20">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 ">
             {competitionsData.map((competition, index) => {
               const cardContent = (
                 <div
