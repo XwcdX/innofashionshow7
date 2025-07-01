@@ -690,7 +690,7 @@ export function SubmissionForm({
         <div className="min-h-screen w-full pt-0 pb-8 px-0 md:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto bg-white/10 backdrop-filter backdrop-blur-lg p-6 md:p-8 shadow-2xl rounded-xl border border-white/20">
                 <h1 className="text-3xl md:text-4xl font-bold text-center text-white mb-8 [text-shadow:0_0_10px_rgba(255,255,255,0.7)] capitalize">
-                    Constest Submission
+                    Contest Submission
                 </h1>
                 <p className="text-3xl md:text-4xl font-bold text-center text-white mb-8 [text-shadow:0_0_10px_rgba(255,255,255,0.7)] capitalize">
                     You registered as a {userType} and are participating in the {initialCategory} category.
