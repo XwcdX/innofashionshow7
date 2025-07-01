@@ -8,7 +8,7 @@ export const workshopSchema: FormSchema = [
             { id: 'name', label: 'Name', type: 'text', defaultValue: '' },
             { id: 'email', label: 'Email', type: 'readonly', defaultValue: '' },
             { id: 'idline', label: 'ID Line', type: 'text', defaultValue: '' },     
-            { id: 'wa', label: 'WhatsApp', type: 'tel', required: true, placeholder: '08..........' }, // Use different ID if needed
+            { id: 'wa', label: 'WhatsApp', type: 'tel', required: true, placeholder: '08..........' },
         ],
     },
     {
@@ -17,14 +17,7 @@ export const workshopSchema: FormSchema = [
         condition: (formData, userType) => userType === 'INTERNAL',
         fields: [
             { id: 'nrp', label: 'NRP', type: 'text', required: true, pattern: '^[A-Za-z]\\d{8}$', title: "Enter NRP (e.g., c14200001)" },
-            // { id: 'batch', label: 'Batch', type: 'number', required: true, placeholder: "e.g., 2022", min: 2000, max: (new Date().getFullYear()) }, // Dynamic max year
             { id: 'jurusan', label: 'Major', type: 'text', required: true, placeholder: "Your major" },
-            // {
-            //     id: 'ktmPath', label: 'KTM (Student ID Card)', type: 'file', required: true,
-            //     accept: 'image/jpeg,image/png,application/pdf',
-            //     maxFileSizeMB: 2,
-            //     filePurpose: 'ktm',
-            // },
         ],
     },
     {

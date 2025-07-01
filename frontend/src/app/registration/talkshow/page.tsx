@@ -50,23 +50,23 @@ interface CategorySelectorProps {
 
 function CategorySelector({ onSelectCategory, submissionStatus }: CategorySelectorProps) {
     const handleSelect = (category: TalkshowCategory) => {
-        if (category === 'TALKSHOW_1' || category === 'TALKSHOW_2') {
-            Swal.fire({
-                title: 'Not Open Yet!',
-                text: `Registration for ${category.replace('_', ' ')} is not open yet. Please stay tuned for updates!`,
-                icon: 'info',
-                confirmButtonText: 'Got It!',
-                background: '#1F2937',
-                color: '#FFFFFF',
-                confirmButtonColor: '#8B5CF6',
-                customClass: {
-                    popup: 'border border-violet-500 rounded-2xl shadow-lg',
-                    confirmButton: 'font-semibold',
-                },
-            });
-        } else {
-            onSelectCategory(category);
-        }
+        // if (category === 'TALKSHOW_1' || category === 'TALKSHOW_2') {
+        //     Swal.fire({
+        //         title: 'Not Open Yet!',
+        //         text: `Registration for ${category.replace('_', ' ')} is not open yet. Please stay tuned for updates!`,
+        //         icon: 'info',
+        //         confirmButtonText: 'Got It!',
+        //         background: '#1F2937',
+        //         color: '#FFFFFF',
+        //         confirmButtonColor: '#8B5CF6',
+        //         customClass: {
+        //             popup: 'border border-violet-500 rounded-2xl shadow-lg',
+        //             confirmButton: 'font-semibold',
+        //         },
+        //     });
+        // } else {
+        onSelectCategory(category);
+        // }
     };
 
     const cardBaseClasses =
@@ -254,7 +254,7 @@ export default function TalkshowRegistrationPage() {
     }
 
     const schemaForTalkshowForm = baseTalkshowSchema;
-    
+
     return (
         <div className="min-h-screen py-8 relative z-10">
             {selectedTalkshowCategory && !isAlreadySubmittedForSelectedCategory ? (
@@ -277,7 +277,7 @@ export default function TalkshowRegistrationPage() {
             ) : (
                 <RegistrationForm
                     registrationType={registrationType}
-                    formSchema={schemaForTalkshowForm }
+                    formSchema={schemaForTalkshowForm}
                     onSuccessRedirectPath={`/registration/${registrationType}`}
                     initialCategory={selectedTalkshowCategory}
                     onRegistrationReset={handleRegistrationSuccess}
