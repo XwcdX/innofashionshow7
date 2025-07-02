@@ -10,6 +10,9 @@ export class CreationService {
 
     async allCreation(): Promise< Creation[] | null> {
         const allCreation = await this.prisma.creation.findMany({
+            where: {
+                submitted: true,
+            },
             include: {
                 contest: {
                     include: {
