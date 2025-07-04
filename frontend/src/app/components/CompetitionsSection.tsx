@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import Swal from 'sweetalert2'
 import DocModal from './DocModal'
+import { link } from 'fs'
 
 const CompetitionsSection: React.FC = () => {
   const competitionsData = [
@@ -15,7 +16,7 @@ const CompetitionsSection: React.FC = () => {
     {
       title: 'Talkshow',
       description: 'Engage in insightful discussions about fashion trends, design inspiration, and the future of style.',
-
+      link: 'https://innofashionshow.petra.ac.id/registration/talkshow',
     },
     {
       title: 'Workshop',
