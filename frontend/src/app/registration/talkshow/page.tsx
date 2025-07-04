@@ -163,8 +163,8 @@ function CategorySelector({ onSelectCategory, submissionStatus }: CategorySelect
 
 const WHATSAPP_LINKS: Record<TalkshowCategory, string> = {
     WEBINAR: "https://chat.whatsapp.com/BgBKTJTlnH6FuT5gjqwrJv",
-    TALKSHOW_1: "https://chat.whatsapp.com/-",
-    TALKSHOW_2: "https://chat.whatsapp.com/-",
+    TALKSHOW_1: "https://chat.whatsapp.com/DXZQpnIRRm8DNUERklba3M?mode=r_t",
+    TALKSHOW_2: "https://chat.whatsapp.com/B4tkd0t7NslH43j7bcxVij?mode=ac_c",
 };
 
 export default function TalkshowRegistrationPage() {
