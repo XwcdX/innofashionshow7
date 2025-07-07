@@ -16,12 +16,13 @@ import Lenis from '@studio-freight/lenis';
 import TimelineSection from "@/app/components/TimelineSection";
 import ClickSpark from './components/ClickSpark';
 import AnimatedSvgBackground from './components/AnimatedSvgBackground';
+import Sponsor, { SponsorItem } from './components/Sponsor';
 
 export default function Home() {
   // State isLoading dan logika Lenis Anda tetap sama persis seperti kode awal Anda.
   // Saya akan mengembalikan isLoading ke kondisi awal Anda (selalu true untuk contoh ini,
   // namun Anda mungkin memiliki logika untuk mengubahnya).
-  const [isLoading] = useState(true); 
+  const [isLoading] = useState(true);
   const mainRef = useRef<HTMLDivElement>(null);
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -47,12 +48,18 @@ export default function Home() {
     }
   }, [isLoading]);
 
+  const sponsors: SponsorItem[] = [
+    { name: '88 Digital Printing', logo: "/assets/Sponsor - 88 Digital Printing.png", url: '#' },
+    { name: 'Barenbliss', logo: "/assets/Sponsor - Barenbliss.png", url: '#' },
+    { name: 'Kados', logo: "/assets/Sponsor - Kados.png", url: '#' },
+  ];
+  
   return (
     // Struktur JSX utama tidak diubah, hanya penambahan AnimatedSvgBackground
     // dan penyesuaian CSS untuk body.
     <div className="relative w-full h-full overflow-hidden">
       <AnimatedSvgBackground />
-      
+
       <div ref={mainRef} className="relative">
         <ClickSpark
           sparkColor='rgba(77, 255, 255, 0.7)'
@@ -70,7 +77,7 @@ export default function Home() {
           <TimelineSection />
           <PrizePool />
           {/* <FAQ /> */}
-          {/* <Sponsor /> */}
+          <Sponsor sponsors={sponsors} />
           <Footer />
         </ClickSpark>
       </div>
