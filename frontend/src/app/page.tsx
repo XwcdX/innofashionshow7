@@ -52,6 +52,11 @@ export default function Home() {
     { name: '88 Digital Printing', logo: "/assets/Sponsor - 88 Digital Printing.png", url: '#' },
     { name: 'Barenbliss', logo: "/assets/Sponsor - Barenbliss.png", url: '#' },
     { name: 'Kados', logo: "/assets/Sponsor - Kados.png", url: '#' },
+    { name: 'Cleo', logo: "/assets/Sponsor - Cleo.PNG", url: '#' },
+    { name: 'Lanyer', logo: "/assets/Sponsor - Lanyer.jpg", url: '#' },
+    { name: 'Mahek', logo: "/assets/Sponsor - Mahek2.png", url: '#' },
+    { name: 'Photohaseo', logo: "/assets/Sponsor - Photohaseo2.png", url: '#' },
+    { name: 'UBS GOLD', logo: "/assets/Sponsor - UBS GOLD2.png", url: '#' },
   ];
   
   return (

@@ -53,84 +53,81 @@ const Sponsor: React.FC<SponsorProps> = ({ sponsors = defaultSponsors }) => {
     const count = sponsors.length;
     const isMobile = screenWidth < 640;
     const isTablet = screenWidth >= 640 && screenWidth < 1024;
-    
+
     if (isMobile) {
-      // Mobile: Always single column
-      return {
-        gridStyle: 'grid-cols-1',
-        cardWidth: '100%',
-        cardHeight: '140px',
-        maxCards: count
-      };
-    } else if (isTablet) {
-      // Tablet: 2-3 columns depending on count
-      if (count <= 2) {
+      return { gridContainerStyle: 'grid-cols-1', cardHeight: '140px', getCardStyle: (index: number) => ({}) };
+    }
+
+    if (isTablet) {
+      if (count <= 2) return { gridContainerStyle: 'grid-cols-2', cardHeight: '180px', getCardStyle: (index: number) => ({}) };
+      const remainder = count % 3;
+      if (remainder === 0) return { gridContainerStyle: 'grid-cols-3', cardHeight: '160px', getCardStyle: (index: number) => ({}) };
+      if (remainder === 1) {
         return {
-          gridStyle: 'grid-cols-2',
-          cardWidth: '100%',
-          cardHeight: '180px',
-          maxCards: count
-        };
-      } else {
-        return {
-          gridStyle: 'grid-cols-3',
-          cardWidth: '100%',
+          gridContainerStyle: 'grid-cols-3',
           cardHeight: '160px',
-          maxCards: count
+          getCardStyle: (index: number) => (index === count - 1 ? { gridColumnStart: 2 } : {})
         };
       }
-    } else {
-      // Desktop: Maximum utilization
-      if (count <= 3) {
+      if (remainder === 2) { 
         return {
-          gridStyle: 'grid-cols-3',
-          cardWidth: '100%',
-          cardHeight: '200px',
-          maxCards: count
-        };
-      } else if (count <= 6) {
-        return {
-          gridStyle: 'grid-cols-3',
-          cardWidth: '100%',
-          cardHeight: '180px',
-          maxCards: count
-        };
-      } else {
-        return {
-          gridStyle: 'grid-cols-4',
-          cardWidth: '100%',
+          gridContainerStyle: 'grid-cols-6',
           cardHeight: '160px',
-          maxCards: count
+          getCardStyle: (index: number) => {
+            const lastRowStartIndex = count - 2;
+            if (index >= lastRowStartIndex) {
+              // FIX: Use shorthand 'start / span N' syntax
+              return index === lastRowStartIndex ? { gridColumn: '2 / span 2' } : { gridColumn: '4 / span 2' };
+            }
+            return { gridColumn: 'span 2' };
+          }
         };
       }
     }
+
+    if (count <= 3) return { gridContainerStyle: 'grid-cols-3', cardHeight: '200px', getCardStyle: (index: number) => ({}) };
+    if (count <= 6) return { gridContainerStyle: 'grid-cols-3', cardHeight: '180px', getCardStyle: (index: number) => ({}) };
+    
+    const remainder = count % 4;
+    if (remainder === 0) return { gridContainerStyle: 'grid-cols-4', cardHeight: '160px', getCardStyle: (index: number) => ({}) };
+    if (remainder === 2) {
+      return {
+        gridContainerStyle: 'grid-cols-4',
+        cardHeight: '160px',
+        getCardStyle: (index: number) => {
+          const lastRowStartIndex = count - 2;
+          if (index >= lastRowStartIndex) {
+            return index === lastRowStartIndex ? { gridColumnStart: 2 } : { gridColumnStart: 3 };
+          }
+          return {};
+        }
+      };
+    }
+    
+    return { // Cases for remainder 1 and 3 on desktop
+      gridContainerStyle: 'grid-cols-8',
+      cardHeight: '160px',
+      getCardStyle: (index: number) => {
+        if (remainder === 1) {
+          // FIX: Use shorthand 'start / span N' syntax
+          return index === count - 1 ? { gridColumn: '4 / span 2' } : { gridColumn: 'span 2' };
+        }
+        if (remainder === 3) {
+          const lastRowStartIndex = count - 3;
+          if (index >= lastRowStartIndex) {
+            // FIX: Use shorthand 'start / span N' syntax
+            if (index === lastRowStartIndex) return { gridColumn: '2 / span 2' };
+            if (index === lastRowStartIndex + 1) return { gridColumn: '4 / span 2' };
+            return { gridColumn: '6 / span 2' };
+          }
+        }
+        return { gridColumn: 'span 2' };
+      }
+    };
   };
 
   const gridConfig = getGridConfig();
   const isMobile = screenWidth < 640;
-
-  // We can remove this function since we're always using 100vh now
-  // const getRequiredHeight = () => {
-  //   const titleHeight = isMobile ? 120 : 180;
-  //   const cardHeight = parseInt(gridConfig.cardHeight);
-  //   const gap = isMobile ? 16 : screenWidth < 1024 ? 24 : 32;
-  //   const padding = isMobile ? 32 : 64;
-  //   const margin = isMobile ? 48 : 96;
-  //   
-  //   const cols = gridConfig.gridStyle === 'grid-cols-1' ? 1 : 
-  //               gridConfig.gridStyle === 'grid-cols-2' ? 2 : 
-  //               gridConfig.gridStyle === 'grid-cols-3' ? 3 : 4;
-  //   const rows = Math.ceil(sponsors.length / cols);
-  //   
-  //   const totalGridHeight = (rows * cardHeight) + ((rows - 1) * gap);
-  //   const totalHeight = titleHeight + totalGridHeight + padding + margin;
-  //   
-  //   return totalHeight;
-  // };
-
-  // Since we're always using 100vh now, we don't need this calculation
-  // const requiredHeight = getRequiredHeight();
-  // const useFullHeight = requiredHeight > (window.innerHeight * 0.8);
 
   return (
     <section 
@@ -139,11 +136,14 @@ const Sponsor: React.FC<SponsorProps> = ({ sponsors = defaultSponsors }) => {
         background: 'transparent', 
         scrollSnapAlign: 'start',
         width: '100vw',
-        height: '100vh',
+        height: isMobile ? 'auto' : '100vh',
         minHeight: '100vh',
         maxWidth: '100vw',
-        overflow: 'hidden',
-        boxSizing: 'border-box'
+        overflowX: 'hidden',
+        overflowY: isMobile ? 'auto' : 'hidden',
+        boxSizing: 'border-box',
+        paddingTop: isMobile ? '6rem' : '0',
+        paddingBottom: isMobile ? '6rem' : '0'
       }}
       id="sponsor"
     >
@@ -154,7 +154,6 @@ const Sponsor: React.FC<SponsorProps> = ({ sponsors = defaultSponsors }) => {
           overflow: 'hidden'
         }}
       >
-        {/* Title Section - Updated with Prize Pool sizing */}
         <div className="relative mb-12 md:mb-16 lg:mb-20 text-center flex-shrink-0">
           <h2 
             className={`text-6xl md:text-8xl lg:text-9xl font-bold uppercase tracking-tighter inline-block relative ${glitchActive ? 'glitch-active' : ''}`}
@@ -168,41 +167,16 @@ const Sponsor: React.FC<SponsorProps> = ({ sponsors = defaultSponsors }) => {
             SPONSORS
             {glitchActive && (
               <>
-                <span 
-                  className="absolute top-0 left-0 w-full h-full opacity-70"
-                  style={{
-                    color: '#a6ff4d',
-                    textShadow: '3px 0 #c306aa',
-                    clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)'
-                  }}
-                >
-                  SPONSORS
-                </span>
-                <span 
-                  className="absolute top-0 left-0 w-full h-full opacity-70"
-                  style={{
-                    color: '#8f03d1',
-                    textShadow: '-3px 0 #4dffff',
-                    clipPath: 'polygon(0 55%, 100% 55%, 100% 100%, 0 100%)'
-                  }}
-                >
-                  SPONSORS
-                </span>
+                <span className="absolute top-0 left-0 w-full h-full opacity-70" style={{ color: '#a6ff4d', textShadow: '3px 0 #c306aa', clipPath: 'polygon(0 0, 100% 0, 100% 45%, 0 45%)' }}>SPONSORS</span>
+                <span className="absolute top-0 left-0 w-full h-full opacity-70" style={{ color: '#8f03d1', textShadow: '-3px 0 #4dffff', clipPath: 'polygon(0 55%, 100% 55%, 100% 100%, 0 100%)' }}>SPONSORS</span>
               </>
             )}
           </h2>
         </div>
 
-        {/* Sponsors Grid */}
-        <div 
-          className="w-full flex items-center justify-center"
-          style={{
-            maxWidth: '100%',
-            overflow: 'hidden'
-          }}
-        >
+        <div className="w-full flex items-center justify-center" style={{ maxWidth: '100%', overflow: 'hidden' }}>
           <div 
-            className={`grid w-full ${gridConfig.gridStyle}`}
+            className={`grid w-full ${gridConfig.gridContainerStyle}`}
             style={{
               maxWidth: '100%',
               gap: isMobile ? '1rem' : screenWidth < 1024 ? '1.5rem' : '2rem',
@@ -210,8 +184,8 @@ const Sponsor: React.FC<SponsorProps> = ({ sponsors = defaultSponsors }) => {
               padding: isMobile ? '0' : '1rem',
               justifyContent: 'center',
               alignContent: 'center',
-              justifyItems: 'center',
-              alignItems: 'center'
+              justifyItems: 'stretch',
+              alignItems: 'stretch'
             }}
           >
             {sponsors.map((sponsor, index) => (
@@ -220,37 +194,17 @@ const Sponsor: React.FC<SponsorProps> = ({ sponsors = defaultSponsors }) => {
                 sponsor={sponsor}
                 cardHeight={gridConfig.cardHeight}
                 isMobile={isMobile}
+                gridItemStyle={gridConfig.getCardStyle(index)}
               />
             ))}
           </div>
         </div>
 
-        {/* Background decoration */}
-        <div 
-          className="absolute bottom-0 right-0 z-0 opacity-10 pointer-events-none"
-          style={{
-            backgroundImage: "url('/assets/layer1.png')",
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            width: isMobile ? '200px' : '400px',
-            height: isMobile ? '160px' : '320px',
-            transform: 'translateX(20%) translateY(10%)'
-          }}
-        />
+        <div className="absolute bottom-0 right-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: "url('/assets/layer1.png')", backgroundSize: 'contain', backgroundRepeat: 'no-repeat', width: isMobile ? '200px' : '400px', height: isMobile ? '160px' : '320px', transform: 'translateX(20%) translateY(10%)' }} />
 
         <style jsx>{`
-          .glitch-active {
-            animation: glitch-anim 0.3s linear infinite;
-          }
-          
-          @keyframes glitch-anim {
-            0% { transform: translate(0); }
-            20% { transform: translate(-3px, 3px); }
-            40% { transform: translate(-3px, -3px); }
-            60% { transform: translate(3px, 3px); }
-            80% { transform: translate(3px, -3px); }
-            100% { transform: translate(0); }
-          }
+          .glitch-active { animation: glitch-anim 0.3s linear infinite; }
+          @keyframes glitch-anim { 0% { transform: translate(0); } 20% { transform: translate(-3px, 3px); } 40% { transform: translate(-3px, -3px); } 60% { transform: translate(3px, 3px); } 80% { transform: translate(3px, -3px); } 100% { transform: translate(0); } }
         `}</style>
       </div>
     </section>
@@ -261,17 +215,12 @@ const SponsorCard: React.FC<{
   sponsor: SponsorItem;
   cardHeight: string;
   isMobile: boolean;
-}> = ({ sponsor, cardHeight, isMobile }) => {
+  gridItemStyle?: React.CSSProperties;
+}> = ({ sponsor, cardHeight, isMobile, gridItemStyle }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div 
-      className="w-full flex justify-center items-center"
-      style={{
-        height: cardHeight,
-        minHeight: cardHeight
-      }}
-    >
+    <div style={gridItemStyle}>
       <div
         className="flex items-center justify-center relative group w-full h-full rounded-2xl transition-all duration-500 hover:scale-105 cursor-pointer"
         style={{
@@ -279,27 +228,19 @@ const SponsorCard: React.FC<{
           backdropFilter: 'blur(15px)',
           border: '1px solid rgba(255, 255, 255, 0.15)',
           boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
-          padding: isMobile ? '1rem' : '1.5rem'
+          padding: isMobile ? '1rem' : '1.5rem',
+          height: cardHeight,
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Logo container with consistent sizing */}
-        <div 
-          className="w-full h-full flex items-center justify-center"
-          style={{
-            maxWidth: '100%',
-            maxHeight: '100%'
-          }}
-        >
+        <div className="w-full h-full flex items-center justify-center">
           <img
             src={sponsor.logo}
             alt={sponsor.name}
             className="transition-all duration-500"
             style={{
-              filter: isHovered 
-                ? 'none brightness(1.1) contrast(1.1)' 
-                : 'grayscale(100%) brightness(1.4) contrast(1.3)',
+              filter: isHovered ? 'none' : 'grayscale(100%) brightness(1.4) contrast(1.3)',
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               maxWidth: '100%',
               maxHeight: '100%',
@@ -310,24 +251,8 @@ const SponsorCard: React.FC<{
           />
         </div>
         
-        {/* Hover glow effect */}
-        <div 
-          className="absolute inset-0 rounded-2xl transition-opacity duration-500"
-          style={{
-            background: 'linear-gradient(135deg, rgba(77, 255, 255, 0.12), rgba(166, 255, 77, 0.12))',
-            boxShadow: '0 0 50px rgba(77, 255, 255, 0.4)',
-            opacity: isHovered ? 1 : 0
-          }}
-        />
-        
-        {/* Subtle inner glow */}
-        <div 
-          className="absolute inset-2 rounded-xl transition-opacity duration-500"
-          style={{
-            background: 'linear-gradient(135deg, rgba(77, 255, 255, 0.05), rgba(166, 255, 77, 0.05))',
-            opacity: isHovered ? 1 : 0
-          }}
-        />
+        <div className="absolute inset-0 rounded-2xl transition-opacity duration-500" style={{ background: 'linear-gradient(135deg, rgba(77, 255, 255, 0.12), rgba(166, 255, 77, 0.12))', boxShadow: '0 0 50px rgba(77, 255, 255, 0.4)', opacity: isHovered ? 1 : 0 }} />
+        <div className="absolute inset-2 rounded-xl transition-opacity duration-500" style={{ background: 'linear-gradient(135deg, rgba(77, 255, 255, 0.05), rgba(166, 255, 77, 0.05))', opacity: isHovered ? 1 : 0 }} />
       </div>
     </div>
   );
