@@ -57,6 +57,7 @@ export default function Home() {
     { name: 'Mahek', logo: "/assets/Sponsor - Mahek.PNG", url: '#' },
     { name: 'Photohaseo', logo: "/assets/Sponsor - Photohaseo.png", url: '#' },
     { name: 'UBS GOLD', logo: "/assets/Sponsor - UBS GOLD.png", url: '#' },
+    { name: 'Miracle', logo: "/assets/Sponsor - Miracle.png", url: '#' },
   ];
   
   return (

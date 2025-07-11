@@ -76,7 +76,6 @@ const Sponsor: React.FC<SponsorProps> = ({ sponsors = defaultSponsors }) => {
           getCardStyle: (index: number) => {
             const lastRowStartIndex = count - 2;
             if (index >= lastRowStartIndex) {
-              // FIX: Use shorthand 'start / span N' syntax
               return index === lastRowStartIndex ? { gridColumn: '2 / span 2' } : { gridColumn: '4 / span 2' };
             }
             return { gridColumn: 'span 2' };
@@ -104,18 +103,16 @@ const Sponsor: React.FC<SponsorProps> = ({ sponsors = defaultSponsors }) => {
       };
     }
     
-    return { // Cases for remainder 1 and 3 on desktop
+    return {
       gridContainerStyle: 'grid-cols-8',
       cardHeight: '160px',
       getCardStyle: (index: number) => {
         if (remainder === 1) {
-          // FIX: Use shorthand 'start / span N' syntax
           return index === count - 1 ? { gridColumn: '4 / span 2' } : { gridColumn: 'span 2' };
         }
         if (remainder === 3) {
           const lastRowStartIndex = count - 3;
           if (index >= lastRowStartIndex) {
-            // FIX: Use shorthand 'start / span N' syntax
             if (index === lastRowStartIndex) return { gridColumn: '2 / span 2' };
             if (index === lastRowStartIndex + 1) return { gridColumn: '4 / span 2' };
             return { gridColumn: '6 / span 2' };
@@ -240,7 +237,7 @@ const SponsorCard: React.FC<{
             alt={sponsor.name}
             className="transition-all duration-500"
             style={{
-              filter: isHovered ? 'none' : 'grayscale(100%) brightness(1.4) contrast(1.3)',
+              filter: 'grayscale(100%) brightness(1.4) contrast(1.3)',
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               maxWidth: '100%',
               maxHeight: '100%',
