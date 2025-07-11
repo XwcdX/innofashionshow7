@@ -54,9 +54,9 @@ export default function Home() {
     { name: 'Kados', logo: "/assets/Sponsor - Kados.png", url: '#' },
     { name: 'Cleo', logo: "/assets/Sponsor - Cleo.PNG", url: '#' },
     { name: 'Lanyer', logo: "/assets/Sponsor - Lanyer.jpg", url: '#' },
-    { name: 'Mahek', logo: "/assets/Sponsor - Mahek2.png", url: '#' },
-    { name: 'Photohaseo', logo: "/assets/Sponsor - Photohaseo2.png", url: '#' },
-    { name: 'UBS GOLD', logo: "/assets/Sponsor - UBS GOLD2.png", url: '#' },
+    { name: 'Mahek', logo: "/assets/Sponsor - Mahek.PNG", url: '#' },
+    { name: 'Photohaseo', logo: "/assets/Sponsor - Photohaseo.png", url: '#' },
+    { name: 'UBS GOLD', logo: "/assets/Sponsor - UBS GOLD.png", url: '#' },
   ];
   
   return (
