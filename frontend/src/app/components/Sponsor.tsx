@@ -237,7 +237,6 @@ const SponsorCard: React.FC<{
             alt={sponsor.name}
             className="transition-all duration-500"
             style={{
-              filter: 'grayscale(100%) brightness(1.4) contrast(1.3)',
               transform: isHovered ? 'scale(1.05)' : 'scale(1)',
               maxWidth: '100%',
               maxHeight: '100%',
