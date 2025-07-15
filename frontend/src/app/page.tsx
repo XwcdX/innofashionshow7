@@ -17,6 +17,8 @@ import TimelineSection from "@/app/components/TimelineSection";
 import ClickSpark from './components/ClickSpark';
 import AnimatedSvgBackground from './components/AnimatedSvgBackground';
 import Sponsor, { SponsorItem } from './components/Sponsor';
+import ShowcaseKarya from './components/showcasekarya';
+
 
 export default function Home() {
   // State isLoading dan logika Lenis Anda tetap sama persis seperti kode awal Anda.
@@ -82,7 +84,7 @@ export default function Home() {
           <Countdown />
           <TimelineSection />
           <PrizePool />
-          {/* <FAQ /> */}
+          <ShowcaseKarya />
           <Sponsor sponsors={sponsors} />
           <Footer />
         </ClickSpark>
