@@ -1,13 +1,17 @@
-'use client'
+// frontend/src/app/providers.tsx
+'use client';
 
-import { SessionProvider } from 'next-auth/react'
-import type { ReactNode } from 'react'
+import { SessionProvider } from 'next-auth/react';
+import { CacheProvider } from '@chakra-ui/next-js';
+import { ChakraProvider } from '@chakra-ui/react';
+import { ReactNode } from 'react';
 
 export function Providers({ children }: { children: ReactNode }) {
-  return <SessionProvider
-    refetchInterval={60}
-    refetchOnWindowFocus={true}
-    session={undefined}>
-    {children}
-  </SessionProvider>
+  return (
+    <SessionProvider>
+      <CacheProvider>
+        <ChakraProvider>{children}</ChakraProvider>
+      </CacheProvider>
+    </SessionProvider>
+  );
 }

@@ -1,6 +1,9 @@
-import NextAuth from 'next-auth'
-import GoogleProvider from 'next-auth/providers/google'
+// frontend/src/pages/api/auth/[...nextauth].ts
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
 
+// Di sini kita tidak melakukan sinkronisasi dengan backend JWT dulu
+// untuk mempermudah. Kita akan gunakan session NextAuth langsung.
 export default NextAuth({
   providers: [
     GoogleProvider({
@@ -9,9 +12,4 @@ export default NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  session: { strategy: 'jwt' },
-  pages: {
-    signIn: '/login',
-    error: '/login',
-  },
-})
+});
