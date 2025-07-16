@@ -1,4 +1,4 @@
-import InfiniteMenu from './InfiniteMenu'
+import InfiniteMenu from './InfiniteMenu';
 
 const items = [
   {
@@ -27,6 +27,10 @@ const items = [
   }
 ];
 
-<div style={{ height: '600px', position: 'relative' }}>
-  <InfiniteMenu items={items}/>
-</div>
+const ShowcaseKarya = () => (
+  <div style={{ height: '600px', position: 'relative', background: '#111'  }}>
+    <InfiniteMenu items={items} />
+  </div>
+);
+
+export default ShowcaseKarya;

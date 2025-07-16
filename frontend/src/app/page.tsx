@@ -17,7 +17,7 @@ import TimelineSection from "@/app/components/TimelineSection";
 import ClickSpark from './components/ClickSpark';
 import AnimatedSvgBackground from './components/AnimatedSvgBackground';
 import Sponsor, { SponsorItem } from './components/Sponsor';
-import ShowcaseKarya from './components/showcasekarya';
+import ShowcaseKarya from './components/ShowcaseKarya';
 
 
 export default function Home() {
