@@ -45,4 +45,27 @@ export class AuthService {
         const token = this.jwtService.sign(payload);
         return { token, user };
     }
+
+    async loginWithGoogle(userDto: { email: string; name: string }) {
+    const { email, name } = userDto;
+    let user = await this.usersService.findOne(email);
+
+    // Jika user tidak ada di database, buat user baru
+    if (!user) {
+      const randomPassword = Math.random().toString(36).slice(-8);
+      const hashedPassword = await bcrypt.hash(randomPassword, 10);
+      
+      user = await this.usersService.create({
+        email,
+        name,
+        password: hashedPassword,
+      });
+    }
+
+    // Buat "tiket masuk" (JWT) untuk user
+    const payload = { sub: user.id, username: user.email };
+    return {
+      access_token: await this.jwtService.signAsync(payload),
+    };
+  }
 }

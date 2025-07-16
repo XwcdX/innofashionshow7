@@ -44,13 +44,41 @@ model User {
   id        String   @id @default(uuid())
   email     String   @unique
   name      String
-  type      UserType @default(EXTERNAL)
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   contest   Contest? @relation("UserContest")
   workshop  Workshop? @relation("UserWorkshop")
   talkshow  Talkshow[] @relation("UserTalkshow")
+
+  vote      Vote?
+}
+
+model Work {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  imageUrl    String
+  link        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  votes       Vote[]
+  voteCount   Int      @default(0)
+}
+
+model Vote {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  // Relasi ke User (unik untuk memastikan 1 user = 1 vote)
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relasi ke Work
+  workId    String
+  work      Work     @relation(fields: [workId], references: [id], onDelete: Cascade)
 }
 
 model Contest {
